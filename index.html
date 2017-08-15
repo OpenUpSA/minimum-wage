@@ -66,85 +66,18 @@ title: Minimum Wage
           <div class="col-xs-3 amount"></div>
         </div>
 
-        <div class="row housing">
+        {% for cat in site.data.expense %}
+        <div class="row {{ cat.id }}">
           <div class="col-xs-6 name">
-            Housing and utilities
+            {{ cat.name }}
           </div>
           <div class="col-xs-3 perc">
-            39.2
+            {{ cat.perc }}
           </div>
           <div class="col-xs-3 amount"></div>
         </div>
+        {% endfor %}
 
-        <div class="row food">
-          <div class="col-xs-6 name">
-            Food
-          </div>
-          <div class="col-xs-3 perc">
-            25.55
-          </div>
-          <div class="col-xs-3 amount"></div>
-        </div>
-
-        <div class="row transport">
-          <div class="col-xs-6 name">
-            Transport
-          </div>
-          <div class="col-xs-3 perc">
-            5.77
-          </div>
-          <div class="col-xs-3 amount"></div>
-        </div>
-
-        <div class="row education">
-          <div class="col-xs-6 name">
-            Education
-          </div>
-          <div class="col-xs-3 perc">
-            0.86
-          </div>
-          <div class="col-xs-3 amount"></div>
-        </div>
-
-        <div class="row communication">
-          <div class="col-xs-6 name">
-            Communication
-          </div>
-          <div class="col-xs-3 perc">
-            2.72
-          </div>
-          <div class="col-xs-3 amount"></div>
-        </div>
-
-        <div class="row health">
-          <div class="col-xs-6 name">
-            Health
-          </div>
-          <div class="col-xs-3 perc">
-            0.5
-          </div>
-          <div class="col-xs-3 amount"></div>
-        </div>
-
-        <div class="row discretionary">
-          <div class="col-xs-6 name">
-            Discretionary
-          </div>
-          <div class="col-xs-3 perc">
-            12.1
-          </div>
-          <div class="col-xs-3 amount"></div>
-        </div>
-
-        <div class="row other">
-          <div class="col-xs-6 name">
-            Other
-          </div>
-          <div class="col-xs-3 perc">
-            13.3
-          </div>
-          <div class="col-xs-3 amount"></div>
-        </div>
 
       </div>
     </div>

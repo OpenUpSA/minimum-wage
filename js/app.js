@@ -6,3 +6,8 @@ $(window).on('load', function() {
   pymChild.sendHeight();
 });
 
+(function($) {
+  $(document).ready(function () {
+
+  });
+})(jQuery)

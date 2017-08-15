@@ -46,10 +46,10 @@ title: Minimum Wage
           <div class="col-sm-12">
             <form class="form-horizontal">
               <div class="form-group">
-                <label for="hh-members" class="col-sm-6 control-label">How many of them are children?</label>
+                <label for="hh-children" class="col-sm-6 control-label">How many of them are children?</label>
                 <div class="col-sm-6">
                   <div class="input-group">
-                    <input class="form-control" id="hh-members" value="1">
+                    <input class="form-control" id="hh-children" value="1">
                   </div>
                 </div>
               </div>
@@ -57,27 +57,20 @@ title: Minimum Wage
         </div>
 
         <div class="row balance">
-          <div class="col-xs-6 name">
-            Balance
-          </div>
-          <div class="col-xs-3 perc">
-            0
-          </div>
+          <div class="col-xs-6 name">Balance</div>
+          <div class="col-xs-3 perc"></div>
           <div class="col-xs-3 amount"></div>
         </div>
 
-        {% for cat in site.data.expense %}
-        <div class="row {{ cat.id }}">
-          <div class="col-xs-6 name">
-            {{ cat.name }}
+        <div id="expense-categories">
+          {% for cat in site.data.expense %}
+          <div id= "{{ cat.id }}" class="row">
+            <div class="col-xs-6 name">{{ cat.name }}</div>
+            <div class="col-xs-3 perc">{{ cat.perc }}</div>
+            <div class="col-xs-3 amount"></div>
           </div>
-          <div class="col-xs-3 perc">
-            {{ cat.perc }}
-          </div>
-          <div class="col-xs-3 amount"></div>
+          {% endfor %}
         </div>
-        {% endfor %}
-
 
       </div>
     </div>

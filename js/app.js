@@ -19,6 +19,10 @@ $(window).on('load', function() {
     var balance = 0;
     var expenses = {};
 
+    var surplusText = "You have extra money available";
+    var deficitText = "You're spending more than you have";
+    var balancedText = "Your expenses match your income";
+
     fillInitialExpenses();
     updateView();
 
@@ -32,11 +36,19 @@ $(window).on('load', function() {
       });
     }
 
+    function updateView() {
+      drawExpenses();
+      totalExpenses();
+      fillBalance();
+      drawSliders();
+    }
+
     function drawExpenses() {
-      $('#expense-blocks').children().each( function () {
+      $('#expenses').children().each( function () {
         var key = $(this).attr('id');
-        $(this).find('.amount').text(round(expenses[key].amount));
-        $(this).find('.perc').text(round(expenses[key].perc * 100, 2));
+        $(this).find('.amount').text("R " + round(expenses[key].amount));
+        $(this).find('.perc').text(round(expenses[key].amount / income * 100, 2) + " %");
+        $(this).find('.of-total').text("of R " + income);
       });
     }
 
@@ -50,7 +62,8 @@ $(window).on('load', function() {
 
     function fillBalance() {
       balance = income - round(total_exp);
-      $('#balance').find('.amount').text(balance);
+      $('#balance').find('.amount').text(balance === 0 ? "" : "R " + balance);
+      $('#balance').find('.name').text(balance === 0 ? balancedText : (balance < 0 ? deficitText : surplusText));
       $('#balance').removeClass("negative positive").addClass(balance < 0 ? 'negative' : 'positive');
     }
 
@@ -59,13 +72,6 @@ $(window).on('load', function() {
       expenses[key].amount = e.value;
       expenses[key].perc = e.value / income;
       updateView();
-    }
-
-    function updateView() {
-      drawExpenses();
-      totalExpenses();
-      fillBalance();
-      drawSliders();
     }
 
     function round(value, decimals) {
@@ -78,13 +84,6 @@ $(window).on('load', function() {
       income = $(this).val();
       updateView();
     });
-
-
-    var hhSliderNameIDs = {
-      members: '#hh-members',
-      children: '#hh-children'
-    };
-
 
     function drawSliders() {
       var expenseSliderNameIDs = {
@@ -115,16 +114,25 @@ $(window).on('load', function() {
       });
     }
 
+    var hhSliderNameIDs = {
+      members: '#hh-members',
+      children: '#hh-children'
+    };
+
     var membersSlider = $('#hh-members').slider({
-        formatter: function(value) {
-          return value;
-        }
+      formatter: function(value) {
+        return value;
+      }
     });
 
     var childrenSlider = $('#hh-children').slider({
-        formatter: function(value) {
-          return value;
-        }
+      formatter: function(value) {
+        return value;
+      }
+    });
+
+    $('#show-money').on('click', function() {
+      $('#money').css('display', 'block');
     });
 
   });

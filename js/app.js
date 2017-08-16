@@ -133,7 +133,9 @@ $(window).on('load', function() {
 
     $('#show-money').on('click', function() {
       $('#money').css('display', 'block');
+      var sticky = new Sticky('#balance');
     });
+
 
   });
 

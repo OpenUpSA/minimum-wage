@@ -3,8 +3,9 @@ layout: default
 title: Minimum Wage
 
 extra_js:
-  - bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js
   - bower_components/underscore/underscore-min.js
+  - bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js
+  - bower_components/sticky.js/dist/sticky.min.js
 extra_css:
   - bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css
 ---
@@ -51,7 +52,7 @@ extra_css:
         </div>
       </div>
 
-      <div id="balance">
+      <div id="balance" data-margin-top=2>
         <div class="row">
           <div class="col-xs-12 col-md-6 name"></div>
           <div class="col-xs-12 col-md-6 amount"></div>

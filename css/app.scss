@@ -13,12 +13,13 @@
 }
 
 #money {
-  // display: none;
+  display: none;
 }
 
 #balance {
   color: #fff;
   padding: 10px 20px;
+  z-index: 10;
 
   .amount {
     font-size: 2em;
@@ -63,8 +64,6 @@
       margin-top: -3px;
     }
   }
-
-
 
   .amount {
     font-size: 2em;

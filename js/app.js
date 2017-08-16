@@ -5,12 +5,10 @@ var pymChild = new pym.Child({
 });
 
 $(window).on('load', function() {
-  "use strict";
   pymChild.sendHeight();
 });
 
 (function($) {
-  "use strict";
   $(document).ready(function () {
 
     var income = parseInt($('#hh-income').val());
@@ -110,7 +108,7 @@ $(window).on('load', function() {
           value: expenses[key].amount,
           min: 0,
           max: income,
-          step: round(income / 700)
+          step: income < 1000 ? 5 : round(income * 0.0015)
         });
 
         expenseSliders[key].on('slideStop', updateExpenses);

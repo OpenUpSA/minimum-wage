@@ -1,12 +1,16 @@
+"use strict";
+
 var pymChild = new pym.Child({
   id: "min-wage-embed-parent"
 });
 
 $(window).on('load', function() {
+  "use strict";
   pymChild.sendHeight();
 });
 
 (function($) {
+  "use strict";
   $(document).ready(function () {
 
     var income = parseInt($('#hh-income').val());
@@ -18,51 +22,52 @@ $(window).on('load', function() {
     var expenses = {};
 
     fillInitialExpenses();
-    updateView()
+    updateView();
 
     function fillInitialExpenses() {
-      for (var key in EXPENSE_DATA) {
-        var perc = parseFloat(EXPENSE_DATA[key]);
+      _.each(EXPENSE_DATA, function(value, key) {
+        var perc = parseFloat(value);
         expenses[key] = {
-          'perc': perc,
-          'amount': perc * income
-        }
-      }
+          perc: perc,
+          amount: perc * income
+        };
+      });
     }
 
     function drawExpenses() {
       $('#expense-blocks').children().each( function () {
         var key = $(this).attr('id');
-        $(this).find('.amount').text(round(expenses[key]['amount']));
-        $(this).find('.perc').text(round(expenses[key]['perc'] * 100, 2));
+        $(this).find('.amount').text(round(expenses[key].amount));
+        $(this).find('.perc').text(round(expenses[key].perc * 100, 2));
       });
     }
 
     function totalExpenses() {
       var total = 0;
-      for(var key in expenses) {
-        total += expenses[key]['amount'];
-      }
+      _.each(expenses, function(expense) {
+        total += expense.amount;
+      });
       total_exp = total;
     }
 
     function fillBalance() {
-      var balance = income - round(total_exp);
+      balance = income - round(total_exp);
       $('#balance').find('.amount').text(balance);
       $('#balance').removeClass("negative positive").addClass(balance < 0 ? 'negative' : 'positive');
     }
 
     function updateExpenses(e) {
-      var key = e['target'].dataset['sliderId'];
-      expenses[key]['amount'] = e.value;
-      expenses[key]['perc'] = e.value / income;
-      updateView()
+      var key = e.target.dataset.sliderId;
+      expenses[key].amount = e.value;
+      expenses[key].perc = e.value / income;
+      updateView();
     }
 
     function updateView() {
       drawExpenses();
       totalExpenses();
       fillBalance();
+      drawSliders();
     }
 
     function round(value, decimals) {
@@ -73,9 +78,44 @@ $(window).on('load', function() {
 
     $('#hh-income').keyup(function() {
       income = $(this).val();
-      totalExpenses();
-      fillBalance();
+      updateView();
     });
+
+
+    var hhSliderNameIDs = {
+      members: '#hh-members',
+      children: '#hh-children'
+    };
+
+
+    function drawSliders() {
+      var expenseSliderNameIDs = {
+        housing: '#housing-slider',
+        food: '#food-slider',
+        transport: '#transport-slider',
+        education: '#education-slider',
+        health: '#health-slider',
+        communication: '#communication-slider',
+        discretionary: '#discretionary-slider',
+        other: '#other-slider'
+      };
+
+      var expenseSliders = {};
+
+      _.each(expenseSliderNameIDs, function(id, key) {
+        expenseSliders[key] = $(id).slider({
+          formatter: function(value) {
+            return value;
+          },
+          value: expenses[key].amount,
+          min: 0,
+          max: income,
+          step: round(income / 700)
+        });
+
+        expenseSliders[key].on('slideStop', updateExpenses);
+      });
+    }
 
     var membersSlider = $('#hh-members').slider({
         formatter: function(value) {
@@ -89,77 +129,6 @@ $(window).on('load', function() {
         }
     });
 
-    var housingSlider = $('#housing-slider').slider({
-      formatter: function(value) {
-        return value;
-      },
-      value: expenses['housing']['amount'],
-    });
-
-    housingSlider.on('slideStop', updateExpenses);
-
-    var foodSlider = $('#food-slider').slider({
-      formatter: function(value) {
-        return value;
-      },
-      value: expenses['food']['amount']
-    });
-
-    foodSlider.on('slideStop', updateExpenses);
-
-    var transportSlider = $('#transport-slider').slider({
-      formatter: function(value) {
-        return value;
-      },
-      value: expenses['transport']['amount']
-    });
-
-    transportSlider.on('slideStop', updateExpenses);
-
-    var educationSlider = $('#education-slider').slider({
-      formatter: function(value) {
-        return value;
-      },
-      value: expenses['education']['amount']
-    });
-
-    educationSlider.on('slideStop', updateExpenses);
-
-    var healthSlider = $('#health-slider').slider({
-      formatter: function(value) {
-        return value;
-      },
-      value: expenses['health']['amount']
-    });
-
-    healthSlider.on('slideStop', updateExpenses);
-
-    var communicationSlider = $('#communication-slider').slider({
-      formatter: function(value) {
-        return value;
-      },
-      value: expenses['communication']['amount']
-    });
-
-    communicationSlider.on('slideStop', updateExpenses);
-
-    var discretionarySlider = $('#discretionary-slider').slider({
-      formatter: function(value) {
-        return value;
-      },
-      value: expenses['discretionary']['amount']
-    });
-
-    discretionarySlider.on('slideStop', updateExpenses);
-
-    var otherSlider = $('#other-slider').slider({
-      formatter: function(value) {
-        return value;
-      },
-      value: expenses['other']['amount']
-    });
-
-    otherSlider.on('slideStop', updateExpenses);
-
   });
+
 })(jQuery)

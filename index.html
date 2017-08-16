@@ -1,75 +1,93 @@
 ---
 layout: default
 title: Minimum Wage
+
+extra_js:
+  - bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js
+extra_css:
+  - bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css
 ---
 
 <div id="content">
-      <div class="container">
+  <div class="container">
 
-        <h1>Living on the Minimum Wage</h1>
-        <p>This is the introduction to the proposed minimum wage, and why the person reading this should care.</p>
+    <h1>Living on the Minimum Wage</h1>
+    <p>This is the introduction to the proposed minimum wage, and why the person reading this should care.</p>
 
-        <div class="row">
-          <div class="col-sm-12">
-            <form class="form-horizontal">
-              <div class="form-group">
-              <div class="col-sm-6">
-                <label for="hh-income" class="control-label">How much money does the household earn?</label>
-                </div>
-                <div class="col-sm-6">
-                  <div class="input-group">
-                    <div class="input-group-addon">R</div>
-                    <input class="form-control" id="hh-income" value="3500">
-                  </div>
-                </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <form class="form-horizontal">
+          <div class="form-group">
+          <div class="col-sm-6">
+            <label for="hh-income" class="control-label">How much money does the household earn?</label>
+            </div>
+            <div class="col-sm-6">
+              <div class="input-group">
+                <div class="input-group-addon">R</div>
+                <input class="form-control" id="hh-income" value="3500">
               </div>
+            </div>
           </div>
-        </div>
-
-        <div class="row">
-          <div class="col-sm-12">
-            <form class="form-horizontal">
-              <div class="form-group">
-              <div class="col-sm-6">
-                <label for="hh-members" class="control-label">How many people live in the household?</label>
-              </div>
-                <div class="col-sm-6">
-                  <div class="input-group">
-                    <input class="form-control" id="hh-members" value="2">
-                  </div>
-                </div>
-              </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-sm-12">
-            <form class="form-horizontal">
-              <div class="form-group">
-                <label for="hh-children" class="col-sm-6 control-label">How many of them are children?</label>
-                <div class="col-sm-6">
-                  <div class="input-group">
-                    <input class="form-control" id="hh-children" value="1">
-                  </div>
-                </div>
-              </div>
-          </div>
-        </div>
-
-        <div id='balance' class="row">
-          <div class="col-xs-6 name">Balance</div>
-          <div class="col-xs-3 amount"></div>
-        </div>
-
-        <div id="expense-categories">
-          {% for cat in site.data.expense %}
-          <div id= "{{ cat.id }}" class="row">
-            <div class="col-xs-6 name">{{ cat.name }}</div>
-            <div class="col-xs-3 perc">{{ cat.perc }}</div>
-            <div class="col-xs-3 amount"></div>
-          </div>
-          {% endfor %}
-        </div>
-
       </div>
     </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <form class="form-horizontal">
+          <div class="form-group">
+          <div class="col-sm-6">
+            <label for="hh-members" class="control-label">How many people live in the household?</label>
+          </div>
+            <div class="col-sm-6">
+              <div class="input-group">
+                <input id="hh-members" data-slider-id='hh-members-slider' type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="3"/>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <form class="form-horizontal">
+          <div class="form-group">
+            <label for="hh-children" class="col-sm-6 control-label">How many of them are children?</label>
+            <div class="col-sm-6">
+              <div class="input-group">
+                <input id="hh-children" data-slider-id='hh-children-slider' type="text" data-slider-min="0" data-slider-max="12" data-slider-step="1" data-slider-value="2"/>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <div id='balance' class="row">
+      <div class="col-xs-6 name">Balance</div>
+      <div class="col-xs-3 amount"></div>
+    </div>
+
+    <div id="expense-blocks">
+      {% for cat in site.data.expense %}
+      <div id= "{{ cat.id }}" class="row">
+        <div class="col-xs-6 name">{{ cat.name }}</div>
+        <div class="col-xs-3 perc">{{ cat.perc }}</div>
+        <div class="col-xs-3 amount"></div>
+        <div class="row">
+          <div class="col-xs-12">
+            <input class='slider' id="{{ cat.id }}-slider" data-slider-id='{{ cat.id }}' type="text" data-slider-min="0" data-slider-max="3500" data-slider-step="5"/>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+<script type="text/javascript">
+  var EXPENSE_DATA = {
+    {% for cat in site.data.expense %}
+    "{{ cat.id }}": "{{ cat.perc }}",
+    {% endfor %}
+  }
+</script>

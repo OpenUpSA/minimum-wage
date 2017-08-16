@@ -8,10 +8,142 @@
     max-width: 700px;
 }
 
+#intro {
+  padding: 30px 0;
+}
+
+#money {
+  display: none;
+}
+
+#balance {
+  color: #fff;
+  padding: 10px 20px;
+  z-index: 10;
+
+  .amount {
+    font-size: 2em;
+  }
+}
+
+
 .positive {
-  background-color: #aaea8a;
+  background-color: #008751;
 }
 
 .negative {
- background-color: #f45a58;
+ background-color: #C9302C;
 }
+
+#assumptions {
+  background-color: #efefef;
+  padding: 30px 20px;
+
+  .row {
+    padding: 12px 0;
+  }
+
+  .slider.slider-horizontal {
+    width: 100%;
+  }
+}
+
+.expense-block {
+  background-color: #efefef;
+  padding: 5px 20px;
+  margin: 10px 2px;
+
+  .name {
+  }
+
+ .slider.slider-horizontal {
+    width: 100%;
+
+    .slider-track {
+      height: 7px;
+      margin-top: -3px;
+    }
+  }
+
+  .amount {
+    font-size: 2em;
+  }
+
+  .more {
+    text-align: right;
+  }
+}
+
+#housing {
+  color: #83769C;
+
+  .slider-handle {
+    background-color: #83769C;
+    background-image: none;
+  }
+
+}
+
+#food {
+  color: #FFA300;
+
+  .slider-handle {
+    background-color: #FFA300;
+    background-image: none;
+  }
+}
+
+#transport {
+  color: #FF77A8;
+
+ .slider-handle {
+    background-color: #FF77A8;
+    background-image: none;
+  }
+}
+
+#education {
+  color:  #00E436;
+
+  .slider-handle {
+    background-color: #00E436;
+    background-image: none;
+  }
+}
+
+#health {
+  color: #29ADFF;
+
+  .slider-handle {
+    background-color: #29ADFF;
+    background-image: none;
+  }
+}
+
+#communication {
+  color: #83769C;
+
+  .slider-handle {
+    background-color: #83769C;
+    background-image: none;
+  }
+}
+
+#discretionary {
+  color: #FF77A8;
+
+  .slider-handle {
+    background-color: #FF77A8;
+    background-image: none;
+  }
+}
+
+#other {
+ color: #FFA300;
+
+ .slider-handle {
+    background-color: #FFA300;
+    background-image: none;
+  }
+}
+

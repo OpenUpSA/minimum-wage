@@ -43,6 +43,19 @@ $(window).on('load', function() {
       drawSliders();
     }
 
+    function updateViewFromSlider(key) {
+      drawSliderExpense(key);
+      totalExpenses();
+      fillBalance();
+    }
+
+    function drawSliderExpense(key) {
+      var exp = $('#expenses').find('#' + key);
+      exp.find('.amount').text("R " + round(expenses[key].amount));
+      exp.find('.perc').text(round(expenses[key].amount / income * 100, 2) + " %");
+      exp.find('.of-total').text("of R " + income);
+    }
+
     function drawExpenses() {
       $('#expenses').children().each( function () {
         var key = $(this).attr('id');
@@ -71,7 +84,7 @@ $(window).on('load', function() {
       var key = e.target.dataset.sliderId;
       expenses[key].amount = e.value;
       expenses[key].perc = e.value / income;
-      updateView();
+      updateViewFromSlider(key);
     }
 
     function round(value, decimals) {

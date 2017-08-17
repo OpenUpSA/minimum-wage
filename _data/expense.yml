@@ -1,0 +1,31 @@
+- id: housing
+  name: Housing and utilites
+  perc: 0.392
+
+- id: food
+  name: Food
+  perc: 0.2555
+
+- id: transport
+  name: Transport
+  perc: 0.0577
+
+- id: education
+  name: Education
+  perc: 0.0086
+
+- id: health
+  name: Health
+  perc: 0.005
+
+- id: communication
+  name: Communication
+  perc: 0.0272
+
+- id: discretionary
+  name: Discretionary
+  perc: 0.121
+
+- id: other
+  name: Other
+  perc: 0.133

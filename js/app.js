@@ -11,145 +11,129 @@ $(window).on('load', function() {
 (function($) {
   $(document).ready(function () {
 
-    var income = parseInt($('#hh-income').val());
-    var members = parseInt($('#hh-members').val());
-    var children = parseInt($('#hh-children').val());
+    var hhAdultSlider = $('#hh-adults').slider({
+      formatter: function(value) {
+        return value;
+      },
+      tooltip: 'always'
+    });
 
-    var total_exp = 0;
-    var balance = 0;
-    var expenses = {};
+    var hhChildrenSlider = $('#hh-children').slider({
+      formatter: function(value) {
+        return value;
+      },
+      tooltip: 'always'
+    });
 
-    var surplusText = "You have extra money available";
-    var deficitText = "You're spending more than you have";
-    var balancedText = "Your expenses match your income";
+    var basket = new FoodBasket();
 
-    fillInitialExpenses();
-    updateView();
+    $('.add').on('click', function () {
+      var foodId = $(this).parents('.food-block')[0].id;
+      basket.addToBasket(foodId);
+    });
 
-    function fillInitialExpenses() {
-      _.each(EXPENSE_DATA, function(value, key) {
-        var perc = parseFloat(value);
-        expenses[key] = {
-          perc: perc,
-          amount: perc * income
-        };
-      });
-    }
+    $('.remove').on('click', function () {
+      var foodId = $(this).parents('.food-block')[0].id;
+      basket.removeFromBasket(foodId);
+    });
 
-    function updateView() {
-      drawExpenses();
-      totalExpenses();
-      fillBalance();
-      drawSliders();
-    }
+    $('#go-shop').on('click', function() {
+      $('#shop').css('display', 'block');
+      pymChild.sendHeight();
+      var sticky = new Sticky('#balance');
+    });
 
-    function updateViewFromSlider(key) {
-      drawSliderExpense(key);
-      totalExpenses();
-      fillBalance();
-    }
+  });
 
-    function drawSliderExpense(key) {
-      var exp = $('#expenses').find('#' + key);
-      exp.find('.amount').text("R " + round(expenses[key].amount));
-      exp.find('.perc').text(round(expenses[key].amount / income * 100, 2) + " %");
-      exp.find('.of-total').text("of R " + income);
-    }
+  var Houshold = function () {
+    var self = this;
 
-    function drawExpenses() {
-      $('#expenses').children().each( function () {
-        var key = $(this).attr('id');
-        $(this).find('.amount').text("R " + round(expenses[key].amount));
-        $(this).find('.perc').text(round(expenses[key].amount / income * 100, 2) + " %");
-        $(this).find('.of-total').text("of R " + income);
-      });
-    }
+    self.income = parseInt($('#hh-income').val());
+    self.adults = parseInt($('#hh-adults').val());
+    self.children = parseInt($('#hh-children').val());
 
-    function totalExpenses() {
-      var total = 0;
-      _.each(expenses, function(expense) {
-        total += expense.amount;
-      });
-      total_exp = total;
-    }
+  };
 
-    function fillBalance() {
-      balance = income - round(total_exp);
-      $('#balance').find('.amount').text(balance === 0 ? "" : "R " + balance);
-      $('#balance').find('.name').text(balance === 0 ? balancedText : (balance < 0 ? deficitText : surplusText));
-      $('#balance').removeClass("negative positive").addClass(balance < 0 ? 'negative' : 'positive');
-    }
+  var FoodBasket = function() {
+    var self = this;
 
-    function updateExpenses(e) {
-      var key = e.target.dataset.sliderId;
-      expenses[key].amount = e.value;
-      expenses[key].perc = e.value / income;
-      updateViewFromSlider(key);
-    }
+    self.cost = 0;
+    self.kCal = 0;
+    // self.balance = 0;
+    self.foods = {};
 
-    function round(value, decimals) {
+    var round = function(value, decimals) {
       // Decimals = 0 if not passed
       decimals = typeof decimals !== 'undefined' ? decimals : 0;
       return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
     }
 
-    $('#hh-income').keyup(function() {
-      income = $(this).val();
-      updateView();
-    });
-
-    function drawSliders() {
-      var expenseSliderNameIDs = {
-        housing: '#housing-slider',
-        food: '#food-slider',
-        transport: '#transport-slider',
-        education: '#education-slider',
-        health: '#health-slider',
-        communication: '#communication-slider',
-        discretionary: '#discretionary-slider',
-        other: '#other-slider'
-      };
-
-      var expenseSliders = {};
-
-      _.each(expenseSliderNameIDs, function(id, key) {
-        expenseSliders[key] = $(id).slider({
-          formatter: function(value) {
-            return value;
-          },
-          value: expenses[key].amount,
-          min: 0,
-          max: income,
-          step: income < 1000 ? 5 : round(income * 0.0015)
-        });
-
-        expenseSliders[key].on('slideStop', updateExpenses);
-      });
+    self.addToBasket = function(id) {
+      if (id in self.foods) {
+        self.foods[id] += 1;
+      } else {
+        self.foods[id] = 1;
+      }
+      calcTotals();
+      draw(id);
     }
 
-    var hhSliderNameIDs = {
-      members: '#hh-members',
-      children: '#hh-children'
-    };
-
-    var membersSlider = $('#hh-members').slider({
-      formatter: function(value) {
-        return value;
+    self.removeFromBasket = function(id) {
+      if (id in self.foods) {
+        self.foods[id] -= 1;
+        if (self.foods[id] === 0) {
+          delete self.foods[id];
+        }
       }
-    });
+      calcTotals();
+      draw(id);
+    }
 
-    var childrenSlider = $('#hh-children').slider({
-      formatter: function(value) {
-        return value;
+    function calcTotals() {
+      totalCost();
+      totalkCal();
+    }
+
+    function draw(id) {
+      drawFoodQty(id);
+      drawTotalCost();
+      drawTotalkCal();
+    }
+
+    function totalCost() {
+      var total = 0;
+      _.each(self.foods, function(qty, id) {
+        var price = FOOD_DATA[id]['price100g'] * (FOOD_DATA[id]['weight'] / 100) * qty;
+        total += price;
+      });
+      self.cost = total;
+    }
+
+     function totalkCal() {
+      var total = 0;
+      _.each(self.foods, function(qty, id) {
+        var kCal = FOOD_DATA[id]['kCal100g'] * (FOOD_DATA[id]['weight'] / 100) * qty;
+        total += kCal;
+      });
+      self.kCal = total;
+    }
+
+    function drawFoodQty(id) {
+      if (id in self.foods) {
+        $('#' + id).addClass('in-basket').find('.qty').text(self.foods[id]);
+      } else {
+        $('#' + id).removeClass('in-basket').find('.qty').text("");
       }
-    });
+    }
 
-    $('#show-money').on('click', function() {
-      $('#money').css('display', 'block');
-      var sticky = new Sticky('#balance');
-    });
+    function drawTotalCost() {
+      $('#total-cost').text(self.cost === 0 ? "" : "R " + round(self.cost, 2));
+    }
 
+    function drawTotalkCal() {
+      $('#total-kCal').text(self.kCal === 0 ? "" : self.kCal + " kCal");
+    }
 
-  });
+  };
 
-})(jQuery)
+})(jQuery);

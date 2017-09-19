@@ -11,21 +11,14 @@ $(window).on('load', function() {
 (function($) {
   $(document).ready(function () {
 
-    var hhAdultSlider = $('#hh-adults').slider({
-      formatter: function(value) {
-        return value;
-      },
-      tooltip: 'always'
-    });
-
-    var hhChildrenSlider = $('#hh-children').slider({
-      formatter: function(value) {
-        return value;
-      },
-      tooltip: 'always'
-    });
-
+    var household = new Household();
     var basket = new FoodBasket();
+
+    $('#go-shop').on('click', function() {
+      $('#shop').css('display', 'block');
+      pymChild.sendHeight();
+      var sticky = new Sticky('#summary');
+    });
 
     $('.add').on('click', function () {
       var foodId = $(this).parents('.food-block')[0].id;
@@ -37,36 +30,73 @@ $(window).on('load', function() {
       basket.removeFromBasket(foodId);
     });
 
-    $('#go-shop').on('click', function() {
-      $('#shop').css('display', 'block');
-      pymChild.sendHeight();
-      var sticky = new Sticky('#balance');
+    $('#hh-income').on('change', function() {
+      household.updateIncome();
     });
 
-  });
+    household.adultSlider.on('slideStop', household.updateAdults);
+    household.childSlider.on('slideStop', household.updateChildren);
 
-  var Houshold = function () {
+  function Household() {
     var self = this;
 
-    self.income = parseInt($('#hh-income').val());
+    var adultkCal = 2000;
+    var childkCal = 1500;
+
+    self.adultSlider = $('#hh-adults').slider({
+      formatter: function(value) {
+        return value;
+      },
+      tooltip: 'always'
+    });
+
+    self.childSlider = $('#hh-children').slider({
+      formatter: function(value) {
+        return value;
+      },
+      tooltip: 'always'
+    });
+
+    self.income = parseInt($("input[name='income']:checked").val());
     self.adults = parseInt($('#hh-adults').val());
     self.children = parseInt($('#hh-children').val());
+    self.reqkCal = calcReqkCal();
 
-  };
+    self.updateIncome = function () {
+      self.income = parseInt($("input[name='income']:checked").val());
+    };
 
-  var FoodBasket = function() {
+    self.updateAdults = function(e) {
+      self.adults = e.value;
+      self.updateReqkCal();
+    };
+
+    self.updateChildren = function(e) {
+      self.children = e.value;
+      self.updateReqkCal();
+    };
+
+    self.updateReqkCal = function() {
+      self.reqkCal = calcReqkCal();
+    };
+
+    function calcReqkCal() {
+      return (self.adults * adultkCal) + (self.children * childkCal);
+    }
+  }
+
+  function FoodBasket() {
     var self = this;
 
     self.cost = 0;
     self.kCal = 0;
-    // self.balance = 0;
     self.foods = {};
 
     var round = function(value, decimals) {
       // Decimals = 0 if not passed
       decimals = typeof decimals !== 'undefined' ? decimals : 0;
       return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
-    }
+    };
 
     self.addToBasket = function(id) {
       if (id in self.foods) {
@@ -76,7 +106,7 @@ $(window).on('load', function() {
       }
       calcTotals();
       draw(id);
-    }
+    };
 
     self.removeFromBasket = function(id) {
       if (id in self.foods) {
@@ -87,7 +117,7 @@ $(window).on('load', function() {
       }
       calcTotals();
       draw(id);
-    }
+    };
 
     function calcTotals() {
       totalCost();
@@ -98,12 +128,13 @@ $(window).on('load', function() {
       drawFoodQty(id);
       drawTotalCost();
       drawTotalkCal();
+      drawCostToIncome();
     }
 
     function totalCost() {
       var total = 0;
       _.each(self.foods, function(qty, id) {
-        var price = FOOD_DATA[id]['price100g'] * (FOOD_DATA[id]['weight'] / 100) * qty;
+        var price = FOOD_DATA[id].price100g * (FOOD_DATA[id].weight / 100) * qty;
         total += price;
       });
       self.cost = total;
@@ -112,7 +143,7 @@ $(window).on('load', function() {
      function totalkCal() {
       var total = 0;
       _.each(self.foods, function(qty, id) {
-        var kCal = FOOD_DATA[id]['kCal100g'] * (FOOD_DATA[id]['weight'] / 100) * qty;
+        var kCal = FOOD_DATA[id].kCal100g * (FOOD_DATA[id].weight / 100) * qty;
         total += kCal;
       });
       self.kCal = total;
@@ -134,6 +165,12 @@ $(window).on('load', function() {
       $('#total-kCal').text(self.kCal === 0 ? "" : self.kCal + " kCal");
     }
 
-  };
+    function drawCostToIncome() {
+      $('#cost-to-income').text(self.cost === 0 ? "" : round((self.cost / household.income * 100), 2) + "%");
+    }
+
+  }
+
+  });
 
 })(jQuery);

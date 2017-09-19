@@ -17,34 +17,34 @@ extra_css:
       <h1>Living on the Minimum Wage</h1>
       <p>This is the introduction to the proposed minimum wage, and why the person reading this should care.</p>
 
-      <p>What dos the household look like?</p>
-
       <div id="assumptions">
         <div class="row">
           <div class="col-sm-4">
             <label for="hh-income" class="control-label">How much money does the household earn?</label>
           </div>
           <div class="col-sm-8">
-            <div class="radio">
-              <label>
-                <input type="radio" name="income" id="income1" value="2360"> R 2 360
-              </label>
-            </div>
-            <div class="radio">
-              <label class="radio">
-                <input type="radio" name="income" id="income2" value="3500" checked> R 3 500
-              </label>
-            </div>
-            <div class="radio">
-              <label class="radio">
-                <input type="radio" name="income" id="income3" value="4500"> R 4 500
-              </label>
-            </div>
-            <div class="radio">
-              <label class="radio">
-                <input type="radio" name="income" id="income3" value="4500"> R 6 000
-              </label>
-            </div>
+            <form id="hh-income">
+              <div class="radio">
+                <label>
+                  <input type="radio" name="income" id="income1" value="2360"> R 2 360
+                </label>
+              </div>
+              <div class="radio">
+                <label class="radio">
+                  <input type="radio" name="income" id="income2" value="3500" checked> R 3 500
+                </label>
+              </div>
+              <div class="radio">
+                <label class="radio">
+                  <input type="radio" name="income" id="income3" value="4500"> R 4 500
+                </label>
+              </div>
+              <div class="radio">
+                <label class="radio">
+                  <input type="radio" name="income" id="income3" value="4500"> R 6 000
+                </label>
+              </div>
+            </form>
           </div>
         </div>
 
@@ -53,7 +53,7 @@ extra_css:
             <label for="hh-adults" class="control-label">How many adults live in the household?</label>
           </div>
           <div class="col-sm-8">
-            <input id="hh-adults" data-slider-id='hh-adults-slider' type="text" data-slider-min="0" data-slider-max="12" data-slider-step="1" data-slider-value="3"/>
+            <input id="hh-adults" data-slider-id='hh-adults-slider' type="number" data-slider-min="0" data-slider-max="12" data-slider-step="1" data-slider-value="3"/>
           </div>
         </div>
         <div class="row">
@@ -73,7 +73,8 @@ extra_css:
 
       <div id="summary" data-margin-top=2>
         <div class="row">
-          <div id="total-cost" class="col-xs-12 col-md-6"></div>
+          <div id="total-cost" class="col-xs-6"></div>
+          <div id="cost-to-income" class="col-xs-6"></div>
           <div id="total-kCal" class="col-xs-12 col-md-6"></div>
         </div>
       </div>

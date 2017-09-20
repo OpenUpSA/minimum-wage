@@ -82,6 +82,49 @@ $(window).on('load', function() {
         var portions = self.helping * meals;
         var platePortion = 0;
 
+        var width = "100%",
+            height = 200;
+
+        var plateImage = window.location.href + "img/plate.svg";
+
+        var initialPosition = { x: 90, y: 95 };
+
+        var circleSize = { width: 150, height: 150 };
+
+        var spacing = {
+          h: 30,
+          v: 70
+        };
+
+        var gridLength = 3;
+
+        var path = d3.arc()
+          .outerRadius(circleSize.width / 2)
+          .innerRadius(0)
+          .startAngle(0);
+
+        var generateArc = function(fraction) {
+          return path({endAngle: Math.PI * 2 * fraction})
+        }
+
+        var svg1 = d3.select("svg").remove();
+
+        var svg = d3.select("#meals").append("svg")
+          .attr("width", width)
+          .attr("height", height);
+
+        var defs = svg.append("defs");
+
+        var coinPattern = patternGrid.circleLayout()
+        .config({
+          image: plateImage,
+          radius: circleSize.width,
+          padding: [spacing.h, spacing.v],
+          margin: [initialPosition.y, initialPosition.x],
+          id: "plates"
+        });
+
+        var angleGrid = [];
 
         _.each(plates, function(plate) {
           if (portions - 1 >= 0) {
@@ -97,7 +140,46 @@ $(window).on('load', function() {
           }
 
           $(plate).text(platePortion);
+
+          var angleObj = {
+            angle: 1 - platePortion,
+          };
+          angleGrid.push(angleObj);
+
         });
+
+        // Assign positions
+        angleGrid.forEach(function(a, i) {
+          a.x = i % gridLength;
+          a.y = Math.floor(i / gridLength);
+        });
+
+        var circles = svg.append("g")
+          .selectAll("circle")
+          .data(angleGrid)
+        .enter().append("circle")
+          .attr("class", "plate-circle")
+          .attr("cx", function(d) {
+            return initialPosition.x + (circleSize.width + spacing.h) * d.x;
+          })
+          .attr("cy", function(d) {
+            return initialPosition.y + (circleSize.height + spacing.v) * d.y;
+          })
+          .attr("r", circleSize.width / 2)
+          .attr("fill", "url(#plates");
+
+        var arcs = svg.append("g")
+          .selectAll("path")
+          .data(angleGrid.filter(d => d.angle))
+         .enter().append("path")
+          .attr("transform", function(d) {
+            var xPos = initialPosition.x + (circleSize.width + spacing.h) * d.x;
+            var yPos = initialPosition.y + (circleSize.height + spacing.v) * d.y;
+            return "translate(" + xPos + ", " + yPos + ")";
+          })
+          .attr("class", "pie-segment")
+          .attr("d", d => generateArc(d.angle));
+
       }
 
     }

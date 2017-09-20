@@ -14,8 +14,8 @@ extra_css:
   <div class="container">
 
     <div id="intro">
-      <h1>Living on the Minimum Wage</h1>
-      <p>This is the introduction to the proposed minimum wage, and why the person reading this should care.</p>
+      <h1>How many meals can you afford when living on the minimum wage?</h1>
+      <p>This is the introduction to the proposed minimum wage and the food poverty line.</p>
 
       <div id="assumptions">
         <div class="row">
@@ -23,84 +23,35 @@ extra_css:
             <label for="hh-income" class="control-label">How much money does the household earn?</label>
           </div>
           <div class="col-sm-8">
-            <form id="hh-income">
-              <div class="radio">
-                <label>
-                  <input type="radio" name="income" id="income1" value="2360"> R 2 360
-                </label>
-              </div>
-              <div class="radio">
-                <label class="radio">
-                  <input type="radio" name="income" id="income2" value="3500" checked> R 3 500
-                </label>
-              </div>
-              <div class="radio">
-                <label class="radio">
-                  <input type="radio" name="income" id="income3" value="4500"> R 4 500
-                </label>
-              </div>
-              <div class="radio">
-                <label class="radio">
-                  <input type="radio" name="income" id="income3" value="4500"> R 6 000
-                </label>
-              </div>
-            </form>
+            <input id="hh-income" data-slider-id='hh-income-slider' type="number" data-slider-min="0" data-slider-max="8000" data-slider-step="250" data-slider-value="3500"/>
           </div>
         </div>
 
         <div class="row">
           <div class="col-sm-4">
-            <label for="hh-adults" class="control-label">How many adults live in the household?</label>
+            <label for="hh-members" class="control-label">How many people live in the household?</label>
           </div>
           <div class="col-sm-8">
-            <input id="hh-adults" data-slider-id='hh-adults-slider' type="number" data-slider-min="0" data-slider-max="12" data-slider-step="1" data-slider-value="3"/>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-4">
-            <label for="hh-children" class="control-label">How many children live in the household?</label>
-          </div>
-          <div class="col-sm-8">
-            <input id="hh-children" data-slider-id='hh-children-slider' type="text" data-slider-min="0" data-slider-max="12" data-slider-step="1" data-slider-value="2"/>
+            <input id="hh-members" data-slider-id='hh-members-slider' type="number" data-slider-min="0" data-slider-max="12" data-slider-step="1" data-slider-value="4"/>
           </div>
         </div>
       </div>
 
-      <button type="button" id="go-shop" class="btn btn-default btn-lg">Let's go shopping</button>
+      <button type="button" id="go-shop" class="btn btn-default btn-lg">Dish up</button>
     </div>
 
     <div id="shop">
 
       <div id="summary" data-margin-top=2>
         <div class="row">
-          <div id="total-cost" class="col-xs-6"></div>
-          <div id="cost-to-income" class="col-xs-6"></div>
-          <div id="total-kCal" class="col-xs-12 col-md-6"></div>
         </div>
       </div>
 
-      <div id="foods">
+      <div id="meals">
         <div class="row">
-          {% for food in site.data.foods %}
-          <div class="col-xs-12 col-sm-6">
-            <div id="{{ food.id }}" class="food-block">
-              <div class="row">
-                <div class="col-xs-6">
-                  <div class="name">{{ food.name }}</div>
-                  <div class="weight-label">{{ food.weight-label }}</div>
-                  <div class="price"></div>
-                </div>
-                <div class="col-xs-3">
-                  <button type="button" class="btn btn-default btn-xs add">+</button>
-                  <button type="button" class="btn btn-default btn-xs remove">-</button>
-                </div>
-                <div class="col-xs-3">
-                  <div class="qty"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {% endfor %}
+          <div class="col-sm-4 plate" id="plate-1"></div>
+          <div class="col-sm-4 plate" id="plate-2"></div>
+          <div class="col-sm-4 plate" id="plate-3"></div>
         </div>
       </div>
     </div>

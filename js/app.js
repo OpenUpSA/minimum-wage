@@ -12,7 +12,7 @@ $(window).on('load', function() {
   $(document).ready(function () {
 
     var household = new Household();
-    var basket = new FoodBasket();
+    var meals = new Meals();
 
     $('#go-shop').on('click', function() {
       $('#shop').css('display', 'block');
@@ -20,69 +20,85 @@ $(window).on('load', function() {
       var sticky = new Sticky('#summary');
     });
 
-    $('.add').on('click', function () {
-      var foodId = $(this).parents('.food-block')[0].id;
-      basket.addToBasket(foodId);
-    });
-
-    $('.remove').on('click', function () {
-      var foodId = $(this).parents('.food-block')[0].id;
-      basket.removeFromBasket(foodId);
-    });
-
-    $('#hh-income').on('change', function() {
-      household.updateIncome();
-    });
-
-    household.adultSlider.on('slideStop', household.updateAdults);
-    household.childSlider.on('slideStop', household.updateChildren);
+    household.incomeSlider.on('slideStop', household.updateIncome);
+    household.memberSlider.on('slideStop', household.updateMembers);
 
   function Household() {
     var self = this;
 
-    var adultkCal = 2000;
-    var childkCal = 1500;
-
-    self.adultSlider = $('#hh-adults').slider({
+    self.incomeSlider = $('#hh-income').slider({
       formatter: function(value) {
         return value;
       },
       tooltip: 'always'
     });
 
-    self.childSlider = $('#hh-children').slider({
+    self.memberSlider = $('#hh-members').slider({
       formatter: function(value) {
         return value;
       },
       tooltip: 'always'
     });
 
-    self.income = parseInt($("input[name='income']:checked").val());
-    self.adults = parseInt($('#hh-adults').val());
-    self.children = parseInt($('#hh-children').val());
-    self.reqkCal = calcReqkCal();
+    self.income = parseInt($('#hh-income').val());
+    self.members = parseInt($('#hh-members').val());
 
-    self.updateIncome = function () {
-      self.income = parseInt($("input[name='income']:checked").val());
+    self.updateIncome = function(e) {
+      self.income = e.value;
+      meals.updateHelping();
     };
 
-    self.updateAdults = function(e) {
-      self.adults = e.value;
-      self.updateReqkCal();
+    self.updateMembers = function(e) {
+      self.members = e.value;
+      meals.updateHelping();
     };
 
-    self.updateChildren = function(e) {
-      self.children = e.value;
-      self.updateReqkCal();
+  }
+
+  function Meals() {
+    var self = this;
+    var meals = 3;
+    var fpl = 498; // Food Poverty Line
+
+    self.helping = calcHelping();
+
+    drawPlates();
+
+    self.updateHelping = function() {
+      self.helping = calcHelping();
+      drawPlates();
     };
 
-    self.updateReqkCal = function() {
-      self.reqkCal = calcReqkCal();
-    };
-
-    function calcReqkCal() {
-      return (self.adults * adultkCal) + (self.children * childkCal);
+    function calcHelping() {
+      var helping = (household.income / household.members) / fpl;
+      if (helping > 1) {
+        return 1;
+      }
+      return helping;
     }
+
+    function drawPlates() {
+      var plates = $('#meals').find('.plate');
+      var portions = self.helping * meals;
+      var platePortion = 0;
+
+      _.each(plates, function(plate) {
+        if (portions - 1 >= 0) {
+          platePortion = 1;
+          portions -= 1;
+        }
+        else if (portions >= 0) {
+          platePortion = portions;
+          portions -= portions;
+        }
+        else {
+          platePortion = 0;
+        }
+
+        $(plate).text(platePortion);
+      });
+    }
+
   }
 
   function FoodBasket() {

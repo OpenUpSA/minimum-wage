@@ -11,145 +11,301 @@ $(window).on('load', function() {
 (function($) {
   $(document).ready(function () {
 
-    var income = parseInt($('#hh-income').val());
-    var members = parseInt($('#hh-members').val());
-    var children = parseInt($('#hh-children').val());
+    var household = new Household();
+    var meals = new Meals();
 
-    var total_exp = 0;
-    var balance = 0;
-    var expenses = {};
-
-    var surplusText = "You have extra money available";
-    var deficitText = "You're spending more than you have";
-    var balancedText = "Your expenses match your income";
-
-    fillInitialExpenses();
-    updateView();
-
-    function fillInitialExpenses() {
-      _.each(EXPENSE_DATA, function(value, key) {
-        var perc = parseFloat(value);
-        expenses[key] = {
-          perc: perc,
-          amount: perc * income
-        };
-      });
-    }
-
-    function updateView() {
-      drawExpenses();
-      totalExpenses();
-      fillBalance();
-      drawSliders();
-    }
-
-    function updateViewFromSlider(key) {
-      drawSliderExpense(key);
-      totalExpenses();
-      fillBalance();
-    }
-
-    function drawSliderExpense(key) {
-      var exp = $('#expenses').find('#' + key);
-      exp.find('.amount').text("R " + round(expenses[key].amount));
-      exp.find('.perc').text(round(expenses[key].amount / income * 100, 2) + " %");
-      exp.find('.of-total').text("of R " + income);
-    }
-
-    function drawExpenses() {
-      $('#expenses').children().each( function () {
-        var key = $(this).attr('id');
-        $(this).find('.amount').text("R " + round(expenses[key].amount));
-        $(this).find('.perc').text(round(expenses[key].amount / income * 100, 2) + " %");
-        $(this).find('.of-total').text("of R " + income);
-      });
-    }
-
-    function totalExpenses() {
-      var total = 0;
-      _.each(expenses, function(expense) {
-        total += expense.amount;
-      });
-      total_exp = total;
-    }
-
-    function fillBalance() {
-      balance = income - round(total_exp);
-      $('#balance').find('.amount').text(balance === 0 ? "" : "R " + balance);
-      $('#balance').find('.name').text(balance === 0 ? balancedText : (balance < 0 ? deficitText : surplusText));
-      $('#balance').removeClass("negative positive").addClass(balance < 0 ? 'negative' : 'positive');
-    }
-
-    function updateExpenses(e) {
-      var key = e.target.dataset.sliderId;
-      expenses[key].amount = e.value;
-      expenses[key].perc = e.value / income;
-      updateViewFromSlider(key);
-    }
-
-    function round(value, decimals) {
-      // Decimals = 0 if not passed
-      decimals = typeof decimals !== 'undefined' ? decimals : 0;
-      return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
-    }
-
-    $('#hh-income').keyup(function() {
-      income = $(this).val();
-      updateView();
+    $('#go-shop').on('click', function() {
+      $('#shop').css('display', 'block');
+      pymChild.sendHeight();
+      var sticky = new Sticky('#summary');
     });
 
-    function drawSliders() {
-      var expenseSliderNameIDs = {
-        housing: '#housing-slider',
-        food: '#food-slider',
-        transport: '#transport-slider',
-        education: '#education-slider',
-        health: '#health-slider',
-        communication: '#communication-slider',
-        discretionary: '#discretionary-slider',
-        other: '#other-slider'
+    household.incomeSlider.on('slideStop', household.updateIncome);
+    household.memberSlider.on('slideStop', household.updateMembers);
+
+    $('#meal-options').on('change', function() {
+      household.updateMealOption();
+    });
+
+    function Household() {
+      var self = this;
+
+      /*
+      Food Costs:
+      1: Food poverty line
+      2. PACSA minimum nutrional basket (10 500 kJ a day - June 2017)
+      */
+
+      self.foodCosts = {
+        '1': 498,
+        '2': 635,
       };
 
-      var expenseSliders = {};
-
-      _.each(expenseSliderNameIDs, function(id, key) {
-        expenseSliders[key] = $(id).slider({
-          formatter: function(value) {
-            return value;
-          },
-          value: expenses[key].amount,
-          min: 0,
-          max: income,
-          step: income < 1000 ? 5 : round(income * 0.0015)
-        });
-
-        expenseSliders[key].on('slideStop', updateExpenses);
+      self.incomeSlider = $('#hh-income').slider({
+        formatter: function(value) {
+          return value;
+        },
+        tooltip: 'always'
       });
+
+      self.memberSlider = $('#hh-members').slider({
+        formatter: function(value) {
+          return value;
+        },
+        tooltip: 'always'
+      });
+
+      self.income = parseInt($('#hh-income').val());
+      self.members = parseInt($('#hh-members').val());
+      self.mealOption = parseInt($("input[name='meal-option']:checked").val());
+
+      self.updateIncome = function(e) {
+        self.income = e.value;
+        meals.updateCoverage();
+      };
+
+      self.updateMembers = function(e) {
+        self.members = e.value;
+        meals.updateCoverage();
+      };
+
+      self.updateMealOption = function () {
+        self.mealOption = parseInt($("input[name='meal-option']:checked").val());
+        meals.updateCoverage();
+      }
+
     }
 
-    var hhSliderNameIDs = {
-      members: '#hh-members',
-      children: '#hh-children'
-    };
+    function Meals() {
+      var self = this;
+      var qMeals = 3;
 
-    var membersSlider = $('#hh-members').slider({
-      formatter: function(value) {
-        return value;
+      self.costCoverage = calcCoverage();
+      drawPlates();
+
+      self.updateCoverage = function() {
+        self.costCoverage = calcCoverage();
+        drawPlates();
+      };
+
+      function calcCoverage() {
+        var foodCost = household.foodCosts[household.mealOption];
+        var coverage = (household.income / household.members) / foodCost;
+        return (coverage > 1) ? 1 : coverage;
       }
-    });
 
-    var childrenSlider = $('#hh-children').slider({
-      formatter: function(value) {
-        return value;
+      function drawPlates() {
+        var plates = $('#meals').find('.plate');
+        var portions = self.costCoverage * qMeals;
+        var platePortion = 0;
+
+        var width,
+            height;
+
+        var plateImage = window.location.href + "img/plate.svg";
+
+        var gridLength = qMeals;
+
+        var svg1 = d3.select("svg").remove();
+        var svg = d3.select("#meals").append("svg");
+
+        var defs = svg.append("defs");
+
+        var angleGrid = [];
+
+        // Create data object
+        _.each(plates, function(plate) {
+          if (portions - 1 >= 0) {
+            platePortion = 1;
+            portions -= 1;
+          }
+          else if (portions >= 0) {
+            platePortion = portions;
+            portions -= portions;
+          }
+          else {
+            platePortion = 0;
+          }
+
+          // $(plate).text(platePortion);
+
+          var angleObj = {
+            angle: 1 - platePortion,
+          };
+          angleGrid.push(angleObj);
+        });
+
+        render();
+
+       function render() {
+
+          //get dimensions based on width of container element
+          updateDimensions($("#meals")[0].clientWidth);
+
+          var initialPosition = { x: width / 7, y: width / 7 };
+          // var circleSize = { width: 150, height: 150 };
+          // var spacing = {h: 30, v: 70};
+          var circleSize = { width: width / 3.5, height: width / 3.5 };
+          var spacing = {h: width / 20, v: width / 10};
+
+          var path = d3.arc()
+          .outerRadius(circleSize.width / 2)
+          .innerRadius(0)
+          .startAngle(0);
+
+          var generateArc = function(fraction) {
+            return path({endAngle: Math.PI * 2 * fraction})
+          }
+
+          svg.attr("width", width).attr("height", height);
+
+          var coinPattern = patternGrid.circleLayout()
+            .config({
+              image: plateImage,
+              radius: circleSize.width,
+              padding: [spacing.h, spacing.v],
+              margin: [initialPosition.y, initialPosition.x],
+              id: "plate"
+            });
+
+          // Assign positions
+          angleGrid.forEach(function(a, i) {
+            a.x = i % gridLength;
+            a.y = Math.floor(i / gridLength);
+          });
+
+          var circles = svg.append("g")
+            .selectAll("circle")
+            .data(angleGrid)
+          .enter().append("circle")
+            .attr("class", "plate-circle")
+            .attr("cx", function(d) {
+              return initialPosition.x + (circleSize.width + spacing.h) * d.x;
+            })
+            .attr("cy", function(d) {
+              return initialPosition.y + (circleSize.height + spacing.v) * d.y;
+            })
+            .attr("r", circleSize.width / 2)
+            .attr("fill", "url(#plate");
+
+          var arcs = svg.append("g")
+            .selectAll("path")
+            .data(angleGrid.filter(d => d.angle))
+           .enter().append("path")
+            .attr("transform", function(d) {
+              var xPos = initialPosition.x + (circleSize.width + spacing.h) * d.x;
+              var yPos = initialPosition.y + (circleSize.height + spacing.v) * d.y;
+              return "translate(" + xPos + ", " + yPos + ")";
+            })
+            .attr("class", "pie-segment")
+            .attr("d", d => generateArc(d.angle));
+
+          // //update svg elements to new dimensions
+          // svg
+          //   .attr('width', width + margin.right + margin.left)
+          //   .attr('height', height + margin.top + margin.bottom);
+          // chartWrapper.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+        }
+
+        function updateDimensions(containerWidth) {
+          width = containerWidth;
+          height = containerWidth < 300 ? 100 : (containerWidth / 3);
+        }
+
+        // return {
+        //   render : render
+        // }
       }
-    });
 
-    $('#show-money').on('click', function() {
-      $('#money').css('display', 'block');
-      var sticky = new Sticky('#balance');
-    });
+    }
 
+    function FoodBasket() {
+      var self = this;
+
+      self.cost = 0;
+      self.kCal = 0;
+      self.foods = {};
+
+      var round = function(value, decimals) {
+        // Decimals = 0 if not passed
+        decimals = typeof decimals !== 'undefined' ? decimals : 0;
+        return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+      };
+
+      self.addToBasket = function(id) {
+        if (id in self.foods) {
+          self.foods[id] += 1;
+        } else {
+          self.foods[id] = 1;
+        }
+        calcTotals();
+        draw(id);
+      };
+
+      self.removeFromBasket = function(id) {
+        if (id in self.foods) {
+          self.foods[id] -= 1;
+          if (self.foods[id] === 0) {
+            delete self.foods[id];
+          }
+        }
+        calcTotals();
+        draw(id);
+      };
+
+      function calcTotals() {
+        totalCost();
+        totalkCal();
+      }
+
+      function draw(id) {
+        drawFoodQty(id);
+        drawTotalCost();
+        drawTotalkCal();
+        drawCostToIncome();
+      }
+
+      function totalCost() {
+        var total = 0;
+        _.each(self.foods, function(qty, id) {
+          var price = FOOD_DATA[id].price100g * (FOOD_DATA[id].weight / 100) * qty;
+          total += price;
+        });
+        self.cost = total;
+      }
+
+       function totalkCal() {
+        var total = 0;
+        _.each(self.foods, function(qty, id) {
+          var kCal = FOOD_DATA[id].kCal100g * (FOOD_DATA[id].weight / 100) * qty;
+          total += kCal;
+        });
+        self.kCal = total;
+      }
+
+      function drawFoodQty(id) {
+        if (id in self.foods) {
+          $('#' + id).addClass('in-basket').find('.qty').text(self.foods[id]);
+        } else {
+          $('#' + id).removeClass('in-basket').find('.qty').text("");
+        }
+      }
+
+      function drawTotalCost() {
+        $('#total-cost').text(self.cost === 0 ? "" : "R " + round(self.cost, 2));
+      }
+
+      function drawTotalkCal() {
+        $('#total-kCal').text(self.kCal === 0 ? "" : self.kCal + " kCal");
+      }
+
+      function drawCostToIncome() {
+        $('#cost-to-income').text(self.cost === 0 ? "" : round((self.cost / household.income * 100), 2) + "%");
+      }
+
+    }
 
   });
 
-})(jQuery)
+})(jQuery);

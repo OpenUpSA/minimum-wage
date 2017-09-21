@@ -45,12 +45,12 @@ $(window).on('load', function() {
 
       self.updateIncome = function(e) {
         self.income = e.value;
-        meals.updateHelping();
+        meals.updateCoverage();
       };
 
       self.updateMembers = function(e) {
         self.members = e.value;
-        meals.updateHelping();
+        meals.updateCoverage();
       };
 
     }
@@ -60,26 +60,22 @@ $(window).on('load', function() {
       var meals = 3;
       var fpl = 498; // Food Poverty Line
 
-      self.helping = calcHelping();
-
+      self.costCoverage = calcCoverage();
       drawPlates();
 
-      self.updateHelping = function() {
-        self.helping = calcHelping();
+      self.updateCoverage = function() {
+        self.costCoverage = calcCoverage();
         drawPlates();
       };
 
-      function calcHelping() {
-        var helping = (household.income / household.members) / fpl;
-        if (helping > 1) {
-          return 1;
-        }
-        return helping;
+      function calcCoverage() {
+        var coverage = (household.income / household.members) / fpl;
+        return (coverage > 1) ? 1 : coverage;
       }
 
       function drawPlates() {
         var plates = $('#meals').find('.plate');
-        var portions = self.helping * meals;
+        var portions = self.costCoverage * meals;
         var platePortion = 0;
 
         var width = "100%",
@@ -88,13 +84,8 @@ $(window).on('load', function() {
         var plateImage = window.location.href + "img/plate.svg";
 
         var initialPosition = { x: 90, y: 95 };
-
         var circleSize = { width: 150, height: 150 };
-
-        var spacing = {
-          h: 30,
-          v: 70
-        };
+        var spacing = {h: 30, v: 70};
 
         var gridLength = 3;
 
@@ -121,7 +112,7 @@ $(window).on('load', function() {
           radius: circleSize.width,
           padding: [spacing.h, spacing.v],
           margin: [initialPosition.y, initialPosition.x],
-          id: "plates"
+          id: "plate"
         });
 
         var angleGrid = [];
@@ -166,7 +157,7 @@ $(window).on('load', function() {
             return initialPosition.y + (circleSize.height + spacing.v) * d.y;
           })
           .attr("r", circleSize.width / 2)
-          .attr("fill", "url(#plates");
+          .attr("fill", "url(#plate");
 
         var arcs = svg.append("g")
           .selectAll("path")

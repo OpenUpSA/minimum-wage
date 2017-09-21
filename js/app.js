@@ -23,8 +23,23 @@ $(window).on('load', function() {
     household.incomeSlider.on('slideStop', household.updateIncome);
     household.memberSlider.on('slideStop', household.updateMembers);
 
+    $('#meal-options').on('change', function() {
+      household.updateMealOption();
+    });
+
     function Household() {
       var self = this;
+
+      /*
+      Food Costs:
+      1: Food poverty line
+      2. PACSA minimum nutrional basket (10 500 kJ a day - June 2017)
+      */
+
+      self.foodCosts = {
+        '1': 498,
+        '2': 635,
+      };
 
       self.incomeSlider = $('#hh-income').slider({
         formatter: function(value) {
@@ -42,6 +57,7 @@ $(window).on('load', function() {
 
       self.income = parseInt($('#hh-income').val());
       self.members = parseInt($('#hh-members').val());
+      self.mealOption = parseInt($("input[name='meal-option']:checked").val());
 
       self.updateIncome = function(e) {
         self.income = e.value;
@@ -53,12 +69,16 @@ $(window).on('load', function() {
         meals.updateCoverage();
       };
 
+      self.updateMealOption = function () {
+        self.mealOption = parseInt($("input[name='meal-option']:checked").val());
+        meals.updateCoverage();
+      }
+
     }
 
     function Meals() {
       var self = this;
       var meals = 3;
-      var fpl = 498; // Food Poverty Line
 
       self.costCoverage = calcCoverage();
       drawPlates();
@@ -69,7 +89,8 @@ $(window).on('load', function() {
       };
 
       function calcCoverage() {
-        var coverage = (household.income / household.members) / fpl;
+        var foodCost = household.foodCosts[household.mealOption];
+        var coverage = (household.income / household.members) / foodCost;
         return (coverage > 1) ? 1 : coverage;
       }
 

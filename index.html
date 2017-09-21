@@ -37,6 +37,26 @@ extra_css:
             <input id="hh-members" data-slider-id='hh-members-slider' type="number" data-slider-min="0" data-slider-max="12" data-slider-step="1" data-slider-value="4"/>
           </div>
         </div>
+
+        <div class="row">
+          <div class="col-sm-4">
+            <label for="meal" class="control-label">What is does a meal consist of?</label>
+          </div>
+          <div class="col-sm-8">
+            <form id="meal-options">
+              <div class="radio">
+                <label>
+                  <input type="radio" name="meal-option" id="meal-option-1" value="1" checked>Food poverty line
+                </label>
+              </div>
+              <div class="radio">
+                <label class="radio">
+                  <input type="radio" name="meal-option" id="meal-option-2" value="2">PACSA minimum nutritional meal
+                </label>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
 
       <button type="button" id="go-shop" class="btn btn-default btn-lg">Show me</button>

@@ -102,7 +102,8 @@ $(window).on('load', function() {
         var width,
             height;
 
-        var plateImage = window.location.href + "img/plate.svg";
+        var src = (window.location.origin + window.location.pathname).replace("index.html", "");
+        var plateImage = src + "img/plate.svg";
 
         var gridLength = qMeals;
 
@@ -155,7 +156,7 @@ $(window).on('load', function() {
 
           var generateArc = function(fraction) {
             return path({endAngle: Math.PI * 2 * fraction})
-          }
+          };
 
           svg.attr("width", width).attr("height", height);
 

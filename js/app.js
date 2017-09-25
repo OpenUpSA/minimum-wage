@@ -14,8 +14,8 @@ $(window).on('load', function() {
     var household = new Household();
     var meals = new Meals();
 
-    $('#go-shop').on('click', function() {
-      $('#shop').css('display', 'block');
+    $('#show-basket').on('click', function() {
+      $('#basket').css('display', 'block');
       pymChild.sendHeight();
       var sticky = new Sticky('#summary');
     });
@@ -33,7 +33,7 @@ $(window).on('load', function() {
       /*
       Food Costs:
       1: Food poverty line
-      2. PACSA minimum nutrional basket (10 500 kJ a day - June 2017)
+      2. PACSA minimum nutritional basket (10 500 kJ a day - June 2017)
       */
 
       self.foodCosts = {

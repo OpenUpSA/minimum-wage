@@ -61,91 +61,86 @@ $(window).on('load', function() {
 
       self.updateIncome = function(e) {
         self.income = e.value;
-        meals.updateCoverage();
+        meals.updateCostCoverage();
       };
 
       self.updateMembers = function(e) {
         self.members = e.value;
-        meals.updateCoverage();
+        meals.updateCostCoverage();
       };
 
       self.updateMealOption = function () {
         self.mealOption = parseInt($("input[name='meal-option']:checked").val());
-        meals.updateCoverage();
+        meals.updateCostCoverage();
       }
 
     }
 
     function Meals() {
       var self = this;
-      var qMeals = 3;
+      var dailyMeals = 3;
 
-      self.costCoverage = calcCoverage();
-      drawPlates();
-
-      self.updateCoverage = function() {
+      self.updateCostCoverage = function() {
         self.costCoverage = calcCoverage();
         drawPlates();
       };
 
+      self.costCoverage = self.updateCostCoverage();
+
+
       function calcCoverage() {
+        // Returns the ratio (0-1) to which income covers the cost of the food basket.
         var foodCost = household.foodCosts[household.mealOption];
         var coverage = (household.income / household.members) / foodCost;
         return (coverage > 1) ? 1 : coverage;
       }
 
       function drawPlates() {
-        var plates = $('#meals').find('.plate');
-        var portions = self.costCoverage * qMeals;
+        var plateElements = $('#meals').find('.plate');
+        var mealsADay = self.costCoverage * dailyMeals;
         var platePortion = 0;
 
         var width,
             height;
 
+        // Use window location to build image src
         var src = (window.location.origin + window.location.pathname).replace("index.html", "");
         var plateImage = src + "img/plate.svg";
 
-        var gridLength = qMeals;
+        var gridLength = dailyMeals;
 
         var svg1 = d3.select("svg").remove();
         var svg = d3.select("#meals").append("svg");
 
         var defs = svg.append("defs");
 
-        var angleGrid = [];
+        var plateGrid = [];
 
         // Create data object
-        _.each(plates, function(plate) {
-          if (portions - 1 >= 0) {
+        for (var i=0; i < dailyMeals; i++) {
+          if (mealsADay >= 1) {
             platePortion = 1;
-            portions -= 1;
-          }
-          else if (portions >= 0) {
-            platePortion = portions;
-            portions -= portions;
+            mealsADay -= 1;
           }
           else {
-            platePortion = 0;
+            platePortion = mealsADay;
+            mealsADay -= mealsADay;
           }
 
-          // $(plate).text(platePortion);
-
-          var angleObj = {
+          var plateObj = {
             angle: 1 - platePortion,
           };
-          angleGrid.push(angleObj);
-        });
+          plateGrid.push(plateObj);
+        }
 
         render();
 
-       function render() {
+        function render() {
 
           //get dimensions based on width of container element
           updateDimensions($("#meals")[0].clientWidth);
 
-          var initialPosition = { x: width / 7, y: width / 7 };
-          // var circleSize = { width: 150, height: 150 };
-          // var spacing = {h: 30, v: 70};
+          var initialPosition = { x: width / 6, y: width / 7 };
           var circleSize = { width: width / 3.5, height: width / 3.5 };
           var spacing = {h: width / 20, v: width / 10};
 
@@ -170,14 +165,14 @@ $(window).on('load', function() {
             });
 
           // Assign positions
-          angleGrid.forEach(function(a, i) {
+          plateGrid.forEach(function(a, i) {
             a.x = i % gridLength;
             a.y = Math.floor(i / gridLength);
           });
 
           var circles = svg.append("g")
             .selectAll("circle")
-            .data(angleGrid)
+            .data(plateGrid)
           .enter().append("circle")
             .attr("class", "plate-circle")
             .attr("cx", function(d) {
@@ -191,7 +186,7 @@ $(window).on('load', function() {
 
           var arcs = svg.append("g")
             .selectAll("path")
-            .data(angleGrid.filter(d => d.angle))
+            .data(plateGrid.filter(d => d.angle))
            .enter().append("path")
             .attr("transform", function(d) {
               var xPos = initialPosition.x + (circleSize.width + spacing.h) * d.x;

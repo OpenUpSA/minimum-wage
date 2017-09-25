@@ -27,6 +27,11 @@ $(window).on('load', function() {
       household.updateMealOption();
     });
 
+    // Redraw plates on resize
+    $(window).on('resize', function() {
+      meals.drawPlates();
+    });
+
     function Household() {
       var self = this;
 
@@ -79,27 +84,9 @@ $(window).on('load', function() {
     function Meals() {
       var self = this;
       var dailyMeals = 3;
+      var plateData = [];
 
-      self.updateCostCoverage = function() {
-        self.costCoverage = calcCoverage();
-        drawPlates();
-      };
-
-      self.costCoverage = self.updateCostCoverage();
-
-
-      function calcCoverage() {
-        // Returns the ratio (0-1) to which income covers the cost of the food basket.
-        var foodCost = household.foodCosts[household.mealOption];
-        var coverage = (household.income / household.members) / foodCost;
-        return (coverage > 1) ? 1 : coverage;
-      }
-
-      function drawPlates() {
-        var plateElements = $('#meals').find('.plate');
-        var mealsADay = self.costCoverage * dailyMeals;
-        var platePortion = 0;
-
+      self.drawPlates = function () {
         var width,
             height;
 
@@ -114,6 +101,90 @@ $(window).on('load', function() {
 
         var defs = svg.append("defs");
 
+        //get dimensions based on width of container element
+        function updateDimensions(containerWidth) {
+          width = containerWidth;
+          height = containerWidth < 300 ? 100 : (containerWidth / 3);
+        }
+
+        updateDimensions($("#meals")[0].clientWidth);
+        svg.attr("width", width).attr("height", height);
+
+        var initialPosition = { x: width / 6, y: width / 7 };
+        var circleSize = { width: width / 3.5, height: width / 3.5 };
+        var spacing = {h: width / 20, v: width / 10};
+
+        var path = d3.arc()
+          .outerRadius(circleSize.width / 2)
+          .innerRadius(0)
+          .startAngle(0);
+
+        var coinPattern = patternGrid.circleLayout()
+          .config({
+            image: plateImage,
+            radius: circleSize.width,
+            padding: [spacing.h, spacing.v],
+            margin: [initialPosition.y, initialPosition.x],
+            id: "plate"
+        });
+
+        var generateArc = function(fraction) {
+          return path({endAngle: Math.PI * 2 * fraction})
+        };
+
+        // Assign plate positions
+        plateData.forEach(function(plate, i) {
+          plate.x = i % gridLength;
+          plate.y = Math.floor(i / gridLength);
+        });
+
+        var circles = svg.append("g")
+          .selectAll("circle")
+          .data(plateData)
+        .enter().append("circle")
+          .attr("class", "plate-circle")
+          .attr("cx", function(d) {
+            return initialPosition.x + (circleSize.width + spacing.h) * d.x;
+          })
+          .attr("cy", function(d) {
+            return initialPosition.y + (circleSize.height + spacing.v) * d.y;
+          })
+          .attr("r", circleSize.width / 2)
+          .attr("fill", "url(#plate)");
+
+        var arcs = svg.append("g")
+          .selectAll("path")
+          .data(plateData.filter(function(d) { return d.angle; }))
+        .enter().append("path")
+          .attr("transform", function(d) {
+            var xPos = initialPosition.x + (circleSize.width + spacing.h) * d.x;
+            var yPos = initialPosition.y + (circleSize.height + spacing.v) * d.y;
+            return "translate(" + xPos + ", " + yPos + ")";
+          })
+          .attr("class", "pie-segment")
+          .attr("d", function(d) {
+            return generateArc(d.angle);
+          });
+      };
+
+      self.updateCostCoverage = function() {
+        self.costCoverage = calcCoverage();
+        plateData = compilePlates();
+        self.drawPlates();
+      };
+
+      self.costCoverage = self.updateCostCoverage();
+
+      function calcCoverage() {
+        // Returns the ratio (0-1) to which income covers the cost of the food basket.
+        var foodCost = household.foodCosts[household.mealOption];
+        var coverage = (household.income / household.members) / foodCost;
+        return (coverage > 1) ? 1 : coverage;
+      }
+
+      function compilePlates() {
+        var mealsADay = self.costCoverage * dailyMeals;
+        var platePortion = 0;
         var plateGrid = [];
 
         // Create data object
@@ -133,85 +204,7 @@ $(window).on('load', function() {
           plateGrid.push(plateObj);
         }
 
-        render();
-
-        function render() {
-
-          //get dimensions based on width of container element
-          updateDimensions($("#meals")[0].clientWidth);
-
-          var initialPosition = { x: width / 6, y: width / 7 };
-          var circleSize = { width: width / 3.5, height: width / 3.5 };
-          var spacing = {h: width / 20, v: width / 10};
-
-          var path = d3.arc()
-          .outerRadius(circleSize.width / 2)
-          .innerRadius(0)
-          .startAngle(0);
-
-          var generateArc = function(fraction) {
-            return path({endAngle: Math.PI * 2 * fraction})
-          };
-
-          svg.attr("width", width).attr("height", height);
-
-          var coinPattern = patternGrid.circleLayout()
-            .config({
-              image: plateImage,
-              radius: circleSize.width,
-              padding: [spacing.h, spacing.v],
-              margin: [initialPosition.y, initialPosition.x],
-              id: "plate"
-            });
-
-          // Assign positions
-          plateGrid.forEach(function(a, i) {
-            a.x = i % gridLength;
-            a.y = Math.floor(i / gridLength);
-          });
-
-          var circles = svg.append("g")
-            .selectAll("circle")
-            .data(plateGrid)
-          .enter().append("circle")
-            .attr("class", "plate-circle")
-            .attr("cx", function(d) {
-              return initialPosition.x + (circleSize.width + spacing.h) * d.x;
-            })
-            .attr("cy", function(d) {
-              return initialPosition.y + (circleSize.height + spacing.v) * d.y;
-            })
-            .attr("r", circleSize.width / 2)
-            .attr("fill", "url(#plate");
-
-          var arcs = svg.append("g")
-            .selectAll("path")
-            .data(plateGrid.filter(d => d.angle))
-           .enter().append("path")
-            .attr("transform", function(d) {
-              var xPos = initialPosition.x + (circleSize.width + spacing.h) * d.x;
-              var yPos = initialPosition.y + (circleSize.height + spacing.v) * d.y;
-              return "translate(" + xPos + ", " + yPos + ")";
-            })
-            .attr("class", "pie-segment")
-            .attr("d", d => generateArc(d.angle));
-
-          // //update svg elements to new dimensions
-          // svg
-          //   .attr('width', width + margin.right + margin.left)
-          //   .attr('height', height + margin.top + margin.bottom);
-          // chartWrapper.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-
-        }
-
-        function updateDimensions(containerWidth) {
-          width = containerWidth;
-          height = containerWidth < 300 ? 100 : (containerWidth / 3);
-        }
-
-        // return {
-        //   render : render
-        // }
+        return plateGrid;
       }
 
     }

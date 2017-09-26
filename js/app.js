@@ -227,17 +227,20 @@ $(window).on('load', function() {
 
       function drawSummary() {
         var mealSummary = {
-          0: "Everyone in the household is getting three meals a day.",
-          1: "The people in the household are getting less than three meals a day."
+          0: "Household members are getting three meals a day.",
+          1: "Household members are getting less than three meals a day."
         };
 
         $('#residual').find('.amount')
           .text("R " + (self.residual > 0 ? round(self.residual, 0) : 0))
           .removeClass('warning').addClass(self.residual > 0 ? "" : "warning");
 
-        $('#meals')
-          .text(self.costCoverage === 1 ? mealSummary[0] : mealSummary[1])
-          .removeClass('warning').addClass(self.costCoverage < 1 ? "warning" : "");
+        $('#meals').find('.description').text(self.costCoverage === 1 ? mealSummary[0] : mealSummary[1]);
+        $('#meals').removeClass('warning').addClass(self.costCoverage < 1 ? "warning" : "");
+
+        $('#meals').find(self.costCoverage === 1 ? '.safe' : '.warning').css('display', 'block');
+        $('#meals').find(self.costCoverage === 1 ? '.warning' : '.safe').css('display', 'none');
+
       }
 
     }

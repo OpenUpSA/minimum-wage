@@ -35,7 +35,7 @@
  background-color: #C9302C;
 }
 
-#assumptions {
+#household {
   background-color: #efefef;
   padding: 30px 20px;
 
@@ -169,18 +169,32 @@
 
 #summary {
   margin-bottom: 20px;
+  padding: 10px 20px;
+  background-color: #f1f1f1;
+
+  .row {
+    padding: 12px 0;
+  }
 
   #meals {
-    color: #fff;
-    background-color: green;
-  }
-  #meals.warning {
-    background-color: red;
+    color: #008751;
+
+    &.warning {
+      color: #C9302C;
+    }
+
+    .icon {
+      float: left;
+
+      .warning {
+        display: none;
+      }
+    }
   }
 
   #residual {
     .amount {
-      font-size: 1.5em;
+      font-size: 1.4em;
     }
   }
 }

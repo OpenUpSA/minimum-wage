@@ -9,6 +9,7 @@ $(window).on('load', function() {
 });
 
 (function($) {
+
   $(document).ready(function () {
 
     var household = new Household();
@@ -82,6 +83,7 @@ $(window).on('load', function() {
     }
 
     function Meals() {
+
       var self = this;
       var dailyMeals = 3;
       var plateData = [];
@@ -135,7 +137,7 @@ $(window).on('load', function() {
         });
 
         var generateArc = function(fraction) {
-          return path({endAngle: Math.PI * 2 * fraction})
+          return path({endAngle: Math.PI * 2 * fraction});
         };
 
         // Assign plate positions
@@ -240,93 +242,6 @@ $(window).on('load', function() {
 
         $('#meals').find(self.costCoverage === 1 ? '.safe' : '.warning').css('display', 'block');
         $('#meals').find(self.costCoverage === 1 ? '.warning' : '.safe').css('display', 'none');
-
-      }
-
-    }
-
-    function FoodBasket() {
-      var self = this;
-
-      self.cost = 0;
-      self.kCal = 0;
-      self.foods = {};
-
-      var round = function(value, decimals) {
-        // Decimals = 0 if not passed
-        decimals = typeof decimals !== 'undefined' ? decimals : 0;
-        return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
-      };
-
-      self.addToBasket = function(id) {
-        if (id in self.foods) {
-          self.foods[id] += 1;
-        } else {
-          self.foods[id] = 1;
-        }
-        calcTotals();
-        draw(id);
-      };
-
-      self.removeFromBasket = function(id) {
-        if (id in self.foods) {
-          self.foods[id] -= 1;
-          if (self.foods[id] === 0) {
-            delete self.foods[id];
-          }
-        }
-        calcTotals();
-        draw(id);
-      };
-
-      function calcTotals() {
-        totalCost();
-        totalkCal();
-      }
-
-      function draw(id) {
-        drawFoodQty(id);
-        drawTotalCost();
-        drawTotalkCal();
-        drawCostToIncome();
-      }
-
-      function totalCost() {
-        var total = 0;
-        _.each(self.foods, function(qty, id) {
-          var price = FOOD_DATA[id].price100g * (FOOD_DATA[id].weight / 100) * qty;
-          total += price;
-        });
-        self.cost = total;
-      }
-
-       function totalkCal() {
-        var total = 0;
-        _.each(self.foods, function(qty, id) {
-          var kCal = FOOD_DATA[id].kCal100g * (FOOD_DATA[id].weight / 100) * qty;
-          total += kCal;
-        });
-        self.kCal = total;
-      }
-
-      function drawFoodQty(id) {
-        if (id in self.foods) {
-          $('#' + id).addClass('in-basket').find('.qty').text(self.foods[id]);
-        } else {
-          $('#' + id).removeClass('in-basket').find('.qty').text("");
-        }
-      }
-
-      function drawTotalCost() {
-        $('#total-cost').text(self.cost === 0 ? "" : "R " + round(self.cost, 2));
-      }
-
-      function drawTotalkCal() {
-        $('#total-kCal').text(self.kCal === 0 ? "" : self.kCal + " kCal");
-      }
-
-      function drawCostToIncome() {
-        $('#cost-to-income').text(self.cost === 0 ? "" : round((self.cost / household.income * 100), 2) + "%");
       }
 
     }

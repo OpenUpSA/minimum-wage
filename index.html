@@ -19,7 +19,7 @@ extra_css:
       <h1>Meals a day when living on the minimum wage</h1>
       <p>This is the introduction to the proposed minimum wage and the food poverty line.</p>
 
-      <div id="assumptions">
+      <div id="household">
         <div class="row">
           <div class="col-sm-4">
             <label for="hh-income" class="control-label">How much money does the household earn in a month?</label>
@@ -61,10 +61,39 @@ extra_css:
 
     </div>
 
-    <div id="meals">
+    <div id="summary">
+      <div class="row">
+
+        <div class="col-sm-6">
+          <div id="meals">
+            <div class="row">
+              <div class="col-xs-3">
+                <div class="icon">
+                  <i class="fa fa-check fa-3x safe" aria-hidden="true"></i>
+                  <i class="fa fa-exclamation fa-3x warning" aria-hidden="true"></i>
+                </div>
+              </div>
+              <div class="col-xs-9">
+                <div class="description"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6">
+          <div id="residual">
+            <div class="row">
+              <div class="col-xs-3 col-sm-4 amount"></div>
+              <div class="col-xs-9 col-sm-8 context">Money available for all other household expenses.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
 
-    <button type="button" id="show-basket" class="btn btn-default btn-lg">What's in the basket?</button>
+    <div id="plates">
+    </div>
 
     <div id="basket"></div>
 

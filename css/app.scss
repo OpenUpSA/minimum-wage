@@ -166,3 +166,21 @@
     color: #c1c1c1;
   }
 }
+
+#summary {
+  margin-bottom: 20px;
+
+  #meals {
+    color: #fff;
+    background-color: green;
+  }
+  #meals.warning {
+    background-color: red;
+  }
+
+  #residual {
+    .amount {
+      font-size: 1.5em;
+    }
+  }
+}

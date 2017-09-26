@@ -77,7 +77,7 @@ $(window).on('load', function() {
       self.updateMealOption = function () {
         self.mealOption = parseInt($("input[name='meal-option']:checked").val());
         meals.updateCostCoverage();
-      }
+      };
 
     }
 
@@ -85,6 +85,12 @@ $(window).on('load', function() {
       var self = this;
       var dailyMeals = 3;
       var plateData = [];
+
+      var round = function(value, decimals) {
+        // decimals = 0 if not passed
+        decimals = typeof decimals !== 'undefined' ? decimals : 0;
+        return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+      };
 
       self.drawPlates = function () {
         var width,
@@ -97,7 +103,7 @@ $(window).on('load', function() {
         var gridLength = dailyMeals;
 
         var svg1 = d3.select("svg").remove();
-        var svg = d3.select("#meals").append("svg");
+        var svg = d3.select("#plates").append("svg");
 
         var defs = svg.append("defs");
 
@@ -107,7 +113,7 @@ $(window).on('load', function() {
           height = containerWidth < 300 ? 100 : (containerWidth / 3);
         }
 
-        updateDimensions($("#meals")[0].clientWidth);
+        updateDimensions($("#plates")[0].clientWidth);
         svg.attr("width", width).attr("height", height);
 
         var initialPosition = { x: width / 6, y: width / 7 };
@@ -171,7 +177,13 @@ $(window).on('load', function() {
         self.costCoverage = calcCoverage();
         plateData = compilePlates();
         self.drawPlates();
+        updateSummary();
       };
+
+      function updateSummary() {
+        self.residual = calcResidual();
+        drawSummary();
+      }
 
       self.costCoverage = self.updateCostCoverage();
 
@@ -205,6 +217,27 @@ $(window).on('load', function() {
         }
 
         return plateGrid;
+      }
+
+      function calcResidual() {
+        var residual = household.income - (household.foodCosts[household.mealOption] * household.members);
+        // return (residual > 0) ? residual : 0;
+        return residual;
+      }
+
+      function drawSummary() {
+        var mealSummary = {
+          0: "Everyone in the household is getting three meals a day.",
+          1: "The people in the household are getting less than three meals a day."
+        };
+
+        $('#residual').find('.amount')
+          .text("R " + (self.residual > 0 ? round(self.residual, 0) : 0))
+          .removeClass('warning').addClass(self.residual > 0 ? "" : "warning");
+
+        $('#meals')
+          .text(self.costCoverage === 1 ? mealSummary[0] : mealSummary[1])
+          .removeClass('warning').addClass(self.costCoverage < 1 ? "warning" : "");
       }
 
     }

@@ -12,7 +12,30 @@
   padding: 30px 0;
 }
 
-#household {
+#basket {
+  display: none;
+}
+
+#balance {
+  color: #fff;
+  padding: 10px 20px;
+  z-index: 10;
+
+  .amount {
+    font-size: 2em;
+  }
+}
+
+
+.positive {
+  background-color: #008751;
+}
+
+.negative {
+ background-color: #C9302C;
+}
+
+#assumptions {
   background-color: #efefef;
   padding: 30px 20px;
 
@@ -22,6 +45,110 @@
 
   .slider.slider-horizontal {
     width: 100%;
+  }
+}
+
+.food-block {
+  background-color: #efefef;
+  padding: 5px 20px;
+  margin: 10px 0;
+
+  .name {
+
+  }
+
+ .slider.slider-horizontal {
+    width: 100%;
+
+    .slider-track {
+      height: 7px;
+      margin-top: -3px;
+    }
+  }
+
+  .amount {
+    font-size: 2em;
+  }
+
+  .more {
+    text-align: right;
+  }
+}
+
+.in-basket {
+  background-color: #00E436;
+}
+
+#housing {
+  color: #83769C;
+
+  .slider-handle {
+    background-color: #83769C;
+    background-image: none;
+  }
+
+}
+
+#food {
+  color: #FFA300;
+
+  .slider-handle {
+    background-color: #FFA300;
+    background-image: none;
+  }
+}
+
+#transport {
+  color: #FF77A8;
+
+ .slider-handle {
+    background-color: #FF77A8;
+    background-image: none;
+  }
+}
+
+#education {
+  color:  #00E436;
+
+  .slider-handle {
+    background-color: #00E436;
+    background-image: none;
+  }
+}
+
+#health {
+  color: #29ADFF;
+
+  .slider-handle {
+    background-color: #29ADFF;
+    background-image: none;
+  }
+}
+
+#communication {
+  color: #83769C;
+
+  .slider-handle {
+    background-color: #83769C;
+    background-image: none;
+  }
+}
+
+#discretionary {
+  color: #FF77A8;
+
+  .slider-handle {
+    background-color: #FF77A8;
+    background-image: none;
+  }
+}
+
+#other {
+ color: #FFA300;
+
+ .slider-handle {
+    background-color: #FFA300;
+    background-image: none;
   }
 }
 
@@ -37,37 +164,5 @@
   font-size: 0.8em;
   a {
     color: #c1c1c1;
-  }
-}
-
-#summary {
-  margin-bottom: 20px;
-  padding: 10px 20px;
-  background-color: #f1f1f1;
-
-  .row {
-    padding: 12px 0;
-  }
-
-  #meals {
-    color: #008751;
-
-    &.warning {
-      color: #C9302C;
-    }
-
-    .icon {
-      float: left;
-
-      .warning {
-        display: none;
-      }
-    }
-  }
-
-  #residual {
-    .amount {
-      font-size: 1.4em;
-    }
   }
 }

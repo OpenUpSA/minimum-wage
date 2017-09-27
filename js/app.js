@@ -28,6 +28,11 @@ $(window).on('load', function() {
       household.updateMealOption();
     });
 
+    $('.explain').on('click', function(e) {
+      $('#explainer').find('#' + e.currentTarget.id).toggle();
+      $('#explainer').find('#' + e.currentTarget.id).siblings().hide();
+    });
+
     // Redraw plates on resize
     $(window).on('resize', function() {
       meals.drawPlates();

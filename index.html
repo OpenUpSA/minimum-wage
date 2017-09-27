@@ -16,49 +16,65 @@ extra_css:
   <div class="container">
 
     <div id="intro">
-      <h1>Meals a day when living on the minimum wage</h1>
-      <p>This is the introduction to the proposed minimum wage and the food poverty line.</p>
+      <h1>Living on the minimum wage</h1>
+      <p>The Minimum Wage Act is set to be implemented in May 2018 and will tentatively set the minimum wage for South Africans at R3,500.</p>
+      <p>Use the sliders below to see how much money a household would have available after meeting their basic food needs.</p>
+    </div>
 
-      <div id="household">
-        <div class="row">
-          <div class="col-sm-4">
-            <label for="hh-income" class="control-label">How much money does the household earn in a month?</label>
-          </div>
-          <div class="col-sm-8">
-            <input id="hh-income" data-slider-id='hh-income-slider' type="number" data-slider-min="0" data-slider-max="8000" data-slider-step="250" data-slider-value="3500"/>
-          </div>
+    <div id="household">
+      <div class="row hh-input">
+        <div class="col-sm-4">
+          <label for="hh-income" class="control-label">How much money does the household earn in a month?</label>
         </div>
-
-        <div class="row">
-          <div class="col-sm-4">
-            <label for="hh-members" class="control-label">How many people live in the household?</label>
-          </div>
-          <div class="col-sm-8">
-            <input id="hh-members" data-slider-id='hh-members-slider' type="number" data-slider-min="0" data-slider-max="12" data-slider-step="1" data-slider-value="4"/>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-sm-4">
-            <label for="meal" class="control-label">What is does a meal consist of?</label>
-          </div>
-          <div class="col-sm-8">
-            <form id="meal-options">
-              <div class="radio">
-                <label>
-                  <input type="radio" name="meal-option" id="meal-option-1" value="1" checked>Food poverty line
-                </label>
-              </div>
-              <div class="radio">
-                <label class="radio">
-                  <input type="radio" name="meal-option" id="meal-option-2" value="2">PACSA minimum nutritional meal
-                </label>
-              </div>
-            </form>
-          </div>
+        <div class="col-sm-8">
+          <input id="hh-income" data-slider-id='hh-income-slider' type="number" data-slider-min="0" data-slider-max="8000" data-slider-step="250" data-slider-value="3500"/>
         </div>
       </div>
 
+      <div class="row hh-input">
+        <div class="col-sm-4">
+          <label for="hh-members" class="control-label">How many people live in the household?</label>
+        </div>
+        <div class="col-sm-8">
+          <input id="hh-members" data-slider-id='hh-members-slider' type="number" data-slider-min="0" data-slider-max="12" data-slider-step="1" data-slider-value="4"/>
+        </div>
+      </div>
+
+      <div class="row hh-input">
+        <div class="col-sm-4">
+          <label for="meal" class="control-label">What should be used to determine the cost of the meals?</label>
+        </div>
+        <div class="col-sm-8">
+          <form id="meal-options">
+            <div class="row">
+              <div class="radio col-xs-11">
+                <label>
+                  <input type="radio" name="meal-option" id="meal-option-1" value="1" checked>Stats SA food poverty line
+                </label>
+              </div>
+              <div id="meal-option-1-q" class="explain col-xs-1"><i class="fa fa-question-circle-o" aria-hidden="true"></i></div>
+            </div>
+            <div class="row">
+              <div class="radio col-xs-11">
+                <label>
+                  <input type="radio" name="meal-option" id="meal-option-2" value="2">PACSA minimum nutritional food basket
+                </label>
+              </div>
+              <div id="meal-option-2-q" class="explain col-xs-1"><i class="fa fa-question-circle-o" aria-hidden="true"></i></div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="explainer" class="block">
+      <div id="meal-option-1-q" class="info">
+        The StatsSA food basket ensures that individuals have enough carbohydrates (energy) and does not look to protein, micronutrients content etxc.
+      </div>
+      <div id="meal-option-2-q" class="info">
+        The PACSA Food Basket is assessed every 3 years to see if the foods and the quantities of these foods in our basket are still being purchased by women living in working class poor families
+      </div>
     </div>
 
     <div id="summary">

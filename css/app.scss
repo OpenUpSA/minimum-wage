@@ -16,12 +16,19 @@
   background-color: #efefef;
   padding: 30px 20px;
 
-  .row {
+  .hh-input {
     padding: 12px 0;
   }
 
   .slider.slider-horizontal {
     width: 100%;
+  }
+
+  #meal-options {
+    .explain {
+      margin: 10px 0;
+      cursor: pointer;
+    }
   }
 }
 
@@ -37,6 +44,15 @@
   font-size: 0.8em;
   a {
     color: #c1c1c1;
+  }
+}
+
+#explainer {
+  padding: 30px 20px;
+  font-size: 0.8em;
+
+  .info {
+    display: none;
   }
 }
 

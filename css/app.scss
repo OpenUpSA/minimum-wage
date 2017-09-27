@@ -9,39 +9,31 @@
 }
 
 #intro {
-  padding: 30px 0;
+  padding-bottom: 20px;
 }
 
 #household {
-  background-color: #efefef;
+  background-color: #f1f1f1;
   padding: 30px 20px;
 
-  .row {
+  .hh-input {
     padding: 12px 0;
   }
 
   .slider.slider-horizontal {
     width: 100%;
   }
-}
 
-.pie-segment {
-  fill: #fff;
-  fill-opacity: 0.6;
-}
-
-#credits {
-  margin: 10px 0;
-  text-align: right;
-  color: #c1c1c1;
-  font-size: 0.8em;
-  a {
-    color: #c1c1c1;
+  #meal-options {
+    .hh-assumptions-extra-info {
+      margin: 10px 0;
+      cursor: pointer;
+      color: #F99466;
+    }
   }
 }
 
 #summary {
-  margin-bottom: 20px;
   padding: 10px 20px;
   background-color: #f1f1f1;
 
@@ -50,10 +42,10 @@
   }
 
   #meals {
-    color: #008751;
+    color: #91DC5A;
 
     &.warning {
-      color: #C9302C;
+      color: #E25C80;
     }
 
     .icon {
@@ -70,4 +62,37 @@
       font-size: 1.4em;
     }
   }
+
+  .results-extra-info {
+    cursor: pointer;
+    color: #F99466;
+  }
 }
+
+.extra-info {
+  padding: 10px 20px 30px;
+  font-size: 0.9em;
+  .info {
+    display: none;
+  }
+}
+
+.pie-segment {
+  fill: #fff;
+  fill-opacity: 0.6;
+}
+
+#footer{
+  background-color: #f1f1f1;
+  padding: 10px 20px;
+  #credits {
+    margin: 10px 0;
+    text-align: right;
+    color: #c1c1c1;
+    font-size: 0.8em;
+    a {
+      color: #c1c1c1;
+    }
+  }
+}
+

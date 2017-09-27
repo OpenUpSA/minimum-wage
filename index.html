@@ -16,49 +16,65 @@ extra_css:
   <div class="container">
 
     <div id="intro">
-      <h1>Meals a day when living on the minimum wage</h1>
-      <p>This is the introduction to the proposed minimum wage and the food poverty line.</p>
+      <h1>Living on the minimum wage</h1>
+      <p>The Minimum Wage Act is set to be implemented in May 2018 and will tentatively set the minimum wage for South Africans at R3,500.</p>
+      <p>Use the sliders below to see how much money a household would have available after meeting their basic food needs.</p>
+    </div>
 
-      <div id="household">
-        <div class="row">
-          <div class="col-sm-4">
-            <label for="hh-income" class="control-label">How much money does the household earn in a month?</label>
-          </div>
-          <div class="col-sm-8">
-            <input id="hh-income" data-slider-id='hh-income-slider' type="number" data-slider-min="0" data-slider-max="8000" data-slider-step="250" data-slider-value="3500"/>
-          </div>
+    <div id="household">
+      <div class="row hh-input">
+        <div class="col-sm-4">
+          <label for="hh-income" class="control-label">How much money does the household earn in a month?</label>
         </div>
-
-        <div class="row">
-          <div class="col-sm-4">
-            <label for="hh-members" class="control-label">How many people live in the household?</label>
-          </div>
-          <div class="col-sm-8">
-            <input id="hh-members" data-slider-id='hh-members-slider' type="number" data-slider-min="0" data-slider-max="12" data-slider-step="1" data-slider-value="4"/>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-sm-4">
-            <label for="meal" class="control-label">What is does a meal consist of?</label>
-          </div>
-          <div class="col-sm-8">
-            <form id="meal-options">
-              <div class="radio">
-                <label>
-                  <input type="radio" name="meal-option" id="meal-option-1" value="1" checked>Food poverty line
-                </label>
-              </div>
-              <div class="radio">
-                <label class="radio">
-                  <input type="radio" name="meal-option" id="meal-option-2" value="2">PACSA minimum nutritional meal
-                </label>
-              </div>
-            </form>
-          </div>
+        <div class="col-sm-8">
+          <input id="hh-income" data-slider-id='hh-income-slider' type="number" data-slider-min="0" data-slider-max="8000" data-slider-step="250" data-slider-value="3500"/>
         </div>
       </div>
 
+      <div class="row hh-input">
+        <div class="col-sm-4">
+          <label for="hh-members" class="control-label">How many people live in the household?</label>
+        </div>
+        <div class="col-sm-8">
+          <input id="hh-members" data-slider-id='hh-members-slider' type="number" data-slider-min="0" data-slider-max="12" data-slider-step="1" data-slider-value="4"/>
+        </div>
+      </div>
+
+      <div class="row hh-input">
+        <div class="col-sm-4">
+          <label for="meal" class="control-label">What should be used to determine the cost of the meals?</label>
+        </div>
+        <div class="col-sm-8">
+          <form id="meal-options">
+            <div class="row">
+              <div class="radio col-xs-11">
+                <label>
+                  <input type="radio" name="meal-option" id="meal-option-1" value="1" checked>Stats SA food poverty line
+                </label>
+              </div>
+              <div id="meal-option-1-info" class="hh-assumptions-extra-info col-xs-1"><i class="fa fa-question" aria-hidden="true"></i></div>
+            </div>
+            <div class="row">
+              <div class="radio col-xs-11">
+                <label>
+                  <input type="radio" name="meal-option" id="meal-option-2" value="2">PACSA minimum nutritional food basket
+                </label>
+              </div>
+              <div id="meal-option-2-info" class="hh-assumptions-extra-info col-xs-1"><i class="fa fa-question" aria-hidden="true"></i></div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="hh-assumptions-extra-info" class="extra-info">
+      <div id="meal-option-1-info" class="info">
+        The StatsSA food basket ensures that individuals have enough carbohydrates (energy) and does not look to protein, micronutrients content etxc.
+      </div>
+      <div id="meal-option-2-info" class="info">
+        In early 2014 PACSA, in consultation with a Registered Dietician, formulated a Minimum Nutritional Food Basket. The rationale was to keep tracking what households are actually able to afford to buy but not to lose sight of the actual cost of foods required in terms of balanced nutrition, in order to grow and develop properly. The PACSA Minimum Nutritional Food Basket provides data on which we can start talking realistically about adequacies in wages and social grants and ensures that current food expenditure patterns are not conflated with the food expenditure required to secure a nutritional basket of food.
+      </div>
     </div>
 
     <div id="summary">
@@ -84,7 +100,7 @@ extra_css:
           <div id="residual">
             <div class="row">
               <div class="col-xs-3 col-sm-4 amount"></div>
-              <div class="col-xs-9 col-sm-8 context">Money available for all other household expenses.</div>
+              <div class="col-xs-9 col-sm-8 context">Money available for all other household expenses <i class="fa fa-question results-extra-info" id="residual-info" aria-hidden="true"></i></div>
             </div>
           </div>
         </div>
@@ -92,10 +108,14 @@ extra_css:
       </div>
     </div>
 
-    <div id="plates">
+    <div id="results-extra-info" class="extra-info">
+      <div id="residual-info" class="info">
+        This is the amount of money which the household has left to spend on housing, education, clothing, medicine etc. after paying for each person in the household to get three meals a day.
+      </div>
     </div>
 
-    <div id="basket"></div>
+    <div id="plates">
+    </div>
 
     <div id="footer">
       <div id="credits">Image by <a href="http://www.freepik.com" title="Freepik" target="_blank">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon" target="_blank">Flaticon</a><br>

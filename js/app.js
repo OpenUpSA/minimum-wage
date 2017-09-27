@@ -15,12 +15,6 @@ $(window).on('load', function() {
     var household = new Household();
     var meals = new Meals();
 
-    $('#show-basket').on('click', function() {
-      $('#basket').css('display', 'block');
-      pymChild.sendHeight();
-      var sticky = new Sticky('#summary');
-    });
-
     household.incomeSlider.on('slideStop', household.updateIncome);
     household.memberSlider.on('slideStop', household.updateMembers);
 
@@ -28,9 +22,22 @@ $(window).on('load', function() {
       household.updateMealOption();
     });
 
+    $('.hh-assumptions-extra-info').on('click', function(e) {
+      $('#hh-assumptions-extra-info').find('#' + e.currentTarget.id).toggle();
+      $('#hh-assumptions-extra-info').find('#' + e.currentTarget.id).siblings().hide();
+      pymChild.sendHeight();
+    });
+
+    $('.results-extra-info').on('click', function(e) {
+      $('#results-extra-info').find('#' + e.currentTarget.id).toggle();
+      $('#results-extra-info').find('#' + e.currentTarget.id).siblings().hide();
+      pymChild.sendHeight();
+    });
+
     // Redraw plates on resize
     $(window).on('resize', function() {
       meals.drawPlates();
+      pymChild.sendHeight();
     });
 
     function Household() {
@@ -223,14 +230,13 @@ $(window).on('load', function() {
 
       function calcResidual() {
         var residual = household.income - (household.foodCosts[household.mealOption] * household.members);
-        // return (residual > 0) ? residual : 0;
         return residual;
       }
 
       function drawSummary() {
         var mealSummary = {
-          0: "Household members are getting three meals a day.",
-          1: "Household members are getting less than three meals a day."
+          0: "Household members are getting three meals a day",
+          1: "Household members are getting less than three meals a day"
         };
 
         $('#residual').find('.amount')

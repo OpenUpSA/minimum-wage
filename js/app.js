@@ -22,9 +22,15 @@ $(window).on('load', function() {
       household.updateMealOption();
     });
 
-    $('.explain').on('click', function(e) {
-      $('#explainer').find('#' + e.currentTarget.id).toggle();
-      $('#explainer').find('#' + e.currentTarget.id).siblings().hide();
+    $('.hh-assumptions-extra-info').on('click', function(e) {
+      $('#hh-assumptions-extra-info').find('#' + e.currentTarget.id).toggle();
+      $('#hh-assumptions-extra-info').find('#' + e.currentTarget.id).siblings().hide();
+      pymChild.sendHeight();
+    });
+
+    $('.results-extra-info').on('click', function(e) {
+      $('#results-extra-info').find('#' + e.currentTarget.id).toggle();
+      $('#results-extra-info').find('#' + e.currentTarget.id).siblings().hide();
       pymChild.sendHeight();
     });
 
@@ -229,8 +235,8 @@ $(window).on('load', function() {
 
       function drawSummary() {
         var mealSummary = {
-          0: "Household members are getting three meals a day.",
-          1: "Household members are getting less than three meals a day."
+          0: "Household members are getting three meals a day",
+          1: "Household members are getting less than three meals a day"
         };
 
         $('#residual').find('.amount')

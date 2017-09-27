@@ -13,7 +13,7 @@
 }
 
 #household {
-  background-color: #efefef;
+  background-color: #f1f1f1;
   padding: 30px 20px;
 
   .hh-input {
@@ -25,39 +25,15 @@
   }
 
   #meal-options {
-    .explain {
+    .hh-assumptions-extra-info {
       margin: 10px 0;
       cursor: pointer;
+      color: #F99466;
     }
   }
 }
 
-.pie-segment {
-  fill: #fff;
-  fill-opacity: 0.6;
-}
-
-#credits {
-  margin: 10px 0;
-  text-align: right;
-  color: #c1c1c1;
-  font-size: 0.8em;
-  a {
-    color: #c1c1c1;
-  }
-}
-
-#explainer {
-  padding: 30px 20px;
-  font-size: 0.9em;
-
-  .info {
-    display: none;
-  }
-}
-
 #summary {
-  margin-bottom: 20px;
   padding: 10px 20px;
   background-color: #f1f1f1;
 
@@ -86,4 +62,37 @@
       font-size: 1.4em;
     }
   }
+
+  .results-extra-info {
+    cursor: pointer;
+    color: #F99466;
+  }
 }
+
+.extra-info {
+  padding: 10px 20px 30px;
+  font-size: 0.9em;
+  .info {
+    display: none;
+  }
+}
+
+.pie-segment {
+  fill: #fff;
+  fill-opacity: 0.6;
+}
+
+#footer{
+  background-color: #f1f1f1;
+  padding: 10px 20px;
+  #credits {
+    margin: 10px 0;
+    text-align: right;
+    color: #c1c1c1;
+    font-size: 0.8em;
+    a {
+      color: #c1c1c1;
+    }
+  }
+}
+

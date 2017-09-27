@@ -15,12 +15,6 @@ $(window).on('load', function() {
     var household = new Household();
     var meals = new Meals();
 
-    $('#show-basket').on('click', function() {
-      $('#basket').css('display', 'block');
-      pymChild.sendHeight();
-      var sticky = new Sticky('#summary');
-    });
-
     household.incomeSlider.on('slideStop', household.updateIncome);
     household.memberSlider.on('slideStop', household.updateMembers);
 
@@ -31,11 +25,13 @@ $(window).on('load', function() {
     $('.explain').on('click', function(e) {
       $('#explainer').find('#' + e.currentTarget.id).toggle();
       $('#explainer').find('#' + e.currentTarget.id).siblings().hide();
+      pymChild.sendHeight();
     });
 
     // Redraw plates on resize
     $(window).on('resize', function() {
       meals.drawPlates();
+      pymChild.sendHeight();
     });
 
     function Household() {
@@ -228,7 +224,6 @@ $(window).on('load', function() {
 
       function calcResidual() {
         var residual = household.income - (household.foodCosts[household.mealOption] * household.members);
-        // return (residual > 0) ? residual : 0;
         return residual;
       }
 

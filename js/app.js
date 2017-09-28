@@ -22,15 +22,20 @@ $(window).on('load', function() {
       household.updateMealOption();
     });
 
+    $('.intro-extra-info').on('click', function(e) {
+      $('#intro').slideToggle();
+      pymChild.sendHeight();
+    });
+
     $('.hh-assumptions-extra-info').on('click', function(e) {
       $('#hh-assumptions-extra-info').find('#' + e.currentTarget.id).slideToggle();
-      $('#hh-assumptions-extra-info').find('#' + e.currentTarget.id).siblings().hide();
+      $('#hh-assumptions-extra-info').find('#' + e.currentTarget.id).siblings().slideUp();
       pymChild.sendHeight();
     });
 
     $('.results-extra-info').on('click', function(e) {
       $('#results-extra-info').find('#' + e.currentTarget.id).slideToggle();
-      $('#results-extra-info').find('#' + e.currentTarget.id).siblings().hide();
+      $('#results-extra-info').find('#' + e.currentTarget.id).siblings().slideUp();
       pymChild.sendHeight();
     });
 
@@ -245,6 +250,8 @@ $(window).on('load', function() {
 
         $('#meals').find('.description').text(self.costCoverage === 1 ? mealSummary[0] : mealSummary[1]);
         $('#meals').removeClass('warning').addClass(self.costCoverage < 1 ? "warning" : "");
+
+        $('#summary').removeClass('warning').addClass(self.residual > 0 ? "" : "warning");
 
         $('#meals').find(self.costCoverage === 1 ? '.safe' : '.warning').css('display', 'block');
         $('#meals').find(self.costCoverage === 1 ? '.warning' : '.safe').css('display', 'none');

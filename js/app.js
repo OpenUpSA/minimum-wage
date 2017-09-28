@@ -23,13 +23,13 @@ $(window).on('load', function() {
     });
 
     $('.hh-assumptions-extra-info').on('click', function(e) {
-      $('#hh-assumptions-extra-info').find('#' + e.currentTarget.id).toggle();
+      $('#hh-assumptions-extra-info').find('#' + e.currentTarget.id).slideToggle();
       $('#hh-assumptions-extra-info').find('#' + e.currentTarget.id).siblings().hide();
       pymChild.sendHeight();
     });
 
     $('.results-extra-info').on('click', function(e) {
-      $('#results-extra-info').find('#' + e.currentTarget.id).toggle();
+      $('#results-extra-info').find('#' + e.currentTarget.id).slideToggle();
       $('#results-extra-info').find('#' + e.currentTarget.id).siblings().hide();
       pymChild.sendHeight();
     });

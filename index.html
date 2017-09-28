@@ -15,13 +15,18 @@ extra_css:
 <div id="content">
   <div class="container">
 
-    <div id="intro">
-      <h1>Living on the minimum wage</h1>
-      <p>The Minimum Wage Act is set to be implemented in May 2018 and will tentatively set the minimum wage for South Africans at R3,500.</p>
-      <p>Use the sliders below to see how much money a household would have available after meeting their basic food needs.</p>
+    <div class="jumbotron">
+      <h1>Living on the <br> minimum wage</h1>
+      <p class="lead">How much money is available after meeting the household's basic needs for food?</p>
+      <p><a class="btn intro-extra-info" role="button">More about the minimum wage</a></p>
     </div>
 
-    <div id="household">
+    <div id="intro" class="panel">
+      <p>The Minimum Wage Act is set to be implemented in May 2018 and will tentatively set the minimum wage for South Africans at R&nbsp;3500.</p>
+      <p>We would add all the information we would like the reader to know about the minimum wage here.
+    </div>
+
+    <div id="household" class="well">
       <div class="row hh-input">
         <div class="col-sm-4">
           <label for="hh-income" class="control-label">How much money does the household earn in a month?</label>
@@ -52,7 +57,7 @@ extra_css:
                   <input type="radio" name="meal-option" id="meal-option-1" value="1" checked>Stats SA food poverty line
                 </label>
               </div>
-              <div id="meal-option-1-info" class="hh-assumptions-extra-info col-xs-1"><i class="fa fa-question" aria-hidden="true"></i></div>
+              <div id="meal-option-1-info" class="hh-assumptions-extra-info col-xs-1"><i class="fa fa-question-circle fa-lg" aria-hidden="true"></i></div>
             </div>
             <div class="row">
               <div class="radio col-xs-11">
@@ -60,7 +65,7 @@ extra_css:
                   <input type="radio" name="meal-option" id="meal-option-2" value="2">PACSA minimum nutritional food basket
                 </label>
               </div>
-              <div id="meal-option-2-info" class="hh-assumptions-extra-info col-xs-1"><i class="fa fa-question" aria-hidden="true"></i></div>
+              <div id="meal-option-2-info" class="hh-assumptions-extra-info col-xs-1"><i class="fa fa-question-circle fa-lg" aria-hidden="true"></i></div>
             </div>
           </form>
         </div>
@@ -69,17 +74,17 @@ extra_css:
     </div>
 
     <div id="hh-assumptions-extra-info" class="extra-info">
-      <div id="meal-option-1-info" class="info">
+      <div id="meal-option-1-info" class="info panel">
         <p>The StatsSA food basket ensures that individuals have enough carbohydrates (energy) and does not look to protein, micronutrients content etc.</p>
         <p>This amount was <b>R&nbsp;498</b> per person per month, as of April 2016.</p>
       </div>
-      <div id="meal-option-2-info" class="info">
+      <div id="meal-option-2-info" class="info panel">
         <p>In early 2014 PACSA, in consultation with a Registered Dietician, formulated a Minimum Nutritional Food Basket. This basket provides data on which one can start talking realistically about adequacies in wages and ensures that current food expenditure patterns are not conflated with the food expenditure required to secure a nutritional basket of food.</p>
         <p>To obtain a diet complete in minimum nutrition (assuming a 10 500 kJ (2509 kCal) daily intake) would cost <b>R&nbsp;635.97</b> per person per month, as of June 2017.</p>
       </div>
     </div>
 
-    <div id="summary">
+    <div id="summary" class="panel">
       <div class="row">
 
         <div class="col-sm-6">
@@ -102,16 +107,19 @@ extra_css:
           <div id="residual">
             <div class="row">
               <div class="col-xs-3 col-sm-4 amount"></div>
-              <div class="col-xs-9 col-sm-8 context">Money available for all other household expenses <i class="fa fa-question results-extra-info" id="residual-info" aria-hidden="true"></i></div>
+              <div class="col-xs-9 col-sm-8 context">Money available for all other household expenses</div>
             </div>
           </div>
         </div>
-
+        <div class="col-sm-6 col-sm-offset-6 summary-info">
+          <i class="fa fa-question-circle fa-lg results-extra-info" id="residual-info" aria-hidden="true"></i>
+        </div>
       </div>
+
     </div>
 
     <div id="results-extra-info" class="extra-info">
-      <div id="residual-info" class="info">
+      <div id="residual-info" class="info panel">
         <p>This is the amount of money which the household has left to spend on all other necessarry expences like ousing, electricity, education, clothing, medicine etc. after buying enough food for each person in the household to get three meals a day.</p>
       </div>
     </div>
@@ -119,7 +127,7 @@ extra_css:
     <div id="plates">
     </div>
 
-    <div id="footer">
+    <div id="footer" class="panel">
       <div id="credits">Image by <a href="http://www.freepik.com" title="Freepik" target="_blank">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon" target="_blank">Flaticon</a><br>
       Licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
     </div>

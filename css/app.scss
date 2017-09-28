@@ -3,17 +3,55 @@
 
 @import "main";
 
-// For testing, as the embed will be 700px wide
+$teal: #6CC5A3;
+$orange: #FFB28F;
+$green: #B4F388;
+$magenta: #F589A6;
+$light-grey: #f1f1f1;
+
+// The embed will be max 700px wide
 .container {
     max-width: 700px;
 }
 
+.container {
+
+  .jumbotron {
+    margin-top: 15px;
+    background-color: $teal;
+    padding-bottom: 20px;
+    padding-top: 10px;
+    border-radius: 4px;
+    text-align: center;
+    color: #fff;
+
+    h1 {
+      font-size: 3.5em;
+    }
+
+    a {
+      color: $teal;
+      font-weight: 500;
+      font-size: 0.7em;
+      background: #fff;
+      border-radius: 15px;
+      padding: 8px 10px;
+      border: none;
+
+    }
+  }
+
+  .panel {
+    padding: 15px;
+  }
+}
+
 #intro {
-  padding-bottom: 20px;
+  display: none;
 }
 
 #household {
-  background-color: #f1f1f1;
+  background-color: $light-grey;
   padding: 30px 20px;
 
   .hh-input {
@@ -28,26 +66,25 @@
     .hh-assumptions-extra-info {
       margin: 10px 0;
       cursor: pointer;
-      color: #F99466;
+      color: #fff;
     }
   }
 }
 
 #summary {
   padding: 10px 20px;
-  background-color: #f1f1f1;
+  background-color: $green;
+  color: #fff;
+
+  &.warning {
+    background-color: $orange;
+  }
 
   .row {
     padding: 12px 0;
   }
 
   #meals {
-    color: #91DC5A;
-
-    &.warning {
-      color: #E25C80;
-    }
-
     .icon {
       float: left;
 
@@ -65,12 +102,11 @@
 
   .results-extra-info {
     cursor: pointer;
-    color: #F99466;
+    float: right;
   }
 }
 
 .extra-info {
-  padding: 10px 20px 30px;
   font-size: 0.9em;
   .info {
     display: none;
@@ -83,7 +119,7 @@
 }
 
 #footer{
-  background-color: #f1f1f1;
+  background-color: $light-grey;
   padding: 10px 20px;
   #credits {
     margin: 10px 0;

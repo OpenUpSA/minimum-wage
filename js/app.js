@@ -55,9 +55,52 @@ $(window).on('load', function() {
       */
 
       self.foodCosts = {
-        '1': 498,
+        '1': 508,
         '2': 635,
       };
+
+      self.incomeDecileRanges = [
+        {
+          'range': [0, 800],
+          'percFood': 0.4813
+        },
+        {
+          'range': [801, 1260],
+          'percFood': 0.4698
+        },
+        {
+          'range': [1261, 1860],
+          'percFood': 0.3867
+        },
+        {
+          'range': [1861, 2500],
+          'percFood': 0.317
+        },
+        {
+          'range': [2501, 3152],
+          'percFood': 0.296
+        },
+        {
+          'range': [3153, 4280],
+          'percFood': 0.2555
+        },
+        {
+          'range': [4281, 6217],
+          'percFood': 0.2391
+        },
+        {
+          'range': [6218, 10000],
+          'percFood': 0.2161
+        },
+        {
+          'range': [10001, 20100],
+          'percFood': 0.1692
+        },
+        {
+          'range': [20101, 0],
+          'percFood': 0.1074
+        }
+      ];
 
       self.incomeSlider = $('#hh-income').slider({
         formatter: function(value) {
@@ -76,9 +119,11 @@ $(window).on('load', function() {
       self.income = parseInt($('#hh-income').val());
       self.members = parseInt($('#hh-members').val());
       self.mealOption = parseInt($("input[name='meal-option']:checked").val());
+      self.percIncomeForFood = getPercIncomeForFood();
 
       self.updateIncome = function(e) {
         self.income = e.value;
+        self.percIncomeForFood = getPercIncomeForFood();
         meals.updateCostCoverage();
       };
 
@@ -91,6 +136,17 @@ $(window).on('load', function() {
         self.mealOption = parseInt($("input[name='meal-option']:checked").val());
         meals.updateCostCoverage();
       };
+
+      function numberInRange(num, min, max) {
+        return num >= min && num <= max;
+      }
+
+      function getPercIncomeForFood() {
+        var decile = _.find(self.incomeDecileRanges, function(d) {
+          return numberInRange(self.income, d.range[0], d.range[1]);
+        });
+        return decile.percFood;
+      }
 
     }
 
@@ -188,6 +244,7 @@ $(window).on('load', function() {
       };
 
       self.updateCostCoverage = function() {
+        self.foodCost = calcFoodCost();
         self.costCoverage = calcCoverage();
         plateData = compilePlates();
         self.drawPlates();
@@ -195,7 +252,7 @@ $(window).on('load', function() {
       };
 
       function updateSummary() {
-        self.residual = calcResidual();
+        self.typicalExpenditure = calcTypicalExpenditure();
         drawSummary();
       }
 
@@ -203,8 +260,7 @@ $(window).on('load', function() {
 
       function calcCoverage() {
         // Returns the ratio (0-1) to which income covers the cost of the food basket.
-        var foodCost = household.foodCosts[household.mealOption];
-        var coverage = (household.income / household.members) / foodCost;
+        var coverage = ((household.income * household.percIncomeForFood) / household.members) / self.foodCost;
         return (coverage > 1) ? 1 : coverage;
       }
 
@@ -233,28 +289,35 @@ $(window).on('load', function() {
         return plateGrid;
       }
 
-      function calcResidual() {
-        var residual = household.income - (household.foodCosts[household.mealOption] * household.members);
-        return residual;
+      function calcFoodCost() {
+        return household.foodCosts[household.mealOption] * household.members;
+
+      }
+
+      function calcTypicalExpenditure() {
+        return household.income * household.percIncomeForFood;
       }
 
       function drawSummary() {
         var mealSummary = {
-          0: "Household members are getting three meals a day",
-          1: "Household members are getting less than three meals a day"
+          0: "People in the household are getting three meals a day",
+          1: "People in the household are getting less than three meals a day"
         };
 
-        $('#residual').find('.amount')
-          .text("R " + (self.residual > 0 ? round(self.residual, 0) : 0))
-          .removeClass('warning').addClass(self.residual > 0 ? "" : "warning");
-
         $('#meals').find('.description').text(self.costCoverage === 1 ? mealSummary[0] : mealSummary[1]);
-        $('#meals').removeClass('warning').addClass(self.costCoverage < 1 ? "warning" : "");
 
-        $('#summary').removeClass('warning').addClass(self.residual > 0 ? "" : "warning");
+        // Set class to determine background colour
+        $('#summary').removeClass('warning').addClass(self.costCoverage < 1 ? "warning" : "");
 
+        // Show the correct icon
         $('#meals').find(self.costCoverage === 1 ? '.safe' : '.warning').css('display', 'block');
         $('#meals').find(self.costCoverage === 1 ? '.warning' : '.safe').css('display', 'none');
+
+        $('#residual').find('.amount')
+          .text("R " + round(self.foodCost, 0));
+
+        $('#typical-expenditure').find('.amount')
+          .text("R " + (self.typicalExpenditure > 0 ? round(self.typicalExpenditure, 0) : 0));
       }
 
     }

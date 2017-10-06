@@ -32,7 +32,7 @@ extra_css:
           <label for="hh-income" class="control-label">How much money does the household earn in a month?</label>
         </div>
         <div class="col-sm-8">
-          <input id="hh-income" data-slider-id='hh-income-slider' type="number" data-slider-min="0" data-slider-max="8000" data-slider-step="250" data-slider-value="3500"/>
+          <input id="hh-income" data-slider-id='hh-income-slider' type="number" data-slider-min="0" data-slider-max="10000" data-slider-step="250" data-slider-value="3500"/>
         </div>
       </div>
 
@@ -41,7 +41,7 @@ extra_css:
           <label for="hh-members" class="control-label">How many people live in the household?</label>
         </div>
         <div class="col-sm-8">
-          <input id="hh-members" data-slider-id='hh-members-slider' type="number" data-slider-min="0" data-slider-max="12" data-slider-step="1" data-slider-value="4"/>
+          <input id="hh-members" data-slider-id='hh-members-slider' type="number" data-slider-min="1" data-slider-max="12" data-slider-step="1" data-slider-value="4"/>
         </div>
       </div>
 
@@ -107,10 +107,20 @@ extra_css:
           <div id="residual">
             <div class="row">
               <div class="col-xs-3 col-sm-4 amount"></div>
-              <div class="col-xs-9 col-sm-8 context">Money available for all other household expenses</div>
+              <div class="col-xs-9 col-sm-8 context">Cost to provide three meals a day</div>
             </div>
           </div>
         </div>
+
+        <div class="col-sm-6 col-sm-offset-6 ">
+          <div id="typical-expenditure">
+            <div class="row">
+              <div class="col-xs-3 col-sm-4 amount"></div>
+              <div class="col-xs-9 col-sm-8 context">Amount that households with this income typically have available for food after meeting other expenses.</div>
+            </div>
+          </div>
+        </div>
+
         <div class="col-sm-6 col-sm-offset-6 summary-info">
           <i class="fa fa-question-circle fa-lg results-extra-info" id="residual-info" aria-hidden="true"></i>
         </div>
@@ -120,7 +130,7 @@ extra_css:
 
     <div id="results-extra-info" class="extra-info">
       <div id="residual-info" class="info panel">
-        <p>This is the amount of money which the household has left to spend on all other necessarry expences like ousing, electricity, education, clothing, medicine etc. after buying enough food for each person in the household to get three meals a day.</p>
+        <p>These are other basic necessarry expences like housing, electricity, transport, education etc.</p>
       </div>
     </div>
 

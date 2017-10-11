@@ -46,9 +46,11 @@ $light-grey: #f1f1f1;
   }
 }
 
+
 #intro {
   display: none;
 }
+
 
 #household {
   background-color: $light-grey;
@@ -70,6 +72,7 @@ $light-grey: #f1f1f1;
     }
   }
 }
+
 
 #summary {
   padding: 10px 20px;
@@ -94,6 +97,12 @@ $light-grey: #f1f1f1;
     }
   }
 
+  #food-cost {
+    .amount {
+      font-size: 1.4em;
+    }
+  }
+
   #residual {
     .amount {
       font-size: 1.4em;
@@ -104,6 +113,17 @@ $light-grey: #f1f1f1;
     cursor: pointer;
     float: right;
   }
+
+  #hh-expenses-slider {
+    .slider-selection {
+      background: #BABABA;
+    }
+
+    .slider-track-high {
+      background: #FF8282;
+    }
+  }
+
 }
 
 .extra-info {

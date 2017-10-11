@@ -23,7 +23,7 @@ extra_css:
 
     <div id="intro" class="panel">
       <p>The Minimum Wage Act is set to be implemented in May 2018 and will tentatively set the minimum wage for South Africans at R&nbsp;3500.</p>
-      <p>We would add all the information we would like the reader to know about the minimum wage here.
+      <p>This is where we would add all the information we would like to convey about the minimum wage here.
     </div>
 
     <div id="household" class="well">
@@ -104,19 +104,39 @@ extra_css:
         </div>
 
         <div class="col-sm-6">
-          <div id="residual">
+          <div id="food-cost">
             <div class="row">
               <div class="col-xs-3 col-sm-4 amount"></div>
               <div class="col-xs-9 col-sm-8 context">Cost to provide three meals a day</div>
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="col-sm-6 col-sm-offset-6 ">
+      <div class="row hh-expenditure">
+        <div class="col-sm-4">
+          <label for="hh-expenses" class="control-label">Money available for all other expenses.</label>
+        </div>
+        <div class="col-sm-8">
+          <input id="hh-expenses" data-slider-id='hh-expenses-slider' type="number" data-slider-min="0" data-slider-step="10"/>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6">
+          <div id="residual">
+            <div class="row">
+              <div class="col-xs-3 col-sm-4 amount"></div>
+              <div class="col-xs-9 col-sm-8 context">Amount available for all other expenses</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6">
           <div id="typical-expenditure">
             <div class="row">
               <div class="col-xs-3 col-sm-4 amount"></div>
-              <div class="col-xs-9 col-sm-8 context">Amount that households with this income typically have available for food after meeting other expenses.</div>
+              <div class="col-xs-9 col-sm-8 context">Typical amount needed for all other expenses</div>
             </div>
           </div>
         </div>

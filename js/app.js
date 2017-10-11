@@ -32,7 +32,7 @@ $(window).on('load', function() {
 
     household.incomeSlider.on('slideStop', household.updateIncome);
     household.memberSlider.on('slideStop', household.updateMembers);
-    household.expenseSlider.on('slideStop', household.updateOtherExpenses);
+    household.expenseSlider.on('slideStop', household.updateExpensePortion);
 
     $('#meal-options').on('change', function() {
       household.updateMealOption();
@@ -88,9 +88,11 @@ $(window).on('load', function() {
       self.percIncomeForFood = getPercIncomeForFood();
 
       self.foodCost = calcCostOfFood();
-      self.costCoverage = calcFoodCostCoverage();
       self.residualIncome = calcResidualIncome();
       self.typicalExpenditure = calcTypicalExpenditure();
+
+      self.foodCostCoverage = calcFoodCostCoverage();
+      self.otherCostCoverage = calcOtherCostCoverage();
 
 
       self.incomeSlider = $('#hh-income').slider({
@@ -111,7 +113,7 @@ $(window).on('load', function() {
         formatter: function(value) {
           return 'R ' + value;
         },
-        value: self.income - (self.members * self.foodCosts[self.mealOption]),
+        value: self.residualIncome,
         max: round(self.typicalExpenditure, 0),
         tooltip: 'always'
       });
@@ -124,6 +126,7 @@ $(window).on('load', function() {
         self.updateCosts();
 
         self.drawSummary();
+        self.drawExpenseSlider();
         meals.updateMealsADay();
       };
 
@@ -132,6 +135,7 @@ $(window).on('load', function() {
         self.updateCosts();
 
         self.drawSummary();
+        self.drawExpenseSlider();
         meals.updateMealsADay();
       };
 
@@ -140,19 +144,26 @@ $(window).on('load', function() {
         self.updateCosts();
 
         self.drawSummary();
+        self.drawExpenseSlider();
         meals.updateMealsADay();
       };
 
-      self.updateOtherExpenses = function(e) {
-        var expenseAdjustedCoverage = (self.income - e.value) / self.foodCost;
-        self.costCoverage = (expenseAdjustedCoverage > 1) ? 1 : expenseAdjustedCoverage;
+      self.updateExpensePortion = function(e) {
+        var adjustedFoodCostCoverage = (self.income - e.value) / self.foodCost;
+        var adjustedOtherCostCoverage = e.value / self.typicalExpenditure;
+
+        self.foodCostCoverage = (adjustedFoodCostCoverage > 1) ? 1 : adjustedFoodCostCoverage;
+        self.otherCostCoverage = (adjustedOtherCostCoverage > 1) ? 1 : adjustedOtherCostCoverage;
+
         meals.updateMealsADay();
+        self.drawSummary();
       };
 
       self.updateCosts = function() {
         self.foodCost = calcCostOfFood();
-        self.costCoverage = calcFoodCostCoverage();
         self.residualIncome = calcResidualIncome();
+        self.foodCostCoverage = calcFoodCostCoverage();
+        self.otherCostCoverage = calcOtherCostCoverage();
       };
 
 
@@ -177,6 +188,12 @@ $(window).on('load', function() {
         return (coverage > 1) ? 1 : coverage;
       }
 
+      function calcOtherCostCoverage() {
+        // Returns the ratio (0-1) to which residual income covers other household costs.
+        var coverage = self.residualIncome / self.typicalExpenditure;
+        return (coverage > 1) ? 1 : coverage;
+      }
+
       function calcResidualIncome() {
         var residual = self.income - self.foodCost;
         return (residual < 0) ? 0 : residual;
@@ -188,25 +205,29 @@ $(window).on('load', function() {
 
       self.drawSummary = function () {
 
-        self.expenseSlider.slider('setAttribute', 'value', self.residualIncome);
-        self.expenseSlider.slider('setAttribute', 'max', self.typicalExpenditure);
-        self.expenseSlider.slider('refresh');
-        self.expenseSlider.slider('relayout');
-
-        var mealSummary = {
+        var mealsADayDesc = {
           0: "People in the household are getting three meals a day",
           1: "People in the household are not getting three meals a day"
         };
 
-        $('#meals').find('.description').text(self.costCoverage === 1 ? mealSummary[0] : mealSummary[1]);
+        var coverExpensesDesc = {
+          0: "Household is covering other expenses",
+          1: "Household is not covering other expenses"
+        }
+
+        $('#meals').find('.description').text(self.foodCostCoverage === 1 ? mealsADayDesc[0] : mealsADayDesc[1]);
+        $('#cover-expenses').find('.description').text(self.otherCostCoverage === 1 ? coverExpensesDesc[0] : coverExpensesDesc[1]);
 
         // Show the correct icon
-        $('#meals').find(self.costCoverage === 1 ? '.safe' : '.warning').css('display', 'block');
-        $('#meals').find(self.costCoverage === 1 ? '.warning' : '.safe').css('display', 'none');
+        $('#meals').find(self.foodCostCoverage === 1 ? '.safe' : '.warning').css('display', 'block');
+        $('#meals').find(self.foodCostCoverage === 1 ? '.warning' : '.safe').css('display', 'none');
+
+        $('#cover-expenses').find(self.otherCostCoverage === 1 ? '.safe' : '.warning').css('display', 'block');
+        $('#cover-expenses').find(self.otherCostCoverage === 1 ? '.warning' : '.safe').css('display', 'none');
 
         // Set class to determine background colour
-        $('#summary').removeClass('warning').addClass(self.costCoverage < 1 ? "warning" : "");
-
+        $('#meals').removeClass('warning').addClass(self.foodCostCoverage < 1 ? "warning" : "");
+        $('#cover-expenses').removeClass('warning').addClass(self.otherCostCoverage < 1 ? "warning" : "");
 
         $('#food-cost').find('.amount')
           .text("R " + round(self.foodCost, 0));
@@ -219,6 +240,15 @@ $(window).on('load', function() {
       };
 
       self.drawSummary();
+
+      self.drawExpenseSlider = function() {
+        self.expenseSlider
+          .slider('setAttribute', 'value', self.residualIncome)
+          .slider('setAttribute', 'max', self.typicalExpenditure)
+          .slider('refresh')
+          .slider('relayout');
+      };
+
     }
 
     function Meals() {
@@ -316,7 +346,7 @@ $(window).on('load', function() {
       self.updateMealsADay();
 
       function compileMealsADay() {
-        var mealsADay = household.costCoverage * mealsADayMeasure;
+        var mealsADay = household.foodCostCoverage * mealsADayMeasure;
         var platePortion = 0;
         var plateGrid = [];
 
@@ -339,33 +369,6 @@ $(window).on('load', function() {
 
         return plateGrid;
       }
-
-      // function drawSummary() {
-
-      //   var mealSummary = {
-      //     0: "People in the household are getting three meals a day",
-      //     1: "People in the household are not getting three meals a day"
-      //   };
-
-      //   $('#meals').find('.description').text(household.costCoverage === 1 ? mealSummary[0] : mealSummary[1]);
-
-      //   // Show the correct icon
-      //   $('#meals').find(household.costCoverage === 1 ? '.safe' : '.warning').css('display', 'block');
-      //   $('#meals').find(household.costCoverage === 1 ? '.warning' : '.safe').css('display', 'none');
-
-      //   // Set class to determine background colour
-      //   $('#summary').removeClass('warning').addClass(household.costCoverage < 1 ? "warning" : "");
-
-
-      //   $('#food-cost').find('.amount')
-      //     .text("R " + round(household.foodCost, 0));
-
-      //   $('#residual').find('.amount')
-      //     .text("R " + round(household.residualIncome, 0));
-
-      //   $('#typical-expenditure').find('.amount')
-      //     .text("R " + (household.typicalExpenditure > 0 ? round(household.typicalExpenditure, 0) : 0));
-      // }
 
     }
 

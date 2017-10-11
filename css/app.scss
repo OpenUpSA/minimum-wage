@@ -87,13 +87,18 @@ $light-grey: #f1f1f1;
     padding: 12px 0;
   }
 
-  #meals {
+  #meals, #cover-expenses {
+    padding: 0 10px;
+
     .icon {
       float: left;
 
       .warning {
         display: none;
       }
+    }
+    &.warning {
+      background-color: $orange;
     }
   }
 
@@ -125,12 +130,29 @@ $light-grey: #f1f1f1;
   }
 
   #hh-expenses-slider {
+    margin-top: 1em;
+
     .slider-selection {
-      background: #BABABA;
+      background: $teal;
+      border-radius: 0;
     }
 
     .slider-track-high {
       background: #FF8282;
+      border-radius: 0;
+    }
+
+    .slider-track {
+      height: 30px;
+      margin-top: 0;
+      top: 0;
+    }
+
+    .slider-handle {
+      width: 5px;
+      height: 40px;
+      margin-left: -2px;
+      margin-top: -4px;
     }
   }
 

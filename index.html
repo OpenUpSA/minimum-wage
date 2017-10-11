@@ -103,32 +103,24 @@ extra_css:
           </div>
         </div>
 
-        <div class="col-sm-6">
-          <div id="food-cost">
-            <div class="row">
-              <div class="col-xs-3 col-sm-4 amount"></div>
-              <div class="col-xs-9 col-sm-8 context">Cost to provide three meals a day</div>
-            </div>
-          </div>
-        </div>
       </div>
 
       <div class="row hh-expenditure">
-        <div class="col-sm-3">
-          <label for="hh-expenses" class="control-label">Money available for all other expenses.</label>
-        </div>
-        <div class="col-sm-5">
-          <input id="hh-expenses" data-slider-id='hh-expenses-slider' type="number" data-slider-min="0" data-slider-step="10"/>
-        </div>
-        <div class="col-sm-4">
-          <div id="typical-expenditure">
-              <div class="amount"></div>
-              <div class="context">Typical amount needed for all other expenses</div>
+        <div class="col-sm-6">
+          <div id="cover-expenses">
+            <div class="row">
+              <div class="col-xs-3">
+                <div class="icon">
+                  <i class="fa fa-check fa-3x safe" aria-hidden="true"></i>
+                  <i class="fa fa-exclamation fa-3x warning" aria-hidden="true"></i>
+                </div>
+              </div>
+              <div class="col-xs-9">
+                <div class="description"></div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="row">
         <div class="col-sm-6">
           <div id="residual">
             <div class="row">
@@ -138,6 +130,20 @@ extra_css:
           </div>
         </div>
 
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6">
+          <input id="hh-expenses" data-slider-id='hh-expenses-slider' type="number" data-slider-min="0" data-slider-step="1" data-slider-handle="square"/>
+        </div>
+        <div class="col-sm-6">
+          <div id="typical-expenditure">
+              <div class="row">
+                <div class="col-xs-3 col-sm-4 amount"></div>
+                <div class="col-xs-9 col-sm-8 context">Amount typically used for all other expenses</div>
+              </div>
+          </div>
+        </div>
         <div class="col-sm-6 col-sm-offset-6 summary-info">
           <i class="fa fa-question-circle fa-lg results-extra-info" id="residual-info" aria-hidden="true"></i>
         </div>

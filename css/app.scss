@@ -109,6 +109,16 @@ $light-grey: #f1f1f1;
     }
   }
 
+  #typical-expenditure {
+    .amount {
+      font-size: 1.4em;
+    }
+  }
+
+  .slider.slider-horizontal {
+    width: 100%;
+  }
+
   .results-extra-info {
     cursor: pointer;
     float: right;

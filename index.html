@@ -4,7 +4,7 @@ title: Minimum Wage
 
 extra_js:
   - bower_components/underscore/underscore-min.js
-  - bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js
+  - bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.js
   - bower_components/sticky.js/dist/sticky.min.js
   - bower_components/d3/d3.min.js
   - js/d3-patterngrid.js
@@ -114,11 +114,17 @@ extra_css:
       </div>
 
       <div class="row hh-expenditure">
-        <div class="col-sm-4">
+        <div class="col-sm-3">
           <label for="hh-expenses" class="control-label">Money available for all other expenses.</label>
         </div>
-        <div class="col-sm-8">
+        <div class="col-sm-5">
           <input id="hh-expenses" data-slider-id='hh-expenses-slider' type="number" data-slider-min="0" data-slider-step="10"/>
+        </div>
+        <div class="col-sm-4">
+          <div id="typical-expenditure">
+              <div class="amount"></div>
+              <div class="context">Typical amount needed for all other expenses</div>
+          </div>
         </div>
       </div>
 
@@ -128,15 +134,6 @@ extra_css:
             <div class="row">
               <div class="col-xs-3 col-sm-4 amount"></div>
               <div class="col-xs-9 col-sm-8 context">Amount available for all other expenses</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-6">
-          <div id="typical-expenditure">
-            <div class="row">
-              <div class="col-xs-3 col-sm-4 amount"></div>
-              <div class="col-xs-9 col-sm-8 context">Typical amount needed for all other expenses</div>
             </div>
           </div>
         </div>

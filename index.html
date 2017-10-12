@@ -4,7 +4,7 @@ title: Minimum Wage
 
 extra_js:
   - bower_components/underscore/underscore-min.js
-  - bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js
+  - bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.js
   - bower_components/sticky.js/dist/sticky.min.js
   - bower_components/d3/d3.min.js
   - js/d3-patterngrid.js
@@ -23,7 +23,7 @@ extra_css:
 
     <div id="intro" class="panel">
       <p>The Minimum Wage Act is set to be implemented in May 2018 and will tentatively set the minimum wage for South Africans at R&nbsp;3500.</p>
-      <p>We would add all the information we would like the reader to know about the minimum wage here.
+      <p>This is where we would add all the information we would like to convey about the minimum wage here.
     </div>
 
     <div id="household" class="well">
@@ -86,9 +86,8 @@ extra_css:
 
     <div id="summary" class="panel">
       <div class="row">
-
         <div class="col-sm-6">
-          <div id="meals">
+          <div id="cover-meals">
             <div class="row">
               <div class="col-xs-3">
                 <div class="icon">
@@ -102,34 +101,56 @@ extra_css:
             </div>
           </div>
         </div>
+      </div>
 
+      <div class="row">
         <div class="col-sm-6">
-          <div id="residual">
+          <div id="cover-expenses">
+            <div class="row">
+              <div class="col-xs-3">
+                <div class="icon">
+                  <i class="fa fa-check fa-3x safe" aria-hidden="true"></i>
+                  <i class="fa fa-exclamation fa-3x warning" aria-hidden="true"></i>
+                </div>
+              </div>
+              <div class="col-xs-9">
+                <div class="description"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div id="residual-income">
             <div class="row">
               <div class="col-xs-3 col-sm-4 amount"></div>
-              <div class="col-xs-9 col-sm-8 context">Cost to provide three meals a day</div>
+              <div class="col-xs-9 col-sm-8 context">Amount available for all other expenses</div>
             </div>
           </div>
         </div>
 
-        <div class="col-sm-6 col-sm-offset-6 ">
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6">
+          <input id="hh-expenses" data-slider-id='hh-expenses-slider' type="number" data-slider-min="0" data-slider-step="1" data-slider-handle="square"/>
+        </div>
+        <div class="col-sm-6">
           <div id="typical-expenditure">
-            <div class="row">
-              <div class="col-xs-3 col-sm-4 amount"></div>
-              <div class="col-xs-9 col-sm-8 context">Amount that households with this income typically have available for food after meeting other expenses.</div>
-            </div>
+              <div class="row">
+                <div class="col-xs-3 col-sm-4 amount"></div>
+                <div class="col-xs-9 col-sm-8 context">Amount typically used for all other expenses</div>
+              </div>
           </div>
         </div>
-
         <div class="col-sm-6 col-sm-offset-6 summary-info">
-          <i class="fa fa-question-circle fa-lg results-extra-info" id="residual-info" aria-hidden="true"></i>
+          <i class="fa fa-question-circle fa-lg results-extra-info" id="other-expenses-info" aria-hidden="true"></i>
         </div>
       </div>
 
     </div>
 
     <div id="results-extra-info" class="extra-info">
-      <div id="residual-info" class="info panel">
+      <div id="other-expenses-info" class="info panel">
         <p>These are other basic necessarry expences like housing, electricity, transport, education etc.</p>
       </div>
     </div>

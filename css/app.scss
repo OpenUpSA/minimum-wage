@@ -46,9 +46,11 @@ $light-grey: #f1f1f1;
   }
 }
 
+
 #intro {
   display: none;
 }
+
 
 #household {
   background-color: $light-grey;
@@ -71,6 +73,7 @@ $light-grey: #f1f1f1;
   }
 }
 
+
 #summary {
   padding: 10px 20px;
   background-color: $green;
@@ -84,7 +87,9 @@ $light-grey: #f1f1f1;
     padding: 12px 0;
   }
 
-  #meals {
+  #cover-meals, #cover-expenses {
+    padding: 0 10px;
+
     .icon {
       float: left;
 
@@ -92,18 +97,65 @@ $light-grey: #f1f1f1;
         display: none;
       }
     }
+    &.warning {
+      background-color: $orange;
+    }
   }
 
-  #residual {
+  #food-cost {
     .amount {
       font-size: 1.4em;
     }
+  }
+
+  #residual-income{
+    .amount {
+      font-size: 1.4em;
+    }
+  }
+
+  #typical-expenditure {
+    .amount {
+      font-size: 1.4em;
+    }
+  }
+
+  .slider.slider-horizontal {
+    width: 100%;
   }
 
   .results-extra-info {
     cursor: pointer;
     float: right;
   }
+
+  #hh-expenses-slider {
+    margin-top: 1em;
+
+    .slider-selection {
+      background: $teal;
+      border-radius: 0;
+    }
+
+    .slider-track-high {
+      background: #FF8282;
+      border-radius: 0;
+    }
+
+    .slider-track {
+      height: 30px;
+      margin-top: 0;
+      top: 0;
+    }
+
+    .slider-handle {
+      width: 5px;
+      height: 40px;
+      margin-left: -2px;
+      margin-top: -4px;
+    }
+  }
+
 }
 
 .extra-info {

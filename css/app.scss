@@ -144,11 +144,14 @@ $bar-red: #D40000;
 
   .typical-expenditure {
     background-color: $panel-grey;
-  }
+    margin-top: 20px;
 
-  #typical-expenditure {
-    .amount {
-      font-size: 1.4em;
+    .label {
+      color: $grey;
+    }
+
+    .context {
+      text-align: center;
     }
   }
 
@@ -180,6 +183,22 @@ $bar-red: #D40000;
 .slider-row {
   padding-top: 40px;
 }
+
+.label {
+  color: $blue;
+  padding: 0;
+  font-weight: normal;
+  font-size: 100%;
+
+  &.start {
+
+  }
+
+  &.end {
+    float: right;
+  }
+}
+
 
 .slider-selection {
   background-image: none;

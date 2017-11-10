@@ -235,7 +235,7 @@ $(window).on('load', function() {
         $('#residual-income').find('.amount')
           .text("R " + round(self.residualIncome, 0));
 
-        $('#typical-expenditure').find('.amount')
+        $('.typical-expenditure').find('.end')
           .text("R " + (self.typicalExpenditure > 0 ? round(self.typicalExpenditure, 0) : 0));
       }
 

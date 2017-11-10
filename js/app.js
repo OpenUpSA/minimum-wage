@@ -31,6 +31,7 @@ $(window).on('load', function() {
     household.memberSlider.on('slideStop', household.updateMembers);
     household.expenseSlider.on('slideStop', household.updateExpensePortion);
 
+
     $('#meal-options').on('change', household.updateMealOption);
 
 
@@ -118,6 +119,9 @@ $(window).on('load', function() {
         max: round(self.typicalExpenditure, 0),
         tooltip: 'always'
       });
+
+      // var tickPos = $('#hh-income-slider').find('.min-slider-handle').css('left');
+      // $('.min-wage-tick').css('left', tickPos);
 
 
       self.updateIncome = function(e) {

@@ -16,88 +16,95 @@ extra_css:
   <div class="container">
 
     <div class="jumbotron">
-      <h1>Living on the <br> minimum wage</h1>
-      <p class="lead">How much money is available after meeting the household's basic needs for food?</p>
-      <p><a class="btn intro-extra-info" role="button">More about the minimum wage</a></p>
+      <h1>The cost of <br> living in SA</h1>
+      <p class="lead">Can you afford food and pay for other household expenses on the new minimum wage?</p>
+      <p><a class="btn intro-info" role="button">About the minimum wage <br> in South Africa</a></p>
     </div>
 
-    <div id="intro" class="panel">
-      <p>The Minimum Wage Act is set to be implemented in May 2018 and will tentatively set the minimum wage for South Africans at R&nbsp;3500.</p>
-      <p>This is where we would add all the information we would like to convey about the minimum wage here.
+    <div id="intro-info" class="panel extra-info">
+      <p>The Minimum Wage Act is set to be implemented in May 2018 and will tentatively set the minimum wage for South Africans at R&nbsp;3200.</p>
+      <p>This is where we would add all the information we would like to convey about the minimum wage here.</p>
     </div>
 
-    <div id="household" class="well">
-      <div class="row hh-input">
-        <div class="col-sm-4">
-          <label for="hh-income" class="control-label">How much money does the household earn in a month?</label>
+    <div id="household">
+      <div class="row slider-row">
+        <div class="col-sm-8 col-sm-push-4">
+          <input id="hh-income" data-slider-id='hh-income-slider' type="number" data-slider-min="0" data-slider-max="10000" data-slider-step="250" data-slider-value="3200"/>
         </div>
-        <div class="col-sm-8">
-          <input id="hh-income" data-slider-id='hh-income-slider' type="number" data-slider-min="0" data-slider-max="10000" data-slider-step="250" data-slider-value="3500"/>
+        <div class="col-sm-4 col-sm-pull-8">
+          <label for="hh-income" class="control-label">How much money does your household earn a month in total?</label>
         </div>
       </div>
 
-      <div class="row hh-input">
-        <div class="col-sm-4">
-          <label for="hh-members" class="control-label">How many people live in the household?</label>
-        </div>
-        <div class="col-sm-8">
+      <div class="row slider-row">
+        <div class="col-sm-8 col-sm-push-4">
           <input id="hh-members" data-slider-id='hh-members-slider' type="number" data-slider-min="1" data-slider-max="12" data-slider-step="1" data-slider-value="4"/>
         </div>
+        <div class="col-sm-4 col-sm-pull-8">
+          <label for="hh-members" class="control-label">How many people live in your household?</label>
+        </div>
       </div>
 
-      <div class="row hh-input">
-        <div class="col-sm-4">
-          <label for="meal" class="control-label">What should be used to determine the cost of the meals?</label>
-        </div>
-        <div class="col-sm-8">
-          <form id="meal-options">
-            <div class="row">
-              <div class="radio col-xs-11">
+
+      <div class="hh-meal-options">Change type of meal</div>
+      <div class="row hh-input extra-info" id="hh-meal-options">
+        <div class="col-sm-8 col-sm-push-4">
+          <form id="meal-options" class="form-horizontal">
+            <div class="form-group">
+              <div class="radio col-xs-10">
                 <label>
                   <input type="radio" name="meal-option" id="meal-option-1" value="1" checked>Stats SA food poverty line
                 </label>
               </div>
-              <div id="meal-option-1-info" class="hh-assumptions-extra-info col-xs-1"><i class="fa fa-question-circle fa-lg" aria-hidden="true"></i></div>
+              <div id="meal-option-1-info" class="hh-assumptions-info col-xs-2 radio info"><i class="fa fa-question-circle fa-lg" aria-hidden="true"></i></div>
             </div>
-            <div class="row">
-              <div class="radio col-xs-11">
+            <div class="form-group">
+              <div class="radio col-xs-10">
                 <label>
                   <input type="radio" name="meal-option" id="meal-option-2" value="2">PACSA minimum nutritional food basket
                 </label>
               </div>
-              <div id="meal-option-2-info" class="hh-assumptions-extra-info col-xs-1"><i class="fa fa-question-circle fa-lg" aria-hidden="true"></i></div>
+              <div id="meal-option-2-info" class="hh-assumptions-info col-xs-2 radio info"><i class="fa fa-question-circle fa-lg" aria-hidden="true"></i></div>
             </div>
           </form>
         </div>
+        <div class="col-sm-4 col-sm-pull-8">
+          <label for="meal" class="control-label">Choose on of these options to determine the cost of the meals</label>
+        </div>
       </div>
-
     </div>
 
-    <div id="hh-assumptions-extra-info" class="extra-info">
-      <div id="meal-option-1-info" class="info panel">
+    <div id="hh-assumptions-info">
+      <div id="meal-option-1-info" class="extra-info panel">
         <p>The StatsSA food basket ensures that individuals have enough carbohydrates (energy) and does not look to protein, micronutrients content etc.</p>
         <p>This amount was <b>R&nbsp;498</b> per person per month, as of April 2016.</p>
       </div>
-      <div id="meal-option-2-info" class="info panel">
+      <div id="meal-option-2-info" class="extra-info panel">
         <p>In early 2014 PACSA, in consultation with a Registered Dietician, formulated a Minimum Nutritional Food Basket. This basket provides data on which one can start talking realistically about adequacies in wages and ensures that current food expenditure patterns are not conflated with the food expenditure required to secure a nutritional basket of food.</p>
         <p>To obtain a diet complete in minimum nutrition (assuming a 10 500 kJ (2509 kCal) daily intake) would cost <b>R&nbsp;635.97</b> per person per month, as of June 2017.</p>
       </div>
     </div>
 
-    <div id="plates"></div>
-
     <div id="summary" class="panel">
+      <div class="head">
+        <h2>Verdict</h2>
+        <p class="lead">Your household can / can't buy <br> enough food on that wage.</p>
+      </div>
+
+      <div id="plates"></div>
+
       <div class="row">
         <div class="col-sm-6">
-          <div id="cover-meals">
+          <div id="cover-meals" class="result">
             <div class="row">
               <div class="col-xs-3">
                 <div class="icon">
-                  <i class="fa fa-check fa-3x safe" aria-hidden="true"></i>
-                  <i class="fa fa-exclamation fa-3x warning" aria-hidden="true"></i>
+                  <i class="fa fa-check-circle fa-4x safe" aria-hidden="true"></i>
+                  <i class="fa fa-times-circle fa-4x warning" aria-hidden="true"></i>
                 </div>
               </div>
               <div class="col-xs-9">
+                <h5>Meals</h5>
                 <div class="description"></div>
               </div>
             </div>
@@ -107,59 +114,63 @@ extra_css:
 
       <div class="row">
         <div class="col-sm-6">
-          <div id="cover-expenses">
+          <div id="cover-expenses" class="result">
             <div class="row">
               <div class="col-xs-3">
                 <div class="icon">
-                  <i class="fa fa-check fa-3x safe" aria-hidden="true"></i>
-                  <i class="fa fa-exclamation fa-3x warning" aria-hidden="true"></i>
+                  <i class="fa fa-check-circle fa-4x safe" aria-hidden="true"></i>
+                  <i class="fa fa-times-circle fa-4x warning" aria-hidden="true"></i>
                 </div>
               </div>
               <div class="col-xs-9">
+                <h5>Other household expenses</h5>
                 <div class="description"></div>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-sm-6">
-          <div id="residual-income">
-            <div class="row">
-              <div class="col-xs-3 col-sm-4 amount"></div>
-              <div class="col-xs-9 col-sm-8 context">Amount available for all other expenses</div>
-            </div>
-          </div>
-        </div>
-
       </div>
 
-      <div class="row">
-        <div class="col-sm-6">
-          <input id="hh-expenses" data-slider-id='hh-expenses-slider' type="number" data-slider-min="0" data-slider-step="1" data-slider-handle="square"/>
-        </div>
-        <div class="col-sm-6">
-          <div id="typical-expenditure">
-              <div class="row">
-                <div class="col-xs-3 col-sm-4 amount"></div>
-                <div class="col-xs-9 col-sm-8 context">Amount typically used for all other expenses</div>
-              </div>
+
+      <div class="row typical-expenditure">
+        <div class="col-xs-12">
+
+          <div class="row">
+            <div class="col-xs-10">
+              <h5>Money available for other expenses</h5>
+            </div>
+            <div class="col-xs-2 h5 info">
+              <i class="fa fa-question-circle fa-lg results-info" id="other-expenses-info" aria-hidden="true"></i>
+            </div>
           </div>
-        </div>
-        <div class="col-sm-6 col-sm-offset-6 summary-info">
-          <i class="fa fa-question-circle fa-lg results-extra-info" id="other-expenses-info" aria-hidden="true"></i>
+
+          <div class="row slider-row">
+            <div class="col-sm-6">
+              <input id="hh-expenses" data-slider-id='hh-expenses-slider' type="number" data-slider-min="0" data-slider-step="1"/>
+            </div>
+            <div class="col-sm-6">
+              <div id="typical-expenditure">
+                  <div class="row">
+                    <div class="col-xs-3 col-sm-4 amount"></div>
+                    <div class="col-xs-9 col-sm-8 context">Amount typically needed for all other expenses</div>
+                  </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
     </div>
 
-    <div id="results-extra-info" class="extra-info">
-      <div id="other-expenses-info" class="info panel">
+    <div id="results-info">
+      <div id="other-expenses-info" class="extra-info panel">
         <p>These are other basic necessarry expences like housing, electricity, transport, education etc.</p>
       </div>
     </div>
 
     <div id="footer" class="panel">
-      <div id="credits">Image by <a href="http://www.freepik.com" title="Freepik" target="_blank">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon" target="_blank">Flaticon</a><br>
-      Licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+      <div id="credits"></div>
     </div>
 
   </div>

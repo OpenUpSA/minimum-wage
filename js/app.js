@@ -35,20 +35,25 @@ $(window).on('load', function() {
 
 
     // Extra info boxes
-    $('.intro-extra-info').on('click', function(e) {
-      $('#intro').slideToggle();
+    $('.intro-info').on('click', function(e) {
+      $('#intro-info').slideToggle();
       pymChild.sendHeight();
     });
 
-    $('.hh-assumptions-extra-info').on('click', function(e) {
-      $('#hh-assumptions-extra-info').find('#' + e.currentTarget.id).slideToggle();
-      $('#hh-assumptions-extra-info').find('#' + e.currentTarget.id).siblings().slideUp();
+    $('.hh-meal-options').on('click', function(e) {
+      $('#hh-meal-options').slideToggle();
       pymChild.sendHeight();
     });
 
-    $('.results-extra-info').on('click', function(e) {
-      $('#results-extra-info').find('#' + e.currentTarget.id).slideToggle();
-      $('#results-extra-info').find('#' + e.currentTarget.id).siblings().slideUp();
+    $('.hh-assumptions-info').on('click', function(e) {
+      $('#hh-assumptions-info').find('#' + e.currentTarget.id).slideToggle();
+      $('#hh-assumptions-info').find('#' + e.currentTarget.id).siblings().slideUp();
+      pymChild.sendHeight();
+    });
+
+    $('.results-info').on('click', function(e) {
+      $('#results-info').find('#' + e.currentTarget.id).slideToggle();
+      $('#results-info').find('#' + e.currentTarget.id).siblings().slideUp();
       pymChild.sendHeight();
     });
 
@@ -201,13 +206,13 @@ $(window).on('load', function() {
       function drawSummary () {
 
         var mealsADayDesc = {
-          0: "People in the household are getting three meals a day",
-          1: "People in the household are not getting three meals a day"
+          0: "People in the household are receiving three meals a day",
+          1: "People in the household are not receiving three meals a day"
         };
 
         var coverExpensesDesc = {
-          0: "Household is covering other expenses",
-          1: "Household is not covering other expenses"
+          0: "Other household expenses are being covered",
+          1: "Other household expenses are not being covered"
         };
 
         $('#cover-meals').find('.description').text(self.foodCostCoverage === 1 ? mealsADayDesc[0] : mealsADayDesc[1]);
@@ -256,7 +261,7 @@ $(window).on('load', function() {
 
         // Use window location to build image src
         var src = (window.location.origin + window.location.pathname).replace("index.html", "");
-        var plateImage = src + "img/plate.svg";
+        var plateImage = src + "img/food-plate.png";
 
         var gridLength = mealsADayMeasure;
 

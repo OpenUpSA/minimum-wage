@@ -146,6 +146,7 @@ $bar-red: #D40000;
   .typical-expenditure {
     background-color: $panel-grey;
     margin-top: 20px;
+    padding: 10px 0;
 
     .label {
       color: $grey;
@@ -240,7 +241,7 @@ $bar-red: #D40000;
   position: absolute;
   height: 70px;
   width: 3px;
-  background-color: $bar-red;
+  background-color: $panel-grey;
   margin-top: -40px;
   left: 32%;
   margin-left: 4px;

@@ -67,8 +67,8 @@ $(window).on('load', function() {
          2. PACSA minimum nutritional basket (10 500 kJ a day - June 2017) */
 
       var foodCostPerPerson = {
-        '1': 508,
-        '2': 635};
+        '1': 531,
+        '2': 621.35};
 
       var incomeDecileRanges = [
         {'range': [0, 800], 'percFood': 0.4813},
@@ -176,13 +176,15 @@ $(window).on('load', function() {
       }
 
       function calcFoodCostCoverage() {
-        // Returns the ratio (0-1) to which income covers the cost of the food basket.
-        var coverage = self.income / self.foodCost;
+        // Returns the ratio (0-1) to which income typiclly spent on foor,
+        // covers the cost of the food basket.
+        var coverage = (self.income * self.percIncomeForFood) / self.foodCost;
         return (coverage > 1) ? 1 : coverage;
       }
 
       function calcOtherCostCoverage() {
-        // Returns the ratio (0-1) to which residual income covers other household costs.
+        // Returns the ratio (0-1) to which the typical income spent on other expenses
+        // covers other household costs.
         var coverage = self.residualIncome / self.typicalExpenditure;
         return (coverage > 1) ? 1 : coverage;
       }

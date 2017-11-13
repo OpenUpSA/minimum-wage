@@ -210,18 +210,18 @@ $(window).on('load', function() {
           1: "Your household can't buy enough food on that wage."
         };
 
-        var mealsADayDesc = {
+        var mealsADayTag = {
           0: "People in the household are receiving three meals a day",
           1: "People in the household are not receiving three meals a day"
         };
 
-        var coverExpensesDesc = {
+        var coverExpensesTag = {
           0: "Other household expenses are being covered",
           1: "Other household expenses are not being covered"
         };
 
-        $('#cover-meals').find('.description').text(self.foodCostCoverage === 1 ? mealsADayDesc[0] : mealsADayDesc[1]);
-        $('#cover-expenses').find('.description').text(self.otherCostCoverage === 1 ? coverExpensesDesc[0] : coverExpensesDesc[1]);
+        $('#cover-meals').find('.tag').text(self.foodCostCoverage === 1 ? mealsADayTag[0] : mealsADayTag[1]);
+        $('#cover-expenses').find('.tag').text(self.otherCostCoverage === 1 ? coverExpensesTag[0] : coverExpensesTag[1]);
 
         // Display correct verdict line
         $('#verdict').text(self.foodCostCoverage === 1 ? verdictTag[0] : verdictTag[1]);

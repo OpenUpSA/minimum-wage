@@ -41,23 +41,17 @@ $(window).on('load', function() {
       pymChild.sendHeight();
     });
 
-    $('.hh-meal-options').on('click', function(e) {
-      $('#hh-meal-options').slideToggle();
-      pymChild.sendHeight();
-    });
-
-    $('.hh-assumptions-info').on('click', function(e) {
-      $('#hh-assumptions-info').find('#' + e.currentTarget.id).slideToggle();
-      $('#hh-assumptions-info').find('#' + e.currentTarget.id).siblings().slideUp();
-      pymChild.sendHeight();
-    });
-
     $('.results-info').on('click', function(e) {
       $('#results-info').find('#' + e.currentTarget.id).slideToggle();
       $('#results-info').find('#' + e.currentTarget.id).siblings().slideUp();
       pymChild.sendHeight();
     });
 
+    $('.meal-options-info').on('click', function(e) {
+      $('#meal-options-info').find('#' + e.currentTarget.id).slideToggle();
+      $('#meal-options-info').find('#' + e.currentTarget.id).siblings().slideUp();
+      pymChild.sendHeight();
+    });
 
     function Household() {
       var self = this;
@@ -251,7 +245,7 @@ $(window).on('load', function() {
         $('#residual-income').find('.amount')
           .text("R " + round(self.residualIncome, 0));
 
-        $('.typical-expenditure').find('.end')
+        $('#other-expenses').find('.end')
           .text("R " + (self.typicalExpenditure > 0 ? round(self.typicalExpenditure, 0) : 0));
       }
 

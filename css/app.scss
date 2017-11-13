@@ -184,6 +184,10 @@ $bar-red: #D40000;
 
 .slider-row {
   padding-top: 40px;
+
+  &.other-expenses {
+    padding-bottom: 30px;
+  }
 }
 
 .label {
@@ -237,22 +241,49 @@ $bar-red: #D40000;
   padding: 3px 10px;
 }
 
-.min-wage-tick {
+
+.slider-stroke {
   position: absolute;
   height: 70px;
   width: 3px;
   background-color: $panel-grey;
   margin-top: -40px;
-  left: 32%;
-  margin-left: 4px;
+
+  &.min-wage {
+    left: 32%;
+    margin-left: 4px;
+  }
+
+  // &.other-expenses-available {
+  //   background-color: $grey;
+  //   margin-left: -1px;
+  //   margin-top: -5px;
+  //   height: 55px;
+  // }
 }
 
-.min-wage-label {
+.slider-stroke-label {
   position: absolute;
   margin-top: -58px;
-  left: 32%;
-  margin-left: -24px;
   font-size:9px;
+  text-align: center;
+
+  &.min-wage{
+    left: 32%;
+    margin-left: -24px;
+  }
+
+  // &.other-expenses-available {
+  //   margin-left: -40px;
+  //   margin-top: 55px;
+  // }
+
+  &.other-expenses-required {
+    right: 5%;
+    margin-top: 37px;
+    text-align: right;
+  }
+
 }
 
 .extra-info {

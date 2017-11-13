@@ -203,6 +203,12 @@ $(window).on('load', function() {
         self.otherCostCoverage = calcOtherCostCoverage();
       }
 
+      // var strokePos = $('#hh-expenses-slider').find('.min-slider-handle').css('left');
+      // $('#hh-expenses-slider').prepend($('.slider-stroke.other-expenses-available'));
+      // $('#hh-expenses-slider').prepend($('.slider-stroke-label.other-expenses-available'));
+      // $('.slider-stroke.other-expenses-available').css('left', strokePos);
+      // $('.slider-stroke-label.other-expenses-available').css('left', strokePos);
+
       function drawSummary () {
 
         var verdictTag = {

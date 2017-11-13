@@ -93,8 +93,8 @@ extra_css:
 
     <div id="summary" class="panel">
       <div class="head">
-        <h2>Verdict</h2>
-        <p class="lead">Your household can / can't buy <br> enough food on that wage.</p>
+
+      <p class="lead" id="verdict"></p>
       </div>
 
       <div id="plates"></div>
@@ -116,9 +116,6 @@ extra_css:
             </div>
           </div>
         </div>
-      </div>
-
-      <div class="row">
         <div class="col-sm-6">
           <div id="cover-expenses" class="result">
             <div class="row">
@@ -140,7 +137,6 @@ extra_css:
 
       <div class="row typical-expenditure">
         <div class="col-xs-12">
-
           <div class="row">
             <div class="col-xs-10">
               <h5>Money typically needed for all other expenses</h5>
@@ -149,18 +145,16 @@ extra_css:
               <i class="fa fa-question-circle fa-lg results-info" id="other-expenses-info" aria-hidden="true"></i>
             </div>
           </div>
-
           <div class="row slider-row">
-            <div class="col-sm-6">
+            <div class="col-xs-12">
               <input id="hh-expenses" data-slider-id='hh-expenses-slider' type="number" data-slider-min="0" data-slider-step="1"/>
               <span class="label start">0</span>
               <span class="label end amount"></span>
             </div>
-            <div class="col-sm-6">
+            <div class="col-xs-12">
                 <div class="context">Amount used for other expenses</div>
             </div>
           </div>
-
         </div>
       </div>
 
@@ -169,6 +163,7 @@ extra_css:
     <div id="results-info">
       <div id="other-expenses-info" class="extra-info panel">
         <p>These are other basic necessarry expences like housing, electricity, transport, education etc.</p>
+        <p>We used the Income and Expenditure survey to determine what a typical household spends their money on.</p>
       </div>
     </div>
 

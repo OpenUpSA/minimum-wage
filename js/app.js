@@ -120,10 +120,6 @@ $(window).on('load', function() {
         tooltip: 'always'
       });
 
-      // var tickPos = $('#hh-income-slider').find('.min-slider-handle').css('left');
-      // $('.min-wage-tick').css('left', tickPos);
-
-
       self.updateIncome = function(e) {
         self.income = e.value;
         self.percIncomeForFood = getPercIncomeForFood();
@@ -209,6 +205,11 @@ $(window).on('load', function() {
 
       function drawSummary () {
 
+        var verdictTag = {
+          0: "Your household can buy enough food on that wage.",
+          1: "Your household can't buy enough food on that wage."
+        };
+
         var mealsADayDesc = {
           0: "People in the household are receiving three meals a day",
           1: "People in the household are not receiving three meals a day"
@@ -221,6 +222,9 @@ $(window).on('load', function() {
 
         $('#cover-meals').find('.description').text(self.foodCostCoverage === 1 ? mealsADayDesc[0] : mealsADayDesc[1]);
         $('#cover-expenses').find('.description').text(self.otherCostCoverage === 1 ? coverExpensesDesc[0] : coverExpensesDesc[1]);
+
+        // Display correct verdict line
+        $('#verdict').text(self.foodCostCoverage === 1 ? verdictTag[0] : verdictTag[1]);
 
         // Show the correct icon
         $('#cover-meals').find(self.foodCostCoverage === 1 ? '.safe' : '.warning').css('display', 'block');

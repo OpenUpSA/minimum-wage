@@ -9,36 +9,54 @@ $green: #B4F388;
 $magenta: #F589A6;
 $light-grey: #f1f1f1;
 
+$grey: #7F7F7F;
+$blue: #0092FF;
+$light-blue: #EFF9FF;
+$dark-blue: #0060B4;
+$green: #00CC31;
+$red: #D31023;
+
+$bg-grey: #F1F1F1;
+$panel-grey: #DEDCDC;
+$bar-green: #00A750;
+$bar-red: #D40000;
+
+
 // The embed will be max 700px wide
 .container {
     max-width: 700px;
 }
 
 .container {
+  color: $grey;
 
   .jumbotron {
+    background-color: #fff;
     margin-top: 15px;
-    background-color: $teal;
-    padding-bottom: 20px;
+    margin-bottom: 0px;
     padding-top: 10px;
+    padding-bottom: 10px;
     border-radius: 4px;
     text-align: center;
-    color: #fff;
 
     h1 {
-      font-size: 3.5em;
+      font-size: 3em;
     }
 
-    a {
-      color: $teal;
+    p {
+      font-size: 18px;
+    }
+
+    .intro-info {
+      color: #fff;
+      background-color: $blue;
       font-weight: 500;
       font-size: 0.7em;
-      background: #fff;
-      border-radius: 15px;
-      padding: 8px 10px;
+      border-radius: 5px;
+      padding: 8px 25px;
       border: none;
-
     }
+
   }
 
   .panel {
@@ -46,59 +64,70 @@ $light-grey: #f1f1f1;
   }
 }
 
-
-#intro {
-  display: none;
-}
-
-
 #household {
-  background-color: $light-grey;
   padding: 30px 20px;
 
   .hh-input {
     padding: 12px 0;
   }
 
+  #hh-meal-options {
+    display: none;
+  }
+
+  #meal-options {
+
+    label {
+      color: $blue;
+    }
+
+  }
+
   .slider.slider-horizontal {
     width: 100%;
   }
 
-  #meal-options {
-    .hh-assumptions-extra-info {
-      margin: 10px 0;
-      cursor: pointer;
-      color: #fff;
-    }
-  }
 }
 
+.info {
+  cursor: pointer;
+  color: $blue;
+  text-align: right;
+}
 
 #summary {
   padding: 10px 20px;
-  background-color: $green;
-  color: #fff;
+  background-color: $bg-grey;
 
-  &.warning {
-    background-color: $orange;
+  .head {
+    text-align: center;
   }
 
-  .row {
-    padding: 12px 0;
+  .icon {
+    .safe {
+      color: $green;
+    }
+    .warning {
+      color: $red;
+    }
   }
 
   #cover-meals, #cover-expenses {
-    padding: 0 10px;
+    margin: 10px 0;
 
     .icon {
       float: left;
+      padding-top: 15px;
+
+      .safe {
+        color: $green;
+      }
 
       .warning {
+        color: $red;
         display: none;
       }
-    }
-    &.warning {
-      background-color: $orange;
+
     }
   }
 
@@ -114,9 +143,17 @@ $light-grey: #f1f1f1;
     }
   }
 
-  #typical-expenditure {
-    .amount {
-      font-size: 1.4em;
+  .typical-expenditure {
+    background-color: $panel-grey;
+    margin-top: 20px;
+    padding: 10px 0;
+
+    .label {
+      color: $grey;
+    }
+
+    .context {
+      text-align: center;
     }
   }
 
@@ -130,39 +167,128 @@ $light-grey: #f1f1f1;
   }
 
   #hh-expenses-slider {
-    margin-top: 1em;
 
     .slider-selection {
-      background: $teal;
-      border-radius: 0;
+      background: $bar-green;
     }
 
     .slider-track-high {
-      background: #FF8282;
-      border-radius: 0;
+      background: $bar-red;
     }
 
-    .slider-track {
-      height: 30px;
-      margin-top: 0;
-      top: 0;
-    }
+  }
 
-    .slider-handle {
-      width: 5px;
-      height: 40px;
-      margin-left: -2px;
-      margin-top: -4px;
-    }
+}
+
+// Slider
+
+.slider-row {
+  padding-top: 40px;
+
+  &.other-expenses {
+    padding-bottom: 30px;
+  }
+}
+
+.label {
+  color: $blue;
+  padding: 0;
+  font-weight: normal;
+  font-size: 100%;
+
+  &.start {
+
+  }
+
+  &.end {
+    float: right;
+  }
+}
+
+
+.slider-selection {
+  background-image: none;
+  background-color: $blue;
+  box-shadow: none;
+}
+
+.slider-track-high {
+  background-image: none;
+  background-color: $light-blue;
+}
+
+.slider.slider-horizontal .slider-handle {
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  top: 3px;
+  background-color: $blue;
+  background-image: none;
+  border: 2px solid #fff;
+}
+
+.tooltip.top {
+  .tooltip-arrow {
+    border-top-color: $blue;
+    margin-left: -7px;
+    border-width: 7px 7px 0;
+  }
+}
+
+.tooltip-inner {
+  background-color: $blue;
+  border-radius: 0;
+  padding: 3px 10px;
+}
+
+
+.slider-stroke {
+  position: absolute;
+  height: 70px;
+  width: 3px;
+  background-color: $panel-grey;
+  margin-top: -40px;
+
+  &.min-wage {
+    left: 32%;
+    margin-left: 4px;
+  }
+
+  // &.other-expenses-available {
+  //   background-color: $grey;
+  //   margin-left: -1px;
+  //   margin-top: -5px;
+  //   height: 55px;
+  // }
+}
+
+.slider-stroke-label {
+  position: absolute;
+  margin-top: -58px;
+  font-size:9px;
+  text-align: center;
+
+  &.min-wage{
+    left: 32%;
+    margin-left: -24px;
+  }
+
+  // &.other-expenses-available {
+  //   margin-left: -40px;
+  //   margin-top: 55px;
+  // }
+
+  &.other-expenses-required {
+    right: 5%;
+    margin-top: 37px;
+    text-align: right;
   }
 
 }
 
 .extra-info {
   font-size: 0.9em;
-  .info {
-    display: none;
-  }
+  display: none;
 }
 
 .pie-segment {

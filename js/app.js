@@ -31,24 +31,30 @@ $(window).on('load', function() {
     household.memberSlider.on('slideStop', household.updateMembers);
     household.expenseSlider.on('slideStop', household.updateExpensePortion);
 
+
     $('#meal-options').on('change', household.updateMealOption);
 
 
     // Extra info boxes
-    $('.intro-extra-info').on('click', function(e) {
-      $('#intro').slideToggle();
+    $('.intro-info').on('click', function(e) {
+      $('#intro-info').slideToggle();
       pymChild.sendHeight();
     });
 
-    $('.hh-assumptions-extra-info').on('click', function(e) {
-      $('#hh-assumptions-extra-info').find('#' + e.currentTarget.id).slideToggle();
-      $('#hh-assumptions-extra-info').find('#' + e.currentTarget.id).siblings().slideUp();
+    $('.hh-meal-options').on('click', function(e) {
+      $('#hh-meal-options').slideToggle();
       pymChild.sendHeight();
     });
 
-    $('.results-extra-info').on('click', function(e) {
-      $('#results-extra-info').find('#' + e.currentTarget.id).slideToggle();
-      $('#results-extra-info').find('#' + e.currentTarget.id).siblings().slideUp();
+    $('.hh-assumptions-info').on('click', function(e) {
+      $('#hh-assumptions-info').find('#' + e.currentTarget.id).slideToggle();
+      $('#hh-assumptions-info').find('#' + e.currentTarget.id).siblings().slideUp();
+      pymChild.sendHeight();
+    });
+
+    $('.results-info').on('click', function(e) {
+      $('#results-info').find('#' + e.currentTarget.id).slideToggle();
+      $('#results-info').find('#' + e.currentTarget.id).siblings().slideUp();
       pymChild.sendHeight();
     });
 
@@ -113,7 +119,6 @@ $(window).on('load', function() {
         max: round(self.typicalExpenditure, 0),
         tooltip: 'always'
       });
-
 
       self.updateIncome = function(e) {
         self.income = e.value;
@@ -198,20 +203,34 @@ $(window).on('load', function() {
         self.otherCostCoverage = calcOtherCostCoverage();
       }
 
+      // var strokePos = $('#hh-expenses-slider').find('.min-slider-handle').css('left');
+      // $('#hh-expenses-slider').prepend($('.slider-stroke.other-expenses-available'));
+      // $('#hh-expenses-slider').prepend($('.slider-stroke-label.other-expenses-available'));
+      // $('.slider-stroke.other-expenses-available').css('left', strokePos);
+      // $('.slider-stroke-label.other-expenses-available').css('left', strokePos);
+
       function drawSummary () {
 
-        var mealsADayDesc = {
-          0: "People in the household are getting three meals a day",
-          1: "People in the household are not getting three meals a day"
+        var verdictTag = {
+          0: "Your household can buy enough food on that wage.",
+          1: "Your household can't buy enough food on that wage."
         };
 
-        var coverExpensesDesc = {
-          0: "Household is covering other expenses",
-          1: "Household is not covering other expenses"
+        var mealsADayTag = {
+          0: "People in the household are receiving three meals a day",
+          1: "People in the household are not receiving three meals a day"
         };
 
-        $('#cover-meals').find('.description').text(self.foodCostCoverage === 1 ? mealsADayDesc[0] : mealsADayDesc[1]);
-        $('#cover-expenses').find('.description').text(self.otherCostCoverage === 1 ? coverExpensesDesc[0] : coverExpensesDesc[1]);
+        var coverExpensesTag = {
+          0: "Other household expenses are being covered",
+          1: "Other household expenses are not being covered"
+        };
+
+        $('#cover-meals').find('.tag').text(self.foodCostCoverage === 1 ? mealsADayTag[0] : mealsADayTag[1]);
+        $('#cover-expenses').find('.tag').text(self.otherCostCoverage === 1 ? coverExpensesTag[0] : coverExpensesTag[1]);
+
+        // Display correct verdict line
+        $('#verdict').text(self.foodCostCoverage === 1 ? verdictTag[0] : verdictTag[1]);
 
         // Show the correct icon
         $('#cover-meals').find(self.foodCostCoverage === 1 ? '.safe' : '.warning').css('display', 'block');
@@ -230,7 +249,7 @@ $(window).on('load', function() {
         $('#residual-income').find('.amount')
           .text("R " + round(self.residualIncome, 0));
 
-        $('#typical-expenditure').find('.amount')
+        $('.typical-expenditure').find('.end')
           .text("R " + (self.typicalExpenditure > 0 ? round(self.typicalExpenditure, 0) : 0));
       }
 
@@ -256,7 +275,7 @@ $(window).on('load', function() {
 
         // Use window location to build image src
         var src = (window.location.origin + window.location.pathname).replace("index.html", "");
-        var plateImage = src + "img/plate.svg";
+        var plateImage = src + "img/food-plate.png";
 
         var gridLength = mealsADayMeasure;
 

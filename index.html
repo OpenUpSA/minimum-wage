@@ -50,45 +50,10 @@ extra_css:
           <label for="hh-members" class="control-label">How many people live in your household?</label>
         </div>
       </div>
-
-
-      <div class="hh-meal-options">Change type of meal</div>
-      <div class="row hh-input extra-info" id="hh-meal-options">
-        <div class="col-sm-8 col-sm-push-4">
-          <form id="meal-options" class="form-horizontal">
-            <div class="form-group">
-              <div class="radio col-xs-10">
-                <label>
-                  <input type="radio" name="meal-option" id="meal-option-1" value="1" checked>Stats SA food poverty line
-                </label>
-              </div>
-              <div id="meal-option-1-info" class="hh-assumptions-info col-xs-2 radio info"><i class="fa fa-question-circle fa-lg" aria-hidden="true"></i></div>
-            </div>
-            <div class="form-group">
-              <div class="radio col-xs-10">
-                <label>
-                  <input type="radio" name="meal-option" id="meal-option-2" value="2">PACSA minimum nutritional food basket
-                </label>
-              </div>
-              <div id="meal-option-2-info" class="hh-assumptions-info col-xs-2 radio info"><i class="fa fa-question-circle fa-lg" aria-hidden="true"></i></div>
-            </div>
-          </form>
-        </div>
-        <div class="col-sm-4 col-sm-pull-8">
-          <label for="meal" class="control-label">Choose on of these options to determine the cost of the meals</label>
-        </div>
-      </div>
     </div>
 
     <div id="hh-assumptions-info">
-      <div id="meal-option-1-info" class="extra-info panel">
-        <p>The StatsSA food basket ensures that individuals have enough carbohydrates (energy) and does not look to protein, micronutrients content etc.</p>
-        <p>This amount was <b>R&nbsp;498</b> per person per month, as of April 2016.</p>
-      </div>
-      <div id="meal-option-2-info" class="extra-info panel">
-        <p>In early 2014 PACSA, in consultation with a Registered Dietician, formulated a Minimum Nutritional Food Basket. This basket provides data on which one can start talking realistically about adequacies in wages and ensures that current food expenditure patterns are not conflated with the food expenditure required to secure a nutritional basket of food.</p>
-        <p>To obtain a diet complete in minimum nutrition (assuming a 10 500 kJ (2509 kCal) daily intake) would cost <b>R&nbsp;635.97</b> per person per month, as of June 2017.</p>
-      </div>
+
     </div>
 
     <div id="summary" class="panel">
@@ -110,7 +75,12 @@ extra_css:
                 </div>
               </div>
               <div class="col-xs-9">
-                <h5>Meals</h5>
+                <div class="row">
+                  <div class="col-xs-10"><h5>Meals</h5></div>
+                  <div class="col-xs-2 h5 info">
+                    <i class="fa fa-question-circle fa-lg results-info" id="meals-info" aria-hidden="true"></i>
+                  </div>
+                </div>
                 <div class="tag"></div>
               </div>
             </div>
@@ -126,7 +96,12 @@ extra_css:
                 </div>
               </div>
               <div class="col-xs-9">
-                <h5>Other household expenses</h5>
+                <div class="row">
+                  <div class="col-xs-10"><h5>Other household expenses</h5></div>
+                  <div class="col-xs-2 h5 info">
+                    <i class="fa fa-question-circle fa-lg results-info" id="other-expenses-info" aria-hidden="true"></i>
+                  </div>
+                </div>
                 <div class="tag"></div>
               </div>
             </div>
@@ -134,37 +109,77 @@ extra_css:
         </div>
       </div>
 
+      <div id="results-info">
+        <div id="other-expenses-info" class="extra-info panel">
+          <p>These are other basic necessarry expences like housing, electricity, transport, education etc.</p>
+          <p>We used the Income and Expenditure survey to determine what a typical household spends their money on.</p>
+        </div>
 
-      <div class="row typical-expenditure">
-        <div class="col-xs-12">
-          <div class="row">
-            <div class="col-xs-10">
-              <h5>Money spent on other household expenses</h5>
+        <div id="meals-info" class="extra-info panel">
+          <div class="row hh-input">
+            <div class="col-sm-4 col-sm-pull-8">
+              <label for="meal" class="control-label">Choose on of these options to determine the cost of the meals</label>
             </div>
-            <div class="col-xs-2 h5 info">
-              <i class="fa fa-question-circle fa-lg results-info" id="other-expenses-info" aria-hidden="true"></i>
+            <div class="col-sm-8 col-sm-push-4">
+              <form id="meal-options" class="form-horizontal">
+                <div class="form-group">
+                  <div class="radio col-xs-10">
+                    <label>
+                      <input type="radio" name="meal-option" id="meal-option-1" value="1" checked>Stats SA food poverty line
+                    </label>
+                  </div>
+                  <div id="meal-option-1-info" class="meal-options-info col-xs-2 radio info">
+                    <i class="fa fa-question-circle fa-lg" aria-hidden="true"></i>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="radio col-xs-10">
+                    <label>
+                      <input type="radio" name="meal-option" id="meal-option-2" value="2">PACSA minimum nutritional food basket
+                    </label>
+                  </div>
+                  <div id="meal-option-2-info" class="meal-options-info col-xs-2 radio info">
+                    <i class="fa fa-question-circle fa-lg" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
+
+          <div id="meal-options-info">
+            <div id="meal-option-1-info" class="extra-info panel">
+              <p>The StatsSA food basket ensures that individuals have enough carbohydrates (energy) and does not look to protein, micronutrients content etc.</p>
+              <p>This amount was <b>R&nbsp;531</b> per person per month, as of April 2017.</p>
+            </div>
+            <div id="meal-option-2-info" class="extra-info panel">
+              <p>In early 2014 PACSA, in consultation with a Registered Dietician, formulated a Minimum Nutritional Food Basket. This basket provides data on which one can start talking realistically about adequacies in wages and ensures that current food expenditure patterns are not conflated with the food expenditure required to secure a nutritional basket of food.</p>
+              <p>To obtain a diet complete in minimum nutrition (assuming a 10 500 kJ (2509 kCal) daily intake) would cost <b>R&nbsp;621.35</b> per person per month, as of <a href="http://pacsa.org.za/images/food_barometer/2017/August_2017_PACSA_monthly_food_price_barometer.pdf">August 2017</a>.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div id="other-expenses" class="row">
+        <div class="col-xs-12">
+          <h5 class="text-center">Money spent on other household expenses</h5>
           <div class="row slider-row other-expenses">
             <div class="col-xs-12 col-sm-10 col-sm-offset-1">
-              <div class="slider-stroke-label other-expenses-required">Typicall amount used for <br> other household expenses</div>
+              <div class="slider-stroke-label other-expenses-required">Typical amount used for <br> other household expenses</div>
 
               <input id="hh-expenses" data-slider-id='hh-expenses-slider' type="number" data-slider-min="0" data-slider-step="1"/>
               <span class="label start">0</span>
               <span class="label end amount"></span>
             </div>
           </div>
+          <p class="text-center">The more you spend on other expenses, the less you have available for food. Adjust the amount above to see the effect.</p>
         </div>
       </div>
 
     </div>
 
-    <div id="results-info">
-      <div id="other-expenses-info" class="extra-info panel">
-        <p>These are other basic necessarry expences like housing, electricity, transport, education etc.</p>
-        <p>We used the Income and Expenditure survey to determine what a typical household spends their money on.</p>
-      </div>
-    </div>
+
 
     <div id="footer" class="panel">
       <div id="credits"></div>

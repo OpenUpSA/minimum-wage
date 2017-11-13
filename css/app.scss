@@ -71,10 +71,6 @@ $bar-red: #D40000;
     padding: 12px 0;
   }
 
-  #hh-meal-options {
-    display: none;
-  }
-
   #meal-options {
 
     label {
@@ -143,13 +139,14 @@ $bar-red: #D40000;
     }
   }
 
-  .typical-expenditure {
+  #other-expenses {
     background-color: $panel-grey;
     margin-top: 20px;
     padding: 10px 0;
 
     .label {
       color: $grey;
+      text-align: left;
     }
 
     .context {

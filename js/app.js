@@ -53,6 +53,10 @@ $(window).on('load', function() {
       pymChild.sendHeight();
     });
 
+    $('#reset').on('click', function(e) {
+      household.reset();
+    });
+
     function Household() {
       var self = this;
 
@@ -111,7 +115,8 @@ $(window).on('load', function() {
         },
         value: self.residualIncome,
         max: round(self.typicalExpenditure, 0),
-        tooltip: 'always'
+        tooltip: 'always',
+        precision: 0
       });
 
       self.updateIncome = function(e) {
@@ -154,6 +159,25 @@ $(window).on('load', function() {
         drawSummary();
       };
 
+      self.reset = function() {
+        self.income = 3200;
+        self.members = 4;
+        self.mealOption = 1;
+
+        self.percIncomeForFood = getPercIncomeForFood();
+        self.typicalExpenditure = calcTypicalExpenditure();
+        updateCosts();
+
+        resetIncomeSlider();
+        resetMemberSlider();
+        resetMealOptions();
+
+        drawSummary();
+        drawExpenseSlider();
+
+        meals.updateMealsADay();
+      };
+
       function numberInRange(num, min, max) {
         return num >= min && num <= max;
       }
@@ -189,7 +213,7 @@ $(window).on('load', function() {
       }
 
       function calcTypicalExpenditure() {
-        return self.income * (1 - self.percIncomeForFood);
+        return round(self.income * (1 - self.percIncomeForFood), 0);
       }
 
       function updateCosts () {
@@ -198,12 +222,6 @@ $(window).on('load', function() {
         self.foodCostCoverage = calcFoodCostCoverage();
         self.otherCostCoverage = calcOtherCostCoverage();
       }
-
-      // var strokePos = $('#hh-expenses-slider').find('.min-slider-handle').css('left');
-      // $('#hh-expenses-slider').prepend($('.slider-stroke.other-expenses-available'));
-      // $('#hh-expenses-slider').prepend($('.slider-stroke-label.other-expenses-available'));
-      // $('.slider-stroke.other-expenses-available').css('left', strokePos);
-      // $('.slider-stroke-label.other-expenses-available').css('left', strokePos);
 
       function drawSummary () {
 
@@ -255,6 +273,24 @@ $(window).on('load', function() {
           .slider('setAttribute', 'max', self.typicalExpenditure)
           .slider('refresh')
           .slider('relayout');
+      }
+
+      function resetIncomeSlider () {
+        self.incomeSlider
+          .slider('setAttribute', 'value', self.income)
+          .slider('refresh')
+          .slider('relayout');
+      }
+
+      function resetMemberSlider () {
+        self.memberSlider
+          .slider('setAttribute', 'value', self.members)
+          .slider('refresh')
+          .slider('relayout');
+      }
+
+      function resetMealOptions() {
+        $('input[name="meal-option"]').filter('[value="1"]').click();
       }
 
     }

@@ -32,7 +32,7 @@ $bar-red: #D40000;
 
   .jumbotron {
     background-color: #fff;
-    margin-top: 15px;
+    margin-top: 0;
     margin-bottom: 0px;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -177,6 +177,15 @@ $bar-red: #D40000;
 
 }
 
+#reset {
+  color: #fff;
+  background-color: $dark-blue;
+  border-radius: 2px;
+  padding: 8px 35px;
+  border: none;
+  text-transform : uppercase;
+}
+
 // Slider
 
 .slider-row {
@@ -251,12 +260,6 @@ $bar-red: #D40000;
     margin-left: 4px;
   }
 
-  // &.other-expenses-available {
-  //   background-color: $grey;
-  //   margin-left: -1px;
-  //   margin-top: -5px;
-  //   height: 55px;
-  // }
 }
 
 .slider-stroke-label {
@@ -269,11 +272,6 @@ $bar-red: #D40000;
     left: 32%;
     margin-left: -24px;
   }
-
-  // &.other-expenses-available {
-  //   margin-left: -40px;
-  //   margin-top: 55px;
-  // }
 
   &.other-expenses-required {
     right: 5%;

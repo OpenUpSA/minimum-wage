@@ -53,6 +53,10 @@ $(window).on('load', function() {
       pymChild.sendHeight();
     });
 
+    $('#reset').on('click', function(e) {
+      household.reset();
+    });
+
     function Household() {
       var self = this;
 
@@ -155,6 +159,25 @@ $(window).on('load', function() {
         drawSummary();
       };
 
+      self.reset = function() {
+        self.income = 3200;
+        self.members = 4;
+        self.mealOption = 1;
+
+        self.percIncomeForFood = getPercIncomeForFood();
+        self.typicalExpenditure = calcTypicalExpenditure();
+        updateCosts();
+
+        resetIncomeSlider();
+        resetMemberSlider();
+        resetMealOptions();
+
+        drawSummary();
+        drawExpenseSlider();
+
+        meals.updateMealsADay();
+      };
+
       function numberInRange(num, min, max) {
         return num >= min && num <= max;
       }
@@ -250,6 +273,24 @@ $(window).on('load', function() {
           .slider('setAttribute', 'max', self.typicalExpenditure)
           .slider('refresh')
           .slider('relayout');
+      }
+
+      function resetIncomeSlider () {
+        self.incomeSlider
+          .slider('setAttribute', 'value', self.income)
+          .slider('refresh')
+          .slider('relayout');
+      }
+
+      function resetMemberSlider () {
+        self.memberSlider
+          .slider('setAttribute', 'value', self.members)
+          .slider('refresh')
+          .slider('relayout');
+      }
+
+      function resetMealOptions() {
+        $('input[name="meal-option"]').filter('[value="1"]').click();
       }
 
     }

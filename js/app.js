@@ -12,17 +12,17 @@ $(window).on('load', function() {
 
   $(document).ready(function () {
 
-    // Redraw plates on resize
     $(window).on('resize', function() {
+      // Redraw plates on resize
       meals.drawPlates();
       pymChild.sendHeight();
     });
 
-    var round = function(value, decimals) {
+    function round(value, decimals) {
       // decimals = 0 if not passed
       decimals = typeof decimals !== 'undefined' ? decimals : 0;
       return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
-    };
+    }
 
     var household = new Household();
     var meals = new Meals();
@@ -31,9 +31,7 @@ $(window).on('load', function() {
     household.memberSlider.on('slideStop', household.updateMembers);
     household.expenseSlider.on('slideStop', household.updateExpensePortion);
 
-
     $('#meal-options').on('change', household.updateMealOption);
-
 
     // Extra info boxes
     $('.intro-info').on('click', function(e) {
@@ -53,14 +51,15 @@ $(window).on('load', function() {
       pymChild.sendHeight();
     });
 
+    // Reset to defaults
     $('#reset').on('click', function(e) {
-      household.reset();
+      household.resetValues();
     });
 
     function Household() {
       var self = this;
 
-      /* Cost of basic food per person per month:
+      /* Cost of food per person per month:
          1: Stats SA Food poverty line
          2. PACSA minimum nutritional basket (10 500 kJ a day - June 2017) */
 
@@ -80,103 +79,94 @@ $(window).on('load', function() {
         {'range': [10001, 20100], 'percFood': 0.1692},
         {'range': [20101, 100000], 'percFood': 0.1074}];
 
-      self.income = parseInt($('#hh-income').data('slider-value'));
-      self.members = parseInt($('#hh-members').data('slider-value'));
-      self.mealOption = parseInt($("input[name='meal-option']:checked").val());
+      init();
 
-      self.percIncomeForFood = getPercIncomeForFood();
-
-      self.foodCost = calcFoodCost();
-      self.residualIncome = calcResidualIncome();
-      self.typicalExpenditure = calcTypicalExpenditure();
-
-      self.foodCostCoverage = calcFoodCostCoverage();
-      self.otherCostCoverage = calcOtherCostCoverage();
-
-      drawSummary();
-
-      self.incomeSlider = $('#hh-income').slider({
-        formatter: function(value) {
-          return 'R' + value;
-        },
-        tooltip: 'always'
-      });
-
-      self.memberSlider = $('#hh-members').slider({
-        formatter: function(value) {
-          return value;
-        },
-        tooltip: 'always'
-      });
-
-      self.expenseSlider = $('#hh-expenses').slider({
-        formatter: function(value) {
-          return 'R ' + value;
-        },
-        value: self.residualIncome,
-        max: round(self.typicalExpenditure, 0),
-        tooltip: 'always',
-        precision: 0
-      });
 
       self.updateIncome = function(e) {
         self.income = e.value;
         self.percIncomeForFood = getPercIncomeForFood();
         self.typicalExpenditure = calcTypicalExpenditure();
-        updateCosts();
-
-        drawSummary();
-        drawExpenseSlider();
+        calcCosts();
+        drawResults();
         meals.updateMealsADay();
       };
 
       self.updateMembers = function(e) {
         self.members = e.value;
-        updateCosts();
-
-        drawSummary();
-        drawExpenseSlider();
+        calcCosts();
+        drawResults();
         meals.updateMealsADay();
       };
 
       self.updateMealOption = function () {
         self.mealOption = parseInt($("input[name='meal-option']:checked").val());
-        updateCosts();
+        calcCosts();
 
-        drawSummary();
-        drawExpenseSlider();
+        drawResults();
         meals.updateMealsADay();
       };
 
       self.updateExpensePortion = function(e) {
-        var adjustedFoodCostCoverage = (self.income - e.value) / self.foodCost;
-        var adjustedOtherCostCoverage = e.value / self.typicalExpenditure;
+        self.residualIncome = e.value;
+        var adjustedFoodCostCoverage = (self.income - self.residualIncome) / self.foodCost;
+        var adjustedOtherCostCoverage = self.residualIncome / self.typicalExpenditure;
 
         self.foodCostCoverage = (adjustedFoodCostCoverage > 1) ? 1 : adjustedFoodCostCoverage;
         self.otherCostCoverage = (adjustedOtherCostCoverage > 1) ? 1 : adjustedOtherCostCoverage;
 
         meals.updateMealsADay();
-        drawSummary();
+        drawResults();
       };
 
-      self.reset = function() {
+      self.resetValues = function() {
+        setDefaultValues();
+        resetInputControls();
+        drawResults();
+        meals.updateMealsADay();
+      };
+
+      function init() {
+        setDefaultValues();
+        initSliders();
+        drawResults();
+      };
+
+      function setDefaultValues() {
         self.income = 3200;
         self.members = 4;
         self.mealOption = 1;
-
         self.percIncomeForFood = getPercIncomeForFood();
-        self.typicalExpenditure = calcTypicalExpenditure();
-        updateCosts();
+        calcCosts();
+      }
 
-        resetIncomeSlider();
-        resetMemberSlider();
-        resetMealOptions();
+      function initSliders() {
+        self.incomeSlider = $('#hh-income').slider({
+          value: self.income,
+          formatter: function(value) {
+            return 'R' + value;
+          },
+          tooltip: 'always'
+        });
 
-        drawSummary();
-        drawExpenseSlider();
+        self.memberSlider = $('#hh-members').slider({
+          value: self.members,
+          formatter: function(value) {
+            return value;
+          },
+          tooltip: 'always'
+        });
 
-        meals.updateMealsADay();
-      };
+        self.expenseSlider = $('#hh-expenses').slider({
+          value: self.residualIncome,
+          formatter: function(value) {
+            return 'R ' + value;
+          },
+          max: round(self.typicalExpenditure, 0),
+          tooltip: 'always',
+          precision: 0
+        });
+
+      }
 
       function numberInRange(num, min, max) {
         return num >= min && num <= max;
@@ -216,15 +206,15 @@ $(window).on('load', function() {
         return round(self.income * (1 - self.percIncomeForFood), 0);
       }
 
-      function updateCosts () {
+      function calcCosts() {
         self.foodCost = calcFoodCost();
         self.residualIncome = calcResidualIncome();
+        self.typicalExpenditure = calcTypicalExpenditure();
         self.foodCostCoverage = calcFoodCostCoverage();
         self.otherCostCoverage = calcOtherCostCoverage();
       }
 
-      function drawSummary () {
-
+      function drawResults() {
         var verdictTag = {
           0: "Your household can buy enough food on that wage.",
           1: "Your household can't buy enough food on that wage."
@@ -265,9 +255,7 @@ $(window).on('load', function() {
 
         $('#other-expenses').find('.end')
           .text("R " + (self.typicalExpenditure > 0 ? round(self.typicalExpenditure, 0) : 0));
-      }
 
-      function drawExpenseSlider () {
         self.expenseSlider
           .slider('setAttribute', 'value', self.residualIncome)
           .slider('setAttribute', 'max', self.typicalExpenditure)
@@ -275,21 +263,17 @@ $(window).on('load', function() {
           .slider('relayout');
       }
 
-      function resetIncomeSlider () {
+      function resetInputControls() {
         self.incomeSlider
           .slider('setAttribute', 'value', self.income)
           .slider('refresh')
           .slider('relayout');
-      }
 
-      function resetMemberSlider () {
         self.memberSlider
           .slider('setAttribute', 'value', self.members)
           .slider('refresh')
           .slider('relayout');
-      }
 
-      function resetMealOptions() {
         $('input[name="meal-option"]').filter('[value="1"]').click();
       }
 
@@ -316,8 +300,8 @@ $(window).on('load', function() {
 
         var defs = svg.append("defs");
 
-        //get dimensions based on width of container element
         function updateDimensions(containerWidth) {
+          //get dimensions based on width of container element
           width = containerWidth;
           height = containerWidth < 300 ? 100 : (containerWidth / 3);
         }
@@ -410,7 +394,6 @@ $(window).on('load', function() {
           };
           plateGrid.push(plateObj);
         }
-
         return plateGrid;
       }
 

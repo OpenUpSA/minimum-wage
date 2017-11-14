@@ -91,7 +91,7 @@ $bar-red: #D40000;
   text-align: right;
 }
 
-#summary {
+#results {
   padding: 10px 20px;
   background-color: $bg-grey;
 
@@ -156,11 +156,6 @@ $bar-red: #D40000;
 
   .slider.slider-horizontal {
     width: 100%;
-  }
-
-  .results-extra-info {
-    cursor: pointer;
-    float: right;
   }
 
   #hh-expenses-slider {

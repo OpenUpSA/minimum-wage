@@ -53,14 +53,9 @@ extra_css:
       </div>
     </div>
 
-    <div id="hh-assumptions-info">
-
-    </div>
-
-    <div id="summary" class="panel">
+    <div id="results" class="panel">
       <div class="head">
-
-      <p class="lead" id="verdict"></p>
+        <p class="lead" id="verdict"></p>
       </div>
 
       <div id="plates"></div>
@@ -192,15 +187,3 @@ extra_css:
 
   </div>
 </div>
-
-<script type="text/javascript">
-  var FOOD_DATA = {
-    {% for food in site.data.foods %}
-    "{{ food.id }}" : {
-      price100g: {{ food.price100g }},
-      kCal100g: {{ food.kCal100g }},
-      weight: {{ food.weight }}
-    },
-    {% endfor %}
-  }
-</script>

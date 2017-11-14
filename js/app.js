@@ -111,7 +111,8 @@ $(window).on('load', function() {
         },
         value: self.residualIncome,
         max: round(self.typicalExpenditure, 0),
-        tooltip: 'always'
+        tooltip: 'always',
+        precision: 0
       });
 
       self.updateIncome = function(e) {
@@ -189,7 +190,7 @@ $(window).on('load', function() {
       }
 
       function calcTypicalExpenditure() {
-        return self.income * (1 - self.percIncomeForFood);
+        return round(self.income * (1 - self.percIncomeForFood), 0);
       }
 
       function updateCosts () {
@@ -198,12 +199,6 @@ $(window).on('load', function() {
         self.foodCostCoverage = calcFoodCostCoverage();
         self.otherCostCoverage = calcOtherCostCoverage();
       }
-
-      // var strokePos = $('#hh-expenses-slider').find('.min-slider-handle').css('left');
-      // $('#hh-expenses-slider').prepend($('.slider-stroke.other-expenses-available'));
-      // $('#hh-expenses-slider').prepend($('.slider-stroke-label.other-expenses-available'));
-      // $('.slider-stroke.other-expenses-available').css('left', strokePos);
-      // $('.slider-stroke-label.other-expenses-available').css('left', strokePos);
 
       function drawSummary () {
 

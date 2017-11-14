@@ -81,7 +81,6 @@ $(window).on('load', function() {
 
       init();
 
-
       self.updateIncome = function(e) {
         self.income = e.value;
         self.percIncomeForFood = getPercIncomeForFood();
@@ -108,17 +107,11 @@ $(window).on('load', function() {
         self.incomeForFood = self.income - e.value;
         self.incomeForOtherExpenses = e.value;
 
-        // var adjustedFoodCostCoverage = (self.income - self.incomeForOtherExpenses) / self.foodCost;
-        // var adjustedOtherCostCoverage = self.incomeForOtherExpenses / self.calcOtherExpensesCost;
-
-        // self.foodCostCoverage = (adjustedFoodCostCoverage > 1) ? 1 : adjustedFoodCostCoverage;
-        // self.otherCostCoverage = (adjustedOtherCostCoverage > 1) ? 1 : adjustedOtherCostCoverage;
-
         self.foodCostCoverage = calcFoodCostCoverage();
         self.otherCostCoverage = calcOtherCostCoverage();
 
-        meals.updateMealsADay();
         drawResults();
+        meals.updateMealsADay();
       };
 
       self.resetValues = function() {
@@ -245,17 +238,12 @@ $(window).on('load', function() {
         // Display correct verdict line
         $('#verdict').text(self.foodCostCoverage === 1 ? verdictTag[0] : verdictTag[1]);
 
-        // Show the correct icon
+        // Show the correct icons
         $('#cover-meals').find(self.foodCostCoverage === 1 ? '.safe' : '.warning').css('display', 'block');
         $('#cover-meals').find(self.foodCostCoverage === 1 ? '.warning' : '.safe').css('display', 'none');
 
         $('#cover-expenses').find(self.otherCostCoverage === 1 ? '.safe' : '.warning').css('display', 'block');
         $('#cover-expenses').find(self.otherCostCoverage === 1 ? '.warning' : '.safe').css('display', 'none');
-
-        // Set class to determine background colour
-        $('#cover-meals').removeClass('warning').addClass(self.foodCostCoverage < 1 ? "warning" : "");
-        $('#cover-expenses').removeClass('warning').addClass(self.otherCostCoverage < 1 ? "warning" : "");
-
 
         $('#other-expenses').find('.end')
           .text("R " + (self.otherExpensesCost > 0 ? self.otherExpensesCost : 0));

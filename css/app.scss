@@ -152,6 +152,10 @@ $bar-red: #D40000;
     .context {
       text-align: center;
     }
+
+    .comment {
+      font-size: 0.8em;
+    }
   }
 
   .slider.slider-horizontal {
@@ -187,7 +191,7 @@ $bar-red: #D40000;
   padding-top: 40px;
 
   &.other-expenses {
-    padding-bottom: 30px;
+    padding-bottom: 50px;
   }
 }
 
@@ -268,7 +272,7 @@ $bar-red: #D40000;
     margin-left: -24px;
   }
 
-  &.other-expenses-required {
+  &.typical-amount {
     right: 5%;
     margin-top: 37px;
     text-align: right;

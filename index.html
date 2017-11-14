@@ -187,15 +187,3 @@ extra_css:
 
   </div>
 </div>
-
-<script type="text/javascript">
-  var FOOD_DATA = {
-    {% for food in site.data.foods %}
-    "{{ food.id }}" : {
-      price100g: {{ food.price100g }},
-      kCal100g: {{ food.kCal100g }},
-      weight: {{ food.weight }}
-    },
-    {% endfor %}
-  }
-</script>

@@ -294,14 +294,25 @@ $bar-red: #D40000;
 #footer{
   background-color: $light-grey;
   padding: 10px 20px;
-  #credits {
-    margin: 10px 0;
-    text-align: right;
-    color: #c1c1c1;
-    font-size: 0.8em;
-    a {
-      color: #c1c1c1;
+
+  #logos {
+    img {
+      display: inline-block;
+    }
+
+    .sabc {
+      margin-right:15px;
+      max-height: 40px;
+    }
+
+    .openup {
+      max-height: 50px;
+    }
+
+    h5 {
+      font-weight: normal;
     }
   }
+
 }
 

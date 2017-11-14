@@ -85,7 +85,6 @@ $(window).on('load', function() {
       self.updateIncome = function(e) {
         self.income = e.value;
         self.percIncomeForFood = getPercIncomeForFood();
-        self.typicalExpenditure = calcTypicalExpenditure();
         calcCosts();
         drawResults();
         meals.updateMealsADay();
@@ -101,18 +100,22 @@ $(window).on('load', function() {
       self.updateMealOption = function () {
         self.mealOption = parseInt($("input[name='meal-option']:checked").val());
         calcCosts();
-
         drawResults();
         meals.updateMealsADay();
       };
 
       self.updateExpensePortion = function(e) {
-        self.residualIncome = e.value;
-        var adjustedFoodCostCoverage = (self.income - self.residualIncome) / self.foodCost;
-        var adjustedOtherCostCoverage = self.residualIncome / self.typicalExpenditure;
+        self.incomeForFood = self.income - e.value;
+        self.incomeForOtherExpenses = e.value;
 
-        self.foodCostCoverage = (adjustedFoodCostCoverage > 1) ? 1 : adjustedFoodCostCoverage;
-        self.otherCostCoverage = (adjustedOtherCostCoverage > 1) ? 1 : adjustedOtherCostCoverage;
+        // var adjustedFoodCostCoverage = (self.income - self.incomeForOtherExpenses) / self.foodCost;
+        // var adjustedOtherCostCoverage = self.incomeForOtherExpenses / self.calcOtherExpensesCost;
+
+        // self.foodCostCoverage = (adjustedFoodCostCoverage > 1) ? 1 : adjustedFoodCostCoverage;
+        // self.otherCostCoverage = (adjustedOtherCostCoverage > 1) ? 1 : adjustedOtherCostCoverage;
+
+        self.foodCostCoverage = calcFoodCostCoverage();
+        self.otherCostCoverage = calcOtherCostCoverage();
 
         meals.updateMealsADay();
         drawResults();
@@ -157,11 +160,11 @@ $(window).on('load', function() {
         });
 
         self.expenseSlider = $('#hh-expenses').slider({
-          value: self.residualIncome,
+          value: self.incomeForOtherExpenses,
           formatter: function(value) {
             return 'R ' + value;
           },
-          max: round(self.typicalExpenditure, 0),
+          max: round(self.otherExpensesCost, 0),
           tooltip: 'always',
           precision: 0
         });
@@ -183,33 +186,39 @@ $(window).on('load', function() {
         return foodCostPerPerson[self.mealOption] * self.members;
       }
 
+      function calcIncomeForFood() {
+        return round(self.income * self.percIncomeForFood, 0)
+      }
+
+      function calcOtherExpensesCost() {
+        return round(self.income * (1 - self.percIncomeForFood), 0);
+      }
+
+      function calcIncomeForOtherExpenses() {
+        return self.income - self.incomeForFood;
+      }
+
       function calcFoodCostCoverage() {
-        // Returns the ratio (0-1) to which income typiclly spent on foor,
-        // covers the cost of the food basket.
-        var coverage = (self.income * self.percIncomeForFood) / self.foodCost;
+        // Returns the ratio (0-1) to which income available for food,
+        // covers the cost of food.
+        var coverage = self.incomeForFood / self.foodCost;
         return (coverage > 1) ? 1 : coverage;
       }
 
       function calcOtherCostCoverage() {
-        // Returns the ratio (0-1) to which the typical income spent on other expenses
-        // covers other household costs.
-        var coverage = self.residualIncome / self.typicalExpenditure;
+        // Returns the ratio (0-1) to which the income available for other expenses
+        // covers the cost of other expenses.
+        var coverage = self.incomeForOtherExpenses / self.otherExpensesCost;
         return (coverage > 1) ? 1 : coverage;
-      }
-
-      function calcResidualIncome() {
-        var residual = self.income - self.foodCost;
-        return (residual < 0) ? 0 : residual;
-      }
-
-      function calcTypicalExpenditure() {
-        return round(self.income * (1 - self.percIncomeForFood), 0);
       }
 
       function calcCosts() {
         self.foodCost = calcFoodCost();
-        self.residualIncome = calcResidualIncome();
-        self.typicalExpenditure = calcTypicalExpenditure();
+        self.incomeForFood = calcIncomeForFood();
+
+        self.otherExpensesCost = calcOtherExpensesCost();
+        self.incomeForOtherExpenses = calcIncomeForOtherExpenses();
+
         self.foodCostCoverage = calcFoodCostCoverage();
         self.otherCostCoverage = calcOtherCostCoverage();
       }
@@ -247,18 +256,13 @@ $(window).on('load', function() {
         $('#cover-meals').removeClass('warning').addClass(self.foodCostCoverage < 1 ? "warning" : "");
         $('#cover-expenses').removeClass('warning').addClass(self.otherCostCoverage < 1 ? "warning" : "");
 
-        $('#food-cost').find('.amount')
-          .text("R " + round(self.foodCost, 0));
-
-        $('#residual-income').find('.amount')
-          .text("R " + round(self.residualIncome, 0));
 
         $('#other-expenses').find('.end')
-          .text("R " + (self.typicalExpenditure > 0 ? round(self.typicalExpenditure, 0) : 0));
+          .text("R " + (self.otherExpensesCost > 0 ? self.otherExpensesCost : 0));
 
         self.expenseSlider
-          .slider('setAttribute', 'value', self.residualIncome)
-          .slider('setAttribute', 'max', self.typicalExpenditure)
+          .slider('setAttribute', 'value', self.incomeForOtherExpenses)
+          .slider('setAttribute', 'max', self.otherExpensesCost)
           .slider('refresh')
           .slider('relayout');
       }

@@ -12,12 +12,6 @@ $(window).on('load', function() {
 
   $(document).ready(function () {
 
-    $(window).on('resize', function() {
-      // Redraw plates on resize
-      meals.drawPlates();
-      pymChild.sendHeight();
-    });
-
     function round(value, decimals) {
       // decimals = 0 if not passed
       decimals = typeof decimals !== 'undefined' ? decimals : 0;
@@ -25,7 +19,6 @@ $(window).on('load', function() {
     }
 
     var household = new Household();
-    var meals = new Meals();
 
     household.incomeSlider.on('slideStop', household.updateIncome);
     household.memberSlider.on('slideStop', household.updateMembers);
@@ -86,21 +79,18 @@ $(window).on('load', function() {
         self.percIncomeForFood = getPercIncomeForFood();
         calcCosts();
         drawResults();
-        meals.updateMealsADay();
       };
 
       self.updateMembers = function(e) {
         self.members = e.value;
         calcCosts();
         drawResults();
-        meals.updateMealsADay();
       };
 
       self.updateMealOption = function () {
         self.mealOption = parseInt($("input[name='meal-option']:checked").val());
         calcCosts();
         drawResults();
-        meals.updateMealsADay();
       };
 
       self.updateExpensePortion = function(e) {
@@ -118,7 +108,6 @@ $(window).on('load', function() {
         setDefaultValues();
         resetInputControls();
         drawResults();
-        meals.updateMealsADay();
       };
 
       function init() {
@@ -267,126 +256,6 @@ $(window).on('load', function() {
           .slider('relayout');
 
         $('input[name="meal-option"]').filter('[value="1"]').click();
-      }
-
-    }
-
-    function Meals() {
-
-      var self = this;
-      var mealsADayMeasure = 3;
-      var plateData = [];
-
-      self.drawPlates = function () {
-
-        var width, height;
-
-        // Use window location to build image src
-        var src = (window.location.origin + window.location.pathname).replace("index.html", "");
-        var plateImage = src + "img/food-plate.png";
-
-        var gridLength = mealsADayMeasure;
-
-        var svg1 = d3.select("svg").remove();
-        var svg = d3.select("#plates").append("svg");
-
-        var defs = svg.append("defs");
-
-        function updateDimensions(containerWidth) {
-          //get dimensions based on width of container element
-          width = containerWidth;
-          height = containerWidth < 300 ? 100 : (containerWidth / 3);
-        }
-
-        updateDimensions($("#plates")[0].clientWidth);
-        svg.attr("width", width).attr("height", height);
-
-        var initialPosition = { x: width / 6, y: width / 7 };
-        var circleSize = { width: width / 3.5, height: width / 3.5 };
-        var spacing = {h: width / 20, v: width / 10};
-
-        var path = d3.arc()
-          .outerRadius(circleSize.width / 2)
-          .innerRadius(0)
-          .startAngle(0);
-
-        var platePattern = patternGrid.circleLayout()
-          .config({
-            image: plateImage,
-            radius: circleSize.width,
-            padding: [spacing.h, spacing.v],
-            margin: [initialPosition.y, initialPosition.x],
-            id: "plate"
-        });
-
-        var generateArc = function(fraction) {
-          return path({endAngle: Math.PI * 2 * fraction});
-        };
-
-        // Assign plate positions
-        plateData.forEach(function(plate, i) {
-          plate.x = i % gridLength;
-          plate.y = Math.floor(i / gridLength);
-        });
-
-        var circles = svg.append("g")
-          .selectAll("circle")
-          .data(plateData)
-        .enter().append("circle")
-          .attr("class", "plate-circle")
-          .attr("cx", function(d) {
-            return initialPosition.x + (circleSize.width + spacing.h) * d.x;
-          })
-          .attr("cy", function(d) {
-            return initialPosition.y + (circleSize.height + spacing.v) * d.y;
-          })
-          .attr("r", circleSize.width / 2)
-          .attr("fill", "url(#plate)");
-
-        var arcs = svg.append("g")
-          .selectAll("path")
-          .data(plateData.filter(function(d) { return d.angle; }))
-        .enter().append("path")
-          .attr("transform", function(d) {
-            var xPos = initialPosition.x + (circleSize.width + spacing.h) * d.x;
-            var yPos = initialPosition.y + (circleSize.height + spacing.v) * d.y;
-            return "translate(" + xPos + ", " + yPos + ")";
-          })
-          .attr("class", "pie-segment")
-          .attr("d", function(d) {
-            return generateArc(d.angle);
-          });
-      };
-
-      self.updateMealsADay = function() {
-        plateData = compilePlateData();
-        self.drawPlates();
-      };
-
-      self.updateMealsADay();
-
-      function compilePlateData() {
-        var mealsADay = household.foodCostCoverage * mealsADayMeasure;
-        var platePortion = 0;
-        var plateGrid = [];
-
-        // Create data object
-        for (var i=0; i < mealsADayMeasure; i++) {
-          if (mealsADay >= 1) {
-            platePortion = 1;
-            mealsADay -= 1;
-          }
-          else {
-            platePortion = mealsADay;
-            mealsADay -= mealsADay;
-          }
-
-          var plateObj = {
-            angle: 1 - platePortion,
-          };
-          plateGrid.push(plateObj);
-        }
-        return plateGrid;
       }
 
     }

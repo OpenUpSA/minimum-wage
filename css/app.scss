@@ -1,0 +1,320 @@
+---
+---
+
+@import "main";
+
+$teal: #6CC5A3;
+$orange: #FFB28F;
+$green: #B4F388;
+$magenta: #F589A6;
+$light-grey: #f1f1f1;
+
+$grey: #7F7F7F;
+$blue: #0092FF;
+$light-blue: #EFF9FF;
+$dark-blue: #0060B4;
+$green: #00CC31;
+$red: #D31023;
+
+$bg-grey: #F1F1F1;
+$panel-grey: #DEDCDC;
+$bar-green: #00A750;
+$bar-red: #D40000;
+
+
+// The embed will be max 700px wide
+.container {
+    max-width: 700px;
+}
+
+.container {
+  color: $grey;
+
+  .jumbotron {
+    background-color: #fff;
+    margin-top: 0;
+    margin-bottom: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 4px;
+    text-align: center;
+
+    h1 {
+      font-size: 3em;
+    }
+
+    p {
+      font-size: 18px;
+    }
+
+    .intro-info {
+      color: #fff;
+      background-color: $blue;
+      font-weight: 500;
+      font-size: 0.7em;
+      border-radius: 5px;
+      padding: 8px 25px;
+      border: none;
+    }
+
+  }
+
+  .panel {
+    padding: 15px;
+  }
+}
+
+#household {
+  padding: 30px 20px;
+
+  .hh-input {
+    padding: 12px 0;
+  }
+
+  #meal-options {
+
+    label {
+      color: $blue;
+    }
+
+  }
+
+  .slider.slider-horizontal {
+    width: 100%;
+  }
+
+}
+
+.info {
+  cursor: pointer;
+  color: $blue;
+  text-align: right;
+}
+
+#results {
+  padding: 10px 20px;
+  background-color: $bg-grey;
+
+  .head {
+    text-align: center;
+  }
+
+  .icon {
+    .safe {
+      color: $green;
+    }
+    .warning {
+      color: $red;
+    }
+  }
+
+  #cover-meals, #cover-expenses {
+    margin: 10px 0;
+
+    .icon {
+      float: left;
+      padding-top: 15px;
+
+      .safe {
+        color: $green;
+      }
+
+      .warning {
+        color: $red;
+        display: none;
+      }
+
+    }
+  }
+
+  #food-cost {
+    .amount {
+      font-size: 1.4em;
+    }
+  }
+
+  #residual-income{
+    .amount {
+      font-size: 1.4em;
+    }
+  }
+
+  #other-expenses {
+    background-color: $panel-grey;
+    margin-top: 20px;
+    padding: 10px 0;
+
+    .label {
+      color: $grey;
+      text-align: left;
+    }
+
+    .context {
+      text-align: center;
+    }
+
+    .comment {
+      font-size: 0.8em;
+    }
+  }
+
+  .slider.slider-horizontal {
+    width: 100%;
+  }
+
+  #hh-expenses-slider {
+
+    .slider-selection {
+      background: $bar-green;
+    }
+
+    .slider-track-high {
+      background: $bar-red;
+    }
+
+  }
+
+}
+
+#reset {
+  color: #fff;
+  background-color: $dark-blue;
+  border-radius: 2px;
+  padding: 8px 35px;
+  border: none;
+  text-transform : uppercase;
+}
+
+// Slider
+
+.slider-row {
+  padding-top: 40px;
+
+  &.other-expenses {
+    padding-bottom: 50px;
+  }
+}
+
+.label {
+  color: $blue;
+  padding: 0;
+  font-weight: normal;
+  font-size: 100%;
+
+  &.start {
+
+  }
+
+  &.end {
+    float: right;
+  }
+}
+
+
+.slider-selection {
+  background-image: none;
+  background-color: $blue;
+  box-shadow: none;
+}
+
+.slider-track-high {
+  background-image: none;
+  background-color: $light-blue;
+}
+
+.slider.slider-horizontal .slider-handle {
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  top: 3px;
+  background-color: $blue;
+  background-image: none;
+  border: 2px solid #fff;
+  cursor: pointer;
+}
+
+.tooltip.top {
+  cursor: pointer;
+
+  .tooltip-arrow {
+    border-top-color: $blue;
+    margin-left: -7px;
+    border-width: 7px 7px 0;
+  }
+}
+
+.tooltip-inner {
+  background-color: $blue;
+  border-radius: 0;
+  padding: 3px 10px;
+}
+
+
+.slider-stroke {
+  position: absolute;
+  height: 70px;
+  width: 3px;
+  background-color: $panel-grey;
+  margin-top: -40px;
+
+  &.min-wage {
+    left: 32%;
+    margin-left: 4px;
+  }
+
+}
+
+.slider-stroke-label {
+  position: absolute;
+  margin-top: -58px;
+  font-size:9px;
+  text-align: center;
+
+  &.min-wage{
+    left: 32%;
+    margin-left: -24px;
+  }
+
+  &.typical-amount {
+    right: 5%;
+    margin-top: 37px;
+    text-align: right;
+  }
+
+}
+
+.extra-info {
+  font-size: 0.9em;
+  display: none;
+}
+
+.pie-segment {
+  fill: #fff;
+  fill-opacity: 0.6;
+}
+
+#footer{
+  background-color: $light-grey;
+  padding: 10px 20px;
+
+  #logos {
+    img {
+      display: inline-block;
+    }
+
+    .sabc {
+      margin-right:15px;
+      max-height: 40px;
+    }
+
+    .openup {
+      max-height: 50px;
+    }
+
+    h5 {
+      font-weight: normal;
+    }
+  }
+
+}
+

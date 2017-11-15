@@ -1,2 +1,2 @@
 # minimum-wage
-What does look like living on the minimum wage?
+How many meals can a household afford a day when living on the minimum wage?

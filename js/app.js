@@ -24,8 +24,6 @@ $(window).on('load', function() {
     household.memberSlider.on('slideStop', household.updateMembers);
     household.expenseSlider.on('slideStop', household.updateExpensePortion);
 
-    $('#meal-options').on('change', household.updateMealOption);
-
     // Extra info boxes
     $('.intro-info').on('click', function(e) {
       $('#intro-info').slideToggle();
@@ -97,11 +95,10 @@ $(window).on('load', function() {
         self.incomeForFood = self.income - e.value;
         self.incomeForOtherExpenses = e.value;
 
-        self.foodCostCoverage = calcFoodCostCoverage();
         self.otherCostCoverage = calcOtherCostCoverage();
 
+        setNutritionLevel();
         drawResults();
-        meals.updateMealsADay();
       };
 
       self.resetValues = function() {
@@ -114,12 +111,11 @@ $(window).on('load', function() {
         setDefaultValues();
         initSliders();
         drawResults();
-      };
+      }
 
       function setDefaultValues() {
         self.income = 3200;
         self.members = 4;
-        self.mealOption = 1;
         self.percIncomeForFood = getPercIncomeForFood();
         calcCosts();
       }
@@ -164,27 +160,18 @@ $(window).on('load', function() {
         return decile.percFood;
       }
 
-      function calcFoodCost() {
-        return foodCostPerPerson[self.mealOption] * self.members;
-      }
-
       function calcIncomeForFood() {
         return round(self.income * self.percIncomeForFood, 0)
       }
 
       function calcOtherExpensesCost() {
+        // TODO: This boils down to the same calc as calcIncomeForOtherExpenses
         return round(self.income * (1 - self.percIncomeForFood), 0);
       }
 
       function calcIncomeForOtherExpenses() {
+        // DO THIS: return self.otherExpensesCost;
         return self.income - self.incomeForFood;
-      }
-
-      function calcFoodCostCoverage() {
-        // Returns the ratio (0-1) to which income available for food,
-        // covers the cost of food.
-        var coverage = self.incomeForFood / self.foodCost;
-        return (coverage > 1) ? 1 : coverage;
       }
 
       function calcOtherCostCoverage() {
@@ -194,26 +181,48 @@ $(window).on('load', function() {
         return (coverage > 1) ? 1 : coverage;
       }
 
+      function calcNutritionLevelCost (i) {
+        return self.members * foodCostPerPerson[i];
+      }
+
+      function calcHouseholdNutritionLevel () {
+        if (self.incomeForFood < self.nutritionLevel1) {
+          return 0;
+        }
+        else if (self.incomeForFood < self.nutritionLevel2) {
+          return 1;
+        }
+        else {
+          return 2;
+        }
+      }
+
+      function setNutritionLevel() {
+        self.hhNutritionLevel = calcHouseholdNutritionLevel();
+      }
+
+
       function calcCosts() {
-        self.foodCost = calcFoodCost();
         self.incomeForFood = calcIncomeForFood();
 
         self.otherExpensesCost = calcOtherExpensesCost();
         self.incomeForOtherExpenses = calcIncomeForOtherExpenses();
 
-        self.foodCostCoverage = calcFoodCostCoverage();
         self.otherCostCoverage = calcOtherCostCoverage();
+
+        self.nutritionLevel1 = calcNutritionLevelCost(1);
+        self.nutritionLevel2 = calcNutritionLevelCost(2);
+
+        setNutritionLevel()
       }
+
+
 
       function drawResults() {
         var verdictTag = {
-          0: "Your household can buy enough food on that wage.",
-          1: "Your household can't buy enough food on that wage."
-        };
-
-        var mealsADayTag = {
-          0: "People in the household are receiving three meals a day",
-          1: "People in the household are not receiving three meals a day"
+          0: "Your household is not securing enough food.",
+          1: "Your household is receiving a sufficient, but nutritionally poor diet.",
+          2: "Your household is receiving a nutritionally adequate diet."
         };
 
         var coverExpensesTag = {
@@ -221,15 +230,15 @@ $(window).on('load', function() {
           1: "Other household expenses are not being covered"
         };
 
-        $('#cover-meals').find('.tag').text(self.foodCostCoverage === 1 ? mealsADayTag[0] : mealsADayTag[1]);
+        // $('#cover-meals').find('.tag').text(self.foodCostCoverage === 1 ? mealsADayTag[0] : mealsADayTag[1]);
         $('#cover-expenses').find('.tag').text(self.otherCostCoverage === 1 ? coverExpensesTag[0] : coverExpensesTag[1]);
 
         // Display correct verdict line
-        $('#verdict').text(self.foodCostCoverage === 1 ? verdictTag[0] : verdictTag[1]);
+        $('#verdict').text(verdictTag[self.hhNutritionLevel]);
 
         // Show the correct icons
-        $('#cover-meals').find(self.foodCostCoverage === 1 ? '.safe' : '.warning').css('display', 'block');
-        $('#cover-meals').find(self.foodCostCoverage === 1 ? '.warning' : '.safe').css('display', 'none');
+        // $('#cover-meals').find(self.foodCostCoverage === 1 ? '.safe' : '.warning').css('display', 'block');
+        // $('#cover-meals').find(self.foodCostCoverage === 1 ? '.warning' : '.safe').css('display', 'none');
 
         $('#cover-expenses').find(self.otherCostCoverage === 1 ? '.safe' : '.warning').css('display', 'block');
         $('#cover-expenses').find(self.otherCostCoverage === 1 ? '.warning' : '.safe').css('display', 'none');
@@ -255,7 +264,7 @@ $(window).on('load', function() {
           .slider('refresh')
           .slider('relayout');
 
-        $('input[name="meal-option"]').filter('[value="1"]').click();
+        // $('input[name="meal-option"]').filter('[value="1"]').click();
       }
 
     }

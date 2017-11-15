@@ -230,9 +230,12 @@ $bar-red: #D40000;
   background-color: $blue;
   background-image: none;
   border: 2px solid #fff;
+  cursor: pointer;
 }
 
 .tooltip.top {
+  cursor: pointer;
+
   .tooltip-arrow {
     border-top-color: $blue;
     margin-left: -7px;

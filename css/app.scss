@@ -13,8 +13,10 @@ $grey: #7F7F7F;
 $blue: #0092FF;
 $light-blue: #EFF9FF;
 $dark-blue: #0060B4;
+
 $green: #00CC31;
 $red: #D31023;
+$yellow: #FFB900;
 
 $bg-grey: #F1F1F1;
 $panel-grey: #DEDCDC;
@@ -107,6 +109,64 @@ $bar-red: #D40000;
       color: $red;
     }
   }
+
+  .amount {
+    font-weight: bold;
+  }
+
+  #verdict-icons {
+    margin-bottom: 40px;
+
+    .diet-level {
+      opacity: 0.1;
+
+      &.active {
+        opacity: 1;
+      }
+    }
+
+    .fa {
+      // opacity: 0.1;
+
+      // &.active {
+      //   opacity: 1;
+      // }
+
+      &.poor {
+        color: $red;
+      }
+
+      &.incomplete {
+        color: $yellow;
+      }
+
+      &.good {
+        color: $green;
+      }
+    }
+  }
+
+  // .nutrition-levels {
+  //   margin-top: 40px;
+  //   height: 30px;
+
+  //   .indicator {
+  //     height: 100%;
+  //     position: absolute;
+  //   }
+
+  //   .poor {
+  //     background-color: $red;
+  //   }
+
+  //   .incomplete {
+  //     background-color: $yellow;
+  //   }
+
+  //   .good {
+  //     background-color: $green;
+  //   }
+  // }
 
   #cover-meals, #cover-expenses {
     margin: 10px 0;
@@ -225,7 +285,7 @@ $bar-red: #D40000;
 .slider.slider-horizontal .slider-handle {
   width: 14px;
   height: 14px;
-  margin-left: -7px;
+  margin-left: -6px;
   top: 3px;
   background-color: $blue;
   background-image: none;
@@ -262,6 +322,13 @@ $bar-red: #D40000;
     margin-left: 4px;
   }
 
+  &.diet-level-1 {
+    margin-left: -7px;
+  }
+
+  &.diet-level-2 {
+    margin-left: -7px;
+  }
 }
 
 .slider-stroke-label {
@@ -276,9 +343,23 @@ $bar-red: #D40000;
   }
 
   &.typical-amount {
-    right: 5%;
+    right: 15px;
     margin-top: 37px;
     text-align: right;
+  }
+
+  &.hh-income {
+    right: 15px;
+    margin-top: 37px;
+    text-align: right;
+  }
+
+  &.diet-level-1 {
+    margin-left: -24px;
+  }
+
+  &.axis {
+    margin-top: 37px;
   }
 
 }

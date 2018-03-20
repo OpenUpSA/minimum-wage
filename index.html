@@ -56,98 +56,88 @@ extra_css:
 
     <div id="results" class="panel">
       <div class="head">
+        <p class="lead" id="income-for-food"><span class="amount"></span> is available for your household's food expenses.</p>
         <p class="lead" id="verdict"></p>
       </div>
 
-      <div class="row">
-        <div class="col-sm-6">
-          <div id="cover-expenses" class="result">
-            <div class="row">
-              <div class="col-xs-3">
-                <div class="icon">
-                  <i class="fa fa-check-circle fa-4x safe" aria-hidden="true"></i>
-                  <i class="fa fa-times-circle fa-4x warning" aria-hidden="true"></i>
-                </div>
-              </div>
-              <div class="col-xs-9">
-                <div class="row">
-                  <div class="col-xs-10"><h5>Other household expenses</h5></div>
-                  <div class="col-xs-2 h5 info">
-                    <i class="fa fa-question-circle fa-lg results-info" id="other-expenses-info" aria-hidden="true"></i>
-                  </div>
-                </div>
-                <div class="tag"></div>
-              </div>
-            </div>
-          </div>
+      <div id="verdict-icons" class="row text-center">
+        <div class="col-xs-4 diet-level poor">
+          <i class="fa fa-times-circle fa-4x poor" aria-hidden="true"></i>
+          <p><span class="diet-level-1 amount"></span> is needed to meet the minimum energy requirements for everyone in your household.</p>
+        </div>
+        <div class="col-xs-4 diet-level incomplete">
+          <i class="fa fa-exclamation-circle fa-4x incomplete" aria-hidden="true"></i>
+          <p>At least <span class="diet-level-2 amount"></span> is needed to secure a basic but nutritionally complete diet.</p>
+        </div>
+        <div class="col-xs-4 diet-level good">
+          <i class="fa fa-check-circle fa-4x good" aria-hidden="true"></i>
+          <p>Your household is receiving a nutritionally complete diet.</p>
         </div>
       </div>
 
-      <div id="results-info">
-        <div id="other-expenses-info" class="extra-info panel">
-          <p>These are other basic necessarry expences like housing, electricity, transport, education etc.</p>
-          <p>We used the Income and Expenditure survey to determine what a typical household spends their money on.</p>
+      <div class="row slider-row" style='display:none'>
+        <div class="col-xs-12">
+          <div class="slider-stroke diet-level-1"></div>
+          <div class="slider-stroke-label diet-level-1">Food poverty line</div>
+          <div class="slider-stroke-label axis diet-level-1"></div>
+
+          <div class="slider-stroke diet-level-2"></div>
+          <div class="slider-stroke-label diet-level-2">PACSA Min Nutrition</div>
+          <div class="slider-stroke-label axis diet-level-2"></div>
+
+          <div class="slider-stroke-label hh-income">Household<br> income</div>
+          <input id="food-expense" data-slider-id='food-expense-slider' type="number" data-slider-min="0" data-slider-step="1"/>
+          <span class="label start">0</span>
+          <span class="label end"></span>
         </div>
-
-        <div id="meals-info" class="extra-info panel">
-          <div class="row">
-            <div class="col-sm-4">
-              <label for="meal" class="control-label">Choose on of these options to determine the cost of the meals</label>
-            </div>
-            <div class="col-sm-8">
-              <form id="meal-options" class="form-horizontal">
-                <div class="form-group">
-                  <div class="radio col-xs-10">
-                    <label>
-                      <input type="radio" name="meal-option" id="meal-option-1" value="1" checked>Stats SA food poverty line
-                    </label>
-                  </div>
-                  <div id="meal-option-1-info" class="meal-options-info col-xs-2 radio info">
-                    <i class="fa fa-question-circle fa-lg" aria-hidden="true"></i>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="radio col-xs-10">
-                    <label>
-                      <input type="radio" name="meal-option" id="meal-option-2" value="2">PACSA minimum nutritional food basket
-                    </label>
-                  </div>
-                  <div id="meal-option-2-info" class="meal-options-info col-xs-2 radio info">
-                    <i class="fa fa-question-circle fa-lg" aria-hidden="true"></i>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-
-          <div id="meal-options-info">
-            <div id="meal-option-1-info" class="extra-info panel">
-              <p>The StatsSA food basket ensures that individuals have enough carbohydrates (energy) and does not look to protein, micronutrients content etc.</p>
-              <p>This amount was <b>R&nbsp;531</b> per person per month, as of April 2017.</p>
-            </div>
-            <div id="meal-option-2-info" class="extra-info panel">
-              <p>In early 2014 PACSA, in consultation with a Registered Dietician, formulated a Minimum Nutritional Food Basket. This basket provides data on which one can start talking realistically about adequacies in wages and ensures that current food expenditure patterns are not conflated with the food expenditure required to secure a nutritional basket of food.</p>
-              <p>To obtain a diet complete in minimum nutrition (assuming a 10 500 kJ (2509 kCal) daily intake) would cost <b>R&nbsp;621.35</b> per person per month, as of <a href="http://pacsa.org.za/images/food_barometer/2017/August_2017_PACSA_monthly_food_price_barometer.pdf" target="_blank">August 2017</a>.</p>
-            </div>
-          </div>
-
-        </div>
-
       </div>
+
 
       <div id="other-expenses" class="row">
         <div class="col-xs-12">
-          <h5 class="text-center">Money for other household expenses</h5>
+
+          <div class="row">
+            <div class="col-xs-10">
+              <h5>Money for other household expenses</h5>
+            </div>
+            <div class="col-xs-2 h5 info">
+              <i class="fa fa-question-circle fa-lg results-info" id="other-expenses-info" aria-hidden="true"></i>
+            </div>
+          </div>
+
           <div class="row slider-row other-expenses">
             <div class="col-xs-12 col-sm-10 col-sm-offset-1">
               <div class="slider-stroke-label typical-amount">Typical amount for<br> this type of household</div>
-
               <input id="hh-expenses" data-slider-id='hh-expenses-slider' type="number" data-slider-min="0" data-slider-step="1"/>
               <span class="label start">0</span>
               <span class="label end amount"></span>
             </div>
           </div>
+          <div class="row" style="display:none">
+            <div class="col-sm-6">
+              <div id="cover-expenses" class="result">
+                <div class="row">
+                  <div class="col-xs-2">
+                    <div class="icon">
+                      <i class="fa fa-check-circle fa-2x safe" aria-hidden="true"></i>
+                      <i class="fa fa-times-circle fa-2x warning" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                  <div class="col-xs-10">
+                    <div class="tag"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <p class="text-center">You can make more money available for food, by reducing other expenses. <br> <span class="comment">Keep in mind that it is likely your household can't reduce this by much, if at all.</span></p>
+        </div>
+      </div>
+
+      <div id="results-info" class="row">
+        <div id="other-expenses-info" class="extra-info panel">
+          <p>These are other basic necessarry expences like housing, electricity, transport, education etc.</p>
+          <p>We used the Income and Expenditure survey to determine what a typical household spends their money on.</p>
         </div>
       </div>
 

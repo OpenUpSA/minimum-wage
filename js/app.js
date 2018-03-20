@@ -22,6 +22,7 @@ $(window).on('load', function() {
 
     household.incomeSlider.on('slideStop', household.updateIncome);
     household.memberSlider.on('slideStop', household.updateMembers);
+    household.foodExpenseSlider.on('slideStop', household.updateFoodExpensePortion);
     household.expenseSlider.on('slideStop', household.updateExpensePortion);
 
     // Extra info boxes
@@ -101,6 +102,16 @@ $(window).on('load', function() {
         drawResults();
       };
 
+      self.updateFoodExpensePortion = function(e) {
+        self.incomeForFood = e.value;
+        self.incomeForOtherExpenses = self.income - e.value;
+
+        self.otherCostCoverage = calcOtherCostCoverage();
+
+        setNutritionLevel();
+        drawResults();
+      };
+
       self.resetValues = function() {
         setDefaultValues();
         resetInputControls();
@@ -137,6 +148,16 @@ $(window).on('load', function() {
           tooltip: 'always'
         });
 
+        self.foodExpenseSlider = $('#food-expense').slider({
+          value: self.incomeForFood,
+          formatter: function(value) {
+            return 'R ' + value;
+          },
+          // max: self.nutritionLevel2,
+          tooltip: 'always',
+          precision: 0
+        });
+
         self.expenseSlider = $('#hh-expenses').slider({
           value: self.incomeForOtherExpenses,
           formatter: function(value) {
@@ -161,7 +182,7 @@ $(window).on('load', function() {
       }
 
       function calcIncomeForFood() {
-        return round(self.income * self.percIncomeForFood, 0)
+        return round(self.income * self.percIncomeForFood, 0);
       }
 
       function calcOtherExpensesCost() {
@@ -182,7 +203,7 @@ $(window).on('load', function() {
       }
 
       function calcNutritionLevelCost (i) {
-        return self.members * foodCostPerPerson[i];
+        return round(self.members * foodCostPerPerson[i], 2);
       }
 
       function calcHouseholdNutritionLevel () {
@@ -213,16 +234,16 @@ $(window).on('load', function() {
         self.nutritionLevel1 = calcNutritionLevelCost(1);
         self.nutritionLevel2 = calcNutritionLevelCost(2);
 
-        setNutritionLevel()
+        setNutritionLevel();
       }
 
 
 
       function drawResults() {
         var verdictTag = {
-          0: "Your household is not securing enough food.",
-          1: "Your household is receiving a sufficient, but nutritionally poor diet.",
-          2: "Your household is receiving a nutritionally adequate diet."
+          0: "Your household's minimum energy requirements is not being met.",
+          1: "Your household is receiving a diet that is nutritionally incomplete.",
+          2: "Your household is receiving diet complete in minimum nutrition."
         };
 
         var coverExpensesTag = {
@@ -230,21 +251,47 @@ $(window).on('load', function() {
           1: "Other household expenses are not being covered"
         };
 
+        var verdictIconClass = {
+          0: "poor",
+          1: "incomplete",
+          2: "good"
+        };
+
         // $('#cover-meals').find('.tag').text(self.foodCostCoverage === 1 ? mealsADayTag[0] : mealsADayTag[1]);
         $('#cover-expenses').find('.tag').text(self.otherCostCoverage === 1 ? coverExpensesTag[0] : coverExpensesTag[1]);
 
         // Display correct verdict line
         $('#verdict').text(verdictTag[self.hhNutritionLevel]);
+        $('#income-for-food').find('.amount').text('R ' + self.incomeForFood);
 
-        // Show the correct icons
-        // $('#cover-meals').find(self.foodCostCoverage === 1 ? '.safe' : '.warning').css('display', 'block');
-        // $('#cover-meals').find(self.foodCostCoverage === 1 ? '.warning' : '.safe').css('display', 'none');
+        $('#verdict-icons').find('.active').removeClass('active');
+        $('#verdict-icons').find('.diet-level.' + verdictIconClass[self.hhNutritionLevel]).addClass('active');
+
+        $('#verdict-icons').find('.diet-level-1.amount').text('R ' + self.nutritionLevel1);
+        $('#verdict-icons').find('.diet-level-2.amount').text('R ' + self.nutritionLevel2);
+
 
         $('#cover-expenses').find(self.otherCostCoverage === 1 ? '.safe' : '.warning').css('display', 'block');
         $('#cover-expenses').find(self.otherCostCoverage === 1 ? '.warning' : '.safe').css('display', 'none');
 
         $('#other-expenses').find('.end')
           .text("R " + (self.otherExpensesCost > 0 ? self.otherExpensesCost : 0));
+
+        self.foodExpenseSlider
+          .slider('setAttribute', 'value', self.incomeForFood)
+          .slider('setAttribute', 'max', self.nutritionLevel2)
+          .slider('refresh');
+
+        // $('#food-expense').siblings('.end').text('R ' + self.income);
+
+        $('#food-expense').siblings('.diet-level-1.axis').text('R ' + self.nutritionLevel1);
+        $('#food-expense').siblings('.diet-level-1').css('left', (self.nutritionLevel1 / self.nutritionLevel2 * 100) + '%');
+
+        $('#food-expense').siblings('.diet-level-2.axis').text('R ' + self.nutritionLevel2);
+        $('#food-expense').siblings('.diet-level-2').css('left', (self.nutritionLevel2 / self.nutritionLevel2 * 100) + '%');
+
+
+
 
         self.expenseSlider
           .slider('setAttribute', 'value', self.incomeForOtherExpenses)

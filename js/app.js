@@ -65,11 +65,11 @@ $(window).on('load', function() {
 
       /* Cost of food per person per month:
          1: Stats SA Food poverty line
-         2. PACSA minimum nutritional basket (10 500 kJ a day - June 2017) */
+         2. PACSA minimum nutritional basket (10 500 kJ a day - Feb 2018) */
 
       var foodCostPerPerson = {
         '1': 531,
-        '2': 621.35};
+        '2': 615.58};
 
       var incomeDecileRanges = [
         {'range': [0, 800], 'percFood': 0.4813},
@@ -84,6 +84,8 @@ $(window).on('load', function() {
         {'range': [20101, 100000], 'percFood': 0.1074}];
 
       init();
+
+      $('#pacsa-min-cost').text(numberWithSpaces(foodCostPerPerson[2]));
 
       self.updateIncome = function(e) {
         self.income = e.value;

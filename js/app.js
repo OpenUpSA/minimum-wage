@@ -24,6 +24,10 @@ $(window).on('load', function() {
       return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
     }
 
+    function numberWithSpaces(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    }
+
     var household = new Household();
     var meals = new Meals();
 
@@ -139,7 +143,7 @@ $(window).on('load', function() {
         self.incomeSlider = $('#hh-income').slider({
           value: self.income,
           formatter: function(value) {
-            return 'R' + value;
+            return 'R' + numberWithSpaces(value);
           },
           tooltip: 'always'
         });
@@ -155,7 +159,7 @@ $(window).on('load', function() {
         self.expenseSlider = $('#hh-expenses').slider({
           value: self.incomeForOtherExpenses,
           formatter: function(value) {
-            return 'R ' + value;
+            return 'R' + numberWithSpaces(value);
           },
           max: round(self.otherExpensesCost, 0),
           tooltip: 'always',
@@ -246,7 +250,7 @@ $(window).on('load', function() {
         $('#cover-expenses').find(self.otherCostCoverage === 1 ? '.warning' : '.safe').css('display', 'none');
 
         $('#other-expenses').find('.end')
-          .text("R " + (self.otherExpensesCost > 0 ? self.otherExpensesCost : 0));
+          .text("R" + (self.otherExpensesCost > 0 ? numberWithSpaces(self.otherExpensesCost) : 0));
 
         self.expenseSlider
           .slider('setAttribute', 'value', self.incomeForOtherExpenses)

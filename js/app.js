@@ -71,6 +71,9 @@ $(window).on('load', function() {
         '1': 531,
         '2': 615.58};
 
+      /* Percentage spent on food accoring to Stats SA’s
+         Income and Expenditure of Households Survey, 2012 */
+
       var incomeDecileRanges = [
         {'range': [0, 800], 'percFood': 0.4813},
         {'range': [801, 1260], 'percFood': 0.4698},

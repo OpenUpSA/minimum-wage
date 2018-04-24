@@ -262,6 +262,8 @@ $(window).on('load', function() {
           .slider('setAttribute', 'max', self.otherExpensesCost)
           .slider('refresh')
           .slider('relayout');
+
+        gtag('event', 're-draw');
       }
 
       function resetInputControls() {

@@ -137,7 +137,7 @@ $(window).on('load', function() {
       };
 
       function setDefaultValues() {
-        self.income = 3200;
+        self.income = 3500;
         self.members = 4;
         self.mealOption = 1;
         self.percIncomeForFood = getPercIncomeForFood();

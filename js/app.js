@@ -96,6 +96,7 @@ $(window).on('load', function() {
         calcCosts();
         drawResults();
         meals.updateMealsADay();
+        gtag('event', 'update-income');
       };
 
       self.updateMembers = function(e) {
@@ -103,6 +104,7 @@ $(window).on('load', function() {
         calcCosts();
         drawResults();
         meals.updateMealsADay();
+        gtag('event', 'update-hh-members');
       };
 
       self.updateMealOption = function () {
@@ -110,6 +112,7 @@ $(window).on('load', function() {
         calcCosts();
         drawResults();
         meals.updateMealsADay();
+        gtag('event', 'update-meal-option');
       };
 
       self.updateExpensePortion = function(e) {
@@ -121,6 +124,7 @@ $(window).on('load', function() {
 
         drawResults();
         meals.updateMealsADay();
+        gtag('event', 'update-expense-portion');
       };
 
       self.resetValues = function() {
@@ -128,6 +132,7 @@ $(window).on('load', function() {
         resetInputControls();
         drawResults();
         meals.updateMealsADay();
+        gtag('event', 'reset-values');
       };
 
       function init() {
@@ -262,8 +267,6 @@ $(window).on('load', function() {
           .slider('setAttribute', 'max', self.otherExpensesCost)
           .slider('refresh')
           .slider('relayout');
-
-        gtag('event', 're-draw');
       }
 
       function resetInputControls() {

@@ -1,0 +1,187 @@
+---
+layout: default
+
+extra_js:
+  - bower_components/underscore/underscore-min.js
+  - bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.js
+  - bower_components/sticky.js/dist/sticky.min.js
+  - bower_components/d3/d3.min.js
+  - js/d3-patterngrid.js
+extra_css:
+  - bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css
+---
+
+<div id="content">
+  <div class="container">
+
+    <div class="jumbotron">
+      <h1>The cost of <br> living in SA</h1>
+      <p class="lead">Can you afford to pay for food and other household expenses on the new minimum wage?</p>
+      <p><a class="btn intro-info" role="button">About the minimum wage</a></p>
+
+    </div>
+
+    <div id="intro-info" class="panel extra-info">
+      <p>The National Minimum Wage Act, 2017 is set to be implemented in May 2018 and will tentatively set the minimum wage for South Africans at R3&nbsp;500.</p>
+    </div>
+
+    <div id="household">
+      <div class="row slider-row">
+        <div class="col-sm-8 col-sm-push-4">
+          <div class="slider-stroke min-wage"></div>
+          <div class="slider-stroke-label min-wage">Minimum wage</div>
+          <input id="hh-income" data-slider-id='hh-income-slider' type="number" data-slider-min="0" data-slider-max="10000" data-slider-step="100" data-slider-value="3500"/>
+          <span class="label start">0</span>
+          <span class="label end">R10&nbsp;000</span>
+        </div>
+        <div class="col-sm-4 col-sm-pull-8">
+          <label for="hh-income" class="control-label">How much money does your household earn a month in total?</label>
+        </div>
+      </div>
+
+      <div class="row slider-row">
+        <div class="col-sm-8 col-sm-push-4">
+          <input id="hh-members" data-slider-id='hh-members-slider' type="number" data-slider-min="1" data-slider-max="12" data-slider-step="1" data-slider-value="4"/>
+          <span class="label start">0</span>
+          <span class="label end">12</span>
+        </div>
+        <div class="col-sm-4 col-sm-pull-8">
+          <label for="hh-members" class="control-label">How many people live in your household?</label>
+        </div>
+      </div>
+    </div>
+
+    <div id="results" class="panel">
+      <div class="head">
+        <p class="lead" id="verdict"></p>
+      </div>
+
+      <div id="plates"></div>
+
+      <div class="row">
+        <div class="col-sm-6">
+          <div id="cover-meals" class="result">
+            <div class="row">
+              <div class="col-xs-3">
+                <div class="icon">
+                  <i class="fa fa-check-circle fa-4x safe" aria-hidden="true"></i>
+                  <i class="fa fa-times-circle fa-4x warning" aria-hidden="true"></i>
+                </div>
+              </div>
+              <div class="col-xs-9">
+                <div class="row">
+                  <div class="col-xs-10"><h5><strong>Meals</strong></h5></div>
+                  <div class="col-xs-2 h5 info">
+                    <i class="fa fa-question-circle fa-lg results-info" id="meals-info" aria-hidden="true"></i>
+                  </div>
+                </div>
+                <div class="tag"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div id="cover-expenses" class="result">
+            <div class="row">
+              <div class="col-xs-3">
+                <div class="icon">
+                  <i class="fa fa-check-circle fa-4x safe" aria-hidden="true"></i>
+                  <i class="fa fa-times-circle fa-4x warning" aria-hidden="true"></i>
+                </div>
+              </div>
+              <div class="col-xs-9">
+                <div class="row">
+                  <div class="col-xs-10"><h5><strong>Other household expenses</strong></h5></div>
+                  <div class="col-xs-2 h5 info">
+                    <i class="fa fa-question-circle fa-lg results-info" id="other-expenses-info" aria-hidden="true"></i>
+                  </div>
+                </div>
+                <div class="tag"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="results-info">
+        <div id="other-expenses-info" class="extra-info panel">
+          <p>These are other basic necessary expenses like housing, electricity, transport, education etc.</p>
+          <p>We used Stats SA’s Income and Expenditure of Households Survey to determine what a typical household spends their money on.</p>
+        </div>
+
+        <div id="meals-info" class="extra-info panel">
+          <div class="row">
+            <div class="col-sm-4">
+              <label for="meal" class="control-label">Choose one of these options to determine the cost of the meals</label>
+            </div>
+            <div class="col-sm-8">
+              <form id="meal-options" class="form-horizontal">
+                <div class="form-group">
+                  <div class="radio col-xs-10">
+                    <label>
+                      <input type="radio" name="meal-option" id="meal-option-1" value="1" checked>Stats SA food poverty line
+                    </label>
+                  </div>
+                  <div id="meal-option-1-info" class="meal-options-info col-xs-2 radio info">
+                    <i class="fa fa-question-circle fa-lg" aria-hidden="true"></i>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="radio col-xs-10">
+                    <label>
+                      <input type="radio" name="meal-option" id="meal-option-2" value="2">PACSA minimum nutritional food basket
+                    </label>
+                  </div>
+                  <div id="meal-option-2-info" class="meal-options-info col-xs-2 radio info">
+                    <i class="fa fa-question-circle fa-lg" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div id="meal-options-info">
+            <div id="meal-option-1-info" class="extra-info panel">
+              <p>The Stats SA food basket ensures that individuals have enough carbohydrates (energy) and does not look to protein, micronutrients content etc.</p>
+              <p>This amount was <b>R531</b> per person per month, as of April 2017.</p>
+            </div>
+            <div id="meal-option-2-info" class="extra-info panel">
+              <p>In early 2014 PACSA, in consultation with a registered dietician, formulated a Minimum Nutritional Food Basket. This basket provides data on which one can start talking realistically about adequacies in wages and ensures that current food expenditure patterns are not conflated with the food expenditure required to secure a nutritional basket of food.</p>
+              <p>To obtain a diet complete in minimum nutrition (assuming a 10 500 kJ (2 509 kcal) daily intake) would cost <b>R<span id="pacsa-min-cost"></span></b> per person per month, as of <a href="http://pacsa.org.za/images/food_barometer/2018/February_2018_PACSA_monthly_food_price_barometer.pdf" target="_blank">February 2018</a>.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div id="other-expenses" class="row">
+        <div class="col-xs-12">
+          <h5 class="text-center"><srong>Money for other household expenses</strong></h5>
+          <div class="row slider-row other-expenses">
+            <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+              <div class="slider-stroke-label typical-amount">Typical amount for<br> this type of household</div>
+
+              <input id="hh-expenses" data-slider-id='hh-expenses-slider' type="number" data-slider-min="0" data-slider-step="1"/>
+              <span class="label start">0</span>
+              <span class="label end amount"></span>
+            </div>
+          </div>
+          <p class="text-center">You can make more money available for food, by reducing other expenses. <br> <span class="comment">Keep in mind that it is likely your household can't reduce this by much, if at all.</span></p>
+        </div>
+      </div>
+
+      <h5 class="text-center"><a class="btn" id="reset" role="button">Reset</a></h5>
+
+    </div>
+
+    <div id="footer" class="panel">
+      <div id="logos" class="row text-center">
+        <a href="http://www.sabcnews.com/newspage/" target="_blank"><img class="sabc" src="img/sabc-news-logo.png"></a>
+        <a href="https://openup.org.za/" target="_blank"><img class="openup" src="img/openup-logo.svg"></a>
+        <h5>SABC News and OpenUp &copy; 2018</h5>
+      </div>
+    </div>
+
+  </div>
+</div>

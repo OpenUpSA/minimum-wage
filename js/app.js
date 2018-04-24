@@ -232,8 +232,8 @@ $(window).on('load', function() {
         };
 
         var mealsADayTag = {
-          0: "People in the household are receiving three meals a day",
-          1: "People in the household are not receiving three meals a day"
+          0: "People in the household can afford three meals a day",
+          1: "People in the household can't afford three meals a day"
         };
 
         var coverExpensesTag = {
